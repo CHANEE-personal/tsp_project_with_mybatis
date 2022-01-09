@@ -191,8 +191,8 @@
 							  update_time)
 		VALUES (#{categoryCd},
 		        #{categoryAge},
-				#{modelKorName},
-				#{modelEngName},
+				CONCAT(#{model_kor_first_name}, #{model_kor_second_name}),
+				CONCAT(#{model_first_name}, #{model_second_name}),
 		        #{height},
 		        #{shoes},
 		        #{size3},
@@ -213,8 +213,8 @@
 		/*[AdminModelApi_SQL.xml].[updateModel] */
 		UPDATE tsp_model
 		SET
-		<if test="modelKorName != null and modelKorName != ''">model_kor_name = #{modelKorName},</if>
-		<if test="modelEngName != null and modelEngName != ''">model_eng_name = #{modelEngName},</if>
+		<if test="modelKorName != null and modelKorName != ''">model_kor_name = CONCAT(#{model_kor_first_name}, #{model_kor_second_name}),</if>
+		<if test="modelEngName != null and modelEngName != ''">model_eng_name = CONCAT(#{model_first_name}, #{model_second_name}),</if>
 		<if test="modelDescription != null and modelDescription != ''">model_description = #{modelDescription},</if>
 		<if test="categoryAge != null and categoryAge != ''">category_age = #{categoryAge},</if>
 		<if test="height != null and height != ''">height = #{height},</if>
