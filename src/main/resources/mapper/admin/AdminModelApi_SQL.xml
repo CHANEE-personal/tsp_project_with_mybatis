@@ -58,7 +58,8 @@
 		model_main_yn,
 		model_first_name,
 		model_second_name,
-		model_third_name,
+		model_kor_first_name,
+		model_kor_second_name,
 		create_time
 		FROM (
 		SELECT @ROWNUM := @ROWNUM + 1 AS RNUM,
@@ -76,7 +77,8 @@
 				model_main_yn,
 				model_first_name,
 				model_second_name,
-				model_third_name,
+				model_kor_first_name,
+				model_kor_second_name,
 				create_time
 		FROM (
 			SELECT
@@ -94,7 +96,8 @@
 			tm.model_main_yn,
 			tm.model_first_name,
 			tm.model_second_name,
-			tm.model_third_name,
+			tm.model_kor_first_name,
+			tm.model_kor_second_name,
 			DATE_FORMAT(tm.create_time,'%Y-%m-%d') AS create_time
 			FROM ( SELECT @ROWNUM := 0) temp, tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 			ON tm.category_cd = tc.category_cd
@@ -137,7 +140,8 @@
 			   tm.model_main_yn,
 			   tm.model_first_name,
 			   tm.model_second_name,
-			   tm.model_third_name
+			   tm.model_kor_first_name,
+			   tm.model_kor_second_name
 		FROM tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 		  ON tm.category_cd = tc.category_cd
 		  WHERE tm.visible = 'Y'
@@ -179,7 +183,8 @@
 							  model_main_yn,
 							  model_first_name,
 							  model_second_name,
-							  model_third_name,
+							  model_kor_first_name,
+		                      model_kor_second_name,
 							  creator,
 							  create_time,
 							  updater,
@@ -196,7 +201,8 @@
 		        #{model_main_yn},
 		        #{model_first_name},
 		        #{model_second_name},
-		        #{model_third_name},
+		        #{model_kor_first_name},
+				#{model_kor_second_name},
 		        '1',
 		        now(),
 		        '1',
@@ -217,7 +223,8 @@
 		<if test="model_main_yn != null and model_main_yn != ''">model_main_yn = #{model_main_yn},</if>
 		<if test="model_first_name != null and model_first_name != ''">model_first_name = #{model_first_name},</if>
 		<if test="model_second_name != null and model_second_name != ''">model_second_name = #{model_second_name},</if>
-		<if test="model_third_name != null and model_third_name != ''">model_third_name = #{model_third_name},</if>
+		<if test="model_kor_first_name != null and model_kor_first_name != ''">model_kor_first_name = #{model_kor_first_name},</if>
+		<if test="model_kor_second_name != null and model_kor_second_name != ''">model_kor_second_name = #{model_kor_second_name},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}

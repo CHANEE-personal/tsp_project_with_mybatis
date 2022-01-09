@@ -67,7 +67,9 @@ public class AdminModelDTO extends NewCommonDTO{
 	@ApiModelProperty(required = true, value = "model second name")
 	private String modelSecondName;
 
-	@ApiModelProperty(required = true, value = "model third name")
-	private String modelThirdName;
+	@ApiModelProperty(required = true, value = "model kor first name")
+	private String modelKorFirstName;
 
+	@ApiModelProperty(required = true, value = "model kor second name")
+	private String modelKorSecondName;
 }
