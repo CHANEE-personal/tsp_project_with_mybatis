@@ -5,6 +5,7 @@ import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
 import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.BaseExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +56,11 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 */
 	@Override
 	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws Exception {
-		return this.adminModelMapper.getModelList(modelMap);
+		try {
+			return this.adminModelMapper.getModelList(modelMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+		}
 	}
 
 	/**
@@ -72,17 +77,21 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 */
 	@Override
 	public ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception {
-		ConcurrentHashMap modelMap = new ConcurrentHashMap();
+		try {
+			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
-		CommonImageDTO commonImageDTO = CommonImageDTO.builder()
-										.typeIdx(adminModelDTO.getIdx())
-										.typeName("model")
-										.build();
+			CommonImageDTO commonImageDTO = CommonImageDTO.builder()
+					.typeIdx(adminModelDTO.getIdx())
+					.typeName("model")
+					.build();
 
-		modelMap.put("modelInfo", this.adminModelMapper.getModelInfo(adminModelDTO));
-		modelMap.put("modelImageList", this.adminModelMapper.getImageList(commonImageDTO));
+			modelMap.put("modelInfo", this.adminModelMapper.getModelInfo(adminModelDTO));
+			modelMap.put("modelImageList", this.adminModelMapper.getImageList(commonImageDTO));
 
-		return modelMap;
+			return modelMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+		}
 	}
 
 	/**

@@ -3,6 +3,7 @@ package com.tsp.new_tsp_project.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ApiExceptionHandler {
 		body.put("status", status.value());
 
 		List<String> errors = ex.getBindingResult()
-				.getFieldErrors().stream().map(x -> x.getDefaultMessage())
+				.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 				.collect(Collectors.toList());
 
 		body.put("errors", errors);

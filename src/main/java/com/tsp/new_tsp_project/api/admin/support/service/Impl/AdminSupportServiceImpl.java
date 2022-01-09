@@ -2,6 +2,8 @@ package com.tsp.new_tsp_project.api.admin.support.service.Impl;
 
 import com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO;
 import com.tsp.new_tsp_project.api.admin.support.service.AdminSupportService;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -62,12 +64,16 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * @throws Exception
 	 */
 	@Override
-	public ConcurrentHashMap getSupportModelInfo(AdminSupportDTO adminSupportDTO) throws Exception {
+	public ConcurrentHashMap<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) throws Exception {
 
-		ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+		try {
+			ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
 
-		supportMap.put("supportModelInfo", this.adminSupportMapper.getSupportModelInfo(adminSupportDTO));
+			supportMap.put("supportModelInfo", this.adminSupportMapper.getSupportModelInfo(adminSupportDTO));
 
-		return supportMap;
+			return supportMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
+		}
 	}
 }

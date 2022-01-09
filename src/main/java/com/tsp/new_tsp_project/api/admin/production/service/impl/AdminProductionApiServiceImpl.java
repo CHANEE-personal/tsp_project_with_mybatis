@@ -72,12 +72,17 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * @throws Exception
 	 */
 	@Override
-	public ConcurrentHashMap getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception {
-		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+	public ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception {
 
-		productionMap.put("productionInfo", this.adminProductionMapper.getProductionInfo(adminProductionDTO));
+		try {
+			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
-		return productionMap;
+			productionMap.put("productionInfo", this.adminProductionMapper.getProductionInfo(adminProductionDTO));
+
+			return productionMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
+		}
 	}
 
 	/**
