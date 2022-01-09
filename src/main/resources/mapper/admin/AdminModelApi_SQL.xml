@@ -55,6 +55,10 @@
 		height,
 		size3,
 		shoes,
+		model_main_yn,
+		model_first_name,
+		model_second_name,
+		model_third_name,
 		create_time
 		FROM (
 		SELECT @ROWNUM := @ROWNUM + 1 AS RNUM,
@@ -69,6 +73,10 @@
 				height,
 				size3,
 				shoes,
+				model_main_yn,
+				model_first_name,
+				model_second_name,
+				model_third_name,
 				create_time
 		FROM (
 			SELECT
@@ -83,6 +91,10 @@
 			tm.height,
 			tm.size3,
 			tm.shoes,
+			tm.model_main_yn,
+			tm.model_first_name,
+			tm.model_second_name,
+			tm.model_third_name,
 			DATE_FORMAT(tm.create_time,'%Y-%m-%d') AS create_time
 			FROM ( SELECT @ROWNUM := 0) temp, tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 			ON tm.category_cd = tc.category_cd
@@ -121,7 +133,11 @@
 			   tm.visible,
 		       tm.height,
 		       tm.size3,
-		       tm.shoes
+		       tm.shoes,
+			   tm.model_main_yn,
+			   tm.model_first_name,
+			   tm.model_second_name,
+			   tm.model_third_name
 		FROM tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 		  ON tm.category_cd = tc.category_cd
 		  WHERE tm.visible = 'Y'
@@ -160,6 +176,10 @@
 		                      size3,
 		                      model_description,
 		                      visible,
+							  model_main_yn,
+							  model_first_name,
+							  model_second_name,
+							  model_third_name,
 							  creator,
 							  create_time,
 							  updater,
@@ -173,6 +193,10 @@
 		        #{size3},
 		        #{modelDescription},
 		        #{visible},
+		        #{model_main_yn},
+		        #{model_first_name},
+		        #{model_second_name},
+		        #{model_third_name},
 		        '1',
 		        now(),
 		        '1',
@@ -190,6 +214,10 @@
 		<if test="height != null and height != ''">height = #{height},</if>
 		<if test="size3 != null and size3 != ''">size3 = #{size3},</if>
 		<if test="shoes != null and shoes != ''">shoes = #{shoes},</if>
+		<if test="model_main_yn != null and model_main_yn != ''">model_main_yn = #{model_main_yn},</if>
+		<if test="model_first_name != null and model_first_name != ''">model_first_name = #{model_first_name},</if>
+		<if test="model_second_name != null and model_second_name != ''">model_second_name = #{model_second_name},</if>
+		<if test="model_third_name != null and model_third_name != ''">model_third_name = #{model_third_name},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}
