@@ -191,18 +191,18 @@
 							  update_time)
 		VALUES (#{categoryCd},
 		        #{categoryAge},
-				CONCAT(#{model_kor_first_name}, #{model_kor_second_name}),
-				CONCAT(#{model_first_name}, #{model_second_name}),
+				CONCAT(#{modelKorFirstName}, #{modelKorSecondName}),
+				CONCAT(#{modelFirstName}, #{modelSecondName}),
 		        #{height},
 		        #{shoes},
 		        #{size3},
 		        #{modelDescription},
 		        #{visible},
-		        #{model_main_yn},
-		        #{model_first_name},
-		        #{model_second_name},
-		        #{model_kor_first_name},
-				#{model_kor_second_name},
+		        #{modelMainYn},
+		        #{modelFirstName},
+		        #{modelSecondName},
+		        #{modelKorFirstName},
+				#{modelKorSecondName},
 		        '1',
 		        now(),
 		        '1',
@@ -213,18 +213,18 @@
 		/*[AdminModelApi_SQL.xml].[updateModel] */
 		UPDATE tsp_model
 		SET
-		<if test="modelKorName != null and modelKorName != ''">model_kor_name = CONCAT(#{model_kor_first_name}, #{model_kor_second_name}),</if>
-		<if test="modelEngName != null and modelEngName != ''">model_eng_name = CONCAT(#{model_first_name}, #{model_second_name}),</if>
+		<if test="modelKorName != null and modelKorName != ''">model_kor_name = CONCAT(#{modelKorFirstName}, #{modelKorSecondName}),</if>
+		<if test="modelEngName != null and modelEngName != ''">model_eng_name = CONCAT(#{modelFirstName}, #{modelSecondName}),</if>
 		<if test="modelDescription != null and modelDescription != ''">model_description = #{modelDescription},</if>
 		<if test="categoryAge != null and categoryAge != ''">category_age = #{categoryAge},</if>
 		<if test="height != null and height != ''">height = #{height},</if>
 		<if test="size3 != null and size3 != ''">size3 = #{size3},</if>
 		<if test="shoes != null and shoes != ''">shoes = #{shoes},</if>
-		<if test="model_main_yn != null and model_main_yn != ''">model_main_yn = #{model_main_yn},</if>
-		<if test="model_first_name != null and model_first_name != ''">model_first_name = #{model_first_name},</if>
-		<if test="model_second_name != null and model_second_name != ''">model_second_name = #{model_second_name},</if>
-		<if test="model_kor_first_name != null and model_kor_first_name != ''">model_kor_first_name = #{model_kor_first_name},</if>
-		<if test="model_kor_second_name != null and model_kor_second_name != ''">model_kor_second_name = #{model_kor_second_name},</if>
+		<if test="modelMainYn != null and modelMainYn != ''">model_main_yn = #{modelMainYn},</if>
+		<if test="modelFirstName != null and modelFirstName != ''">model_first_name = #{modelFirstName},</if>
+		<if test="modelSecondName != null and modelSecondName != ''">model_second_name = #{modelSecondName},</if>
+		<if test="modelKorFirstName != null and modelKorFirstName != ''">model_kor_first_name = #{modelKorFirstName},</if>
+		<if test="modelKorSecondName != null and modelKorSecondName != ''">model_kor_second_name = #{modelKorSecondName},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}
