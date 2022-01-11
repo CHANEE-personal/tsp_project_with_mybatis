@@ -213,8 +213,12 @@
 		/*[AdminModelApi_SQL.xml].[updateModel] */
 		UPDATE tsp_model
 		SET
-		<if test="modelKorName != null and modelKorName != ''">model_kor_name = CONCAT(#{modelKorFirstName}, #{modelKorSecondName}),</if>
-		<if test="modelEngName != null and modelEngName != ''">model_eng_name = CONCAT(#{modelFirstName}, #{modelSecondName}),</if>
+		<if test="modelKorFirstName != null and modelKorFirstName != '' and modelKorSecondName != null and modelKorSecondName != ''">
+		    model_kor_name = CONCAT(#{modelKorFirstName}, #{modelKorSecondName}),
+		</if>
+		<if test="modelFirstName != null and modelFirstName != '' and modelSecondName != null and modelSecondName != ''">
+		    model_eng_name = CONCAT(#{modelFirstName}, #{modelSecondName}),
+		</if>
 		<if test="modelDescription != null and modelDescription != ''">model_description = #{modelDescription},</if>
 		<if test="categoryAge != null and categoryAge != ''">category_age = #{categoryAge},</if>
 		<if test="height != null and height != ''">height = #{height},</if>
