@@ -19,16 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private JwtUtil jwtUtil;
+	private final JwtUtil jwtUtil;
+	private final MyUserDetailsService userDetailsService;
 
 	@Autowired
-	private MyUserDetailsService userDetailsService;
+	public LoginCheckInterceptor(JwtUtil jwtUtil, MyUserDetailsService userDetailsService) {
+		this.jwtUtil = jwtUtil;
+		this.userDetailsService = userDetailsService;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-		log.info("Interceptor 호출{}");
 
 		// Request Header에서 토큰 값 가져온다
 		String authorizationHeader = request.getHeader("Authorization");
@@ -46,7 +47,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
-		if (userName != null && token != null) {
+		if (userName != null) {
 			log.info("인증 사용자");
 			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 
