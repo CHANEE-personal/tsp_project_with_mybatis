@@ -31,10 +31,9 @@ public class AdminProductionJpaService {
 	 * </pre>
 	 *
 	 * @param productionMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public Long findProductionCount(ConcurrentHashMap<String, Object> productionMap) throws Exception {
+	public Long findProductionCount(ConcurrentHashMap<String, Object> productionMap) {
 		return this.productionRepository.findProductionCount(productionMap);
 	}
 
@@ -48,10 +47,9 @@ public class AdminProductionJpaService {
 	 * </pre>
 	 *
 	 * @param productionMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws Exception {
+	public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
 		return productionRepository.findProductionList(productionMap);
 	}
 
@@ -65,10 +63,9 @@ public class AdminProductionJpaService {
 	 * </pre>
 	 *
 	 * @param adminProductionEntity
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity adminProductionEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity adminProductionEntity) {
 		return productionRepository.findOneProduction(adminProductionEntity);
 	}
 
@@ -84,12 +81,11 @@ public class AdminProductionJpaService {
 	 * @param adminProductionEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@Transactional
 	public Integer insertProduction(AdminProductionEntity adminProductionEntity,
 									CommonImageEntity commonImageEntity,
-									MultipartFile[] files) throws Exception {
+									MultipartFile[] files) {
 		return productionRepository.insertProduction(adminProductionEntity, commonImageEntity, files);
 	}
 
@@ -105,11 +101,10 @@ public class AdminProductionJpaService {
 	 * @param adminProductionEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	public Integer updateProduction(AdminProductionEntity adminProductionEntity,
 									CommonImageEntity commonImageEntity,
-									MultipartFile[] files) throws Exception {
+									MultipartFile[] files) {
 
 		int num;
 
@@ -137,9 +132,8 @@ public class AdminProductionJpaService {
 	 * </pre>
 	 *
 	 * @param adminProductionEntity
-	 * @throws Exception
 	 */
-	public Long deleteProduction(AdminProductionEntity adminProductionEntity) throws Exception {
+	public Long deleteProduction(AdminProductionEntity adminProductionEntity) {
 		return this.productionRepository.deleteProduction(adminProductionEntity);
 	}
 }

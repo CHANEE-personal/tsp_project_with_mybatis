@@ -14,7 +14,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity.*;
 
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "모델관련 API")
@@ -51,7 +54,6 @@ public class AdminModelJpaApi {
 	 * @param categoryCd
 	 * @param paramMap
 	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
 	@ApiResponses({
@@ -60,9 +62,9 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists/{categoryCd}")
-	public ConcurrentHashMap getModelList(@PathVariable("categoryCd") Integer categoryCd,
-										  Map<String, Object> paramMap,
-										  Page page) throws Exception {
+	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
+														  Integer categoryCd, Map<String, Object> paramMap, Page page) {
 
 		// 페이징 및 검색
 		ConcurrentHashMap<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
@@ -99,7 +101,6 @@ public class AdminModelJpaApi {
 	 *
 	 * @param categoryCd
 	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
 	@ApiResponses({
@@ -108,8 +109,10 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{categoryCd}/{idx}")
-	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd") Integer categoryCd,
-														  @PathVariable("idx") Integer idx) throws Exception {
+	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd")
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
+														  Integer categoryCd,
+														  @PathVariable("idx") Integer idx) {
 
 		ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
@@ -129,7 +132,6 @@ public class AdminModelJpaApi {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 공통 코드 조회", notes = "모델을 공통 코드를 조회한다.")
 	@ApiResponses({
@@ -138,7 +140,7 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/common")
-	public ConcurrentHashMap<String, Object> modelCommonCode() throws Exception {
+	public ConcurrentHashMap<String, Object> modelCommonCode() {
 		ConcurrentHashMap<String, Object> modelCmmCode = new ConcurrentHashMap<>();
 
 		CommonCodeEntity modelCodeEntity = CommonCodeEntity.builder().cmmType("model").build();
@@ -171,7 +173,7 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public String insertModel(@Valid AdminModelEntity adminModelEntity,
+	public String insertModel(AdminModelEntity adminModelEntity,
 							  CommonImageEntity commonImageEntity,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,
@@ -216,8 +218,10 @@ public class AdminModelJpaApi {
 	})
 	@PostMapping(value = "/{categoryCd}/{idx}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public Integer updateModel(@PathVariable(value = "idx") Integer idx,
-							   @PathVariable(value = "categoryCd") Integer categoryCd,
-							   @Valid AdminModelEntity adminModelEntity,
+							   @PathVariable(value = "categoryCd")
+							   @Range(min = 1, max = 3, message = "{modelCategory.Range}")
+							   Integer categoryCd,
+							   AdminModelEntity adminModelEntity,
 							   CommonImageEntity commonImageEntity,
 							   NewCommonDTO newCommonDTO,
 							   HttpServletRequest request,
@@ -248,7 +252,6 @@ public class AdminModelJpaApi {
 	 * </pre>
 	 *
 	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
 	@ApiResponses({
@@ -257,10 +260,10 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@DeleteMapping(value = "/{idx}")
-	public String deleteModel(@PathVariable("idx") Integer idx) throws Exception {
+	public String deleteModel(@PathVariable("idx") Integer idx) {
 		String result;
 
-		AdminModelEntity adminModelEntity = AdminModelEntity.builder().visible("N").idx(idx).build();
+		AdminModelEntity adminModelEntity = builder().visible("N").idx(idx).build();
 
 		if (this.adminModelJpaService.deleteModel(adminModelEntity) > 0) {
 			result = "Y";

@@ -27,11 +27,14 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
 	@Override
-	public Integer getSupportModelCnt(Map<String, Object> searchMap) throws Exception {
-		return this.adminSupportMapper.getSupportModelCnt(searchMap);
+	public Integer getSupportModelCnt(Map<String, Object> searchMap) {
+		try {
+			return this.adminSupportMapper.getSupportModelCnt(searchMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+		}
 	}
 
 	/**
@@ -44,11 +47,14 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
 	@Override
-	public List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) throws Exception {
-		return this.adminSupportMapper.getSupportModelList(searchMap);
+	public List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) {
+		try {
+			return this.adminSupportMapper.getSupportModelList(searchMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+		}
 	}
 
 	/**
@@ -61,10 +67,9 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * </pre>
 	 *
 	 * @param adminSupportDTO
-	 * @throws Exception
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) throws Exception {
+	public ConcurrentHashMap<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) {
 
 		try {
 			ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();

@@ -10,6 +10,8 @@ import com.tsp.new_tsp_project.api.common.domain.entity.CommonCodeEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.image.service.jpa.ImageRepository;
 import com.tsp.new_tsp_project.common.utils.StringUtil;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
@@ -62,13 +64,16 @@ public class PortFolioRepository {
 	 * </pre>
 	 *
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
-	public Long findPortFolioCount(Map<String, Object> portFolioMap) throws Exception {
+	public Long findPortFolioCount(Map<String, Object> portFolioMap) {
 
-		return queryFactory.selectFrom(adminPortFolioEntity)
-				.where(searchPortFolio(portFolioMap))
-				.fetchCount();
+		try {
+			return queryFactory.selectFrom(adminPortFolioEntity)
+					.where(searchPortFolio(portFolioMap))
+					.fetchCount();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+		}
 	}
 
 	/**
@@ -81,25 +86,28 @@ public class PortFolioRepository {
 	 * </pre>
 	 *
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
-	public List<AdminPortFolioDTO> findPortFolioList(Map<String, Object> portFolioMap) throws Exception {
+	public List<AdminPortFolioDTO> findPortFolioList(Map<String, Object> portFolioMap) {
 
-		List<AdminPortFolioEntity> portFolioList = queryFactory
-				.selectFrom(adminPortFolioEntity)
-				.where(searchPortFolio(portFolioMap))
-				.orderBy(adminPortFolioEntity.idx.desc())
-				.offset(StringUtil.getInt(portFolioMap.get("jpaStartPage"),0))
-				.limit(StringUtil.getInt(portFolioMap.get("size"),0))
-				.fetch();
+		try {
+			List<AdminPortFolioEntity> portFolioList = queryFactory
+					.selectFrom(adminPortFolioEntity)
+					.where(searchPortFolio(portFolioMap))
+					.orderBy(adminPortFolioEntity.idx.desc())
+					.offset(StringUtil.getInt(portFolioMap.get("jpaStartPage"),0))
+					.limit(StringUtil.getInt(portFolioMap.get("size"),0))
+					.fetch();
 
-		List<AdminPortFolioDTO> portFolioDtoList = PortFolioMapper.INSTANCE.toDtoList(portFolioList);
+			List<AdminPortFolioDTO> portFolioDtoList = PortFolioMapper.INSTANCE.toDtoList(portFolioList);
 
-		for(int i = 0; i < portFolioDtoList.size(); i++) {
-			portFolioDtoList.get(i).setRnum(StringUtil.getInt(portFolioMap.get("startPage"),1)*(StringUtil.getInt(portFolioMap.get("size"),1))-(2-i));
+			for(int i = 0; i < portFolioDtoList.size(); i++) {
+				portFolioDtoList.get(i).setRnum(StringUtil.getInt(portFolioMap.get("startPage"),1)*(StringUtil.getInt(portFolioMap.get("size"),1))-(2-i));
+			}
+
+			return portFolioDtoList;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
 		}
-
-		return portFolioDtoList;
 	}
 
 	/**
@@ -112,19 +120,22 @@ public class PortFolioRepository {
 	 * </pre>
 	 *
 	 * @param existPortFolioEntity
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> portFolioCommonCode(CommonCodeEntity existPortFolioEntity) throws Exception {
-		ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
+	public ConcurrentHashMap<String, Object> portFolioCommonCode(CommonCodeEntity existPortFolioEntity) {
+		try {
+			ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
 
-		List<CommonCodeEntity> codeEntityList = queryFactory
-				.selectFrom(commonCodeEntity)
-				.where(commonCodeEntity.cmmType.eq(existPortFolioEntity.getCmmType()))
-				.fetch();
+			List<CommonCodeEntity> codeEntityList = queryFactory
+					.selectFrom(commonCodeEntity)
+					.where(commonCodeEntity.cmmType.eq(existPortFolioEntity.getCmmType()))
+					.fetch();
 
-		modelCommonMap.put("codeEntityList", codeEntityList);
+			modelCommonMap.put("codeEntityList", codeEntityList);
 
-		return modelCommonMap;
+			return modelCommonMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
+		}
 	}
 
 	/**
@@ -137,28 +148,31 @@ public class PortFolioRepository {
 	 * </pre>
 	 *
 	 * @param existAdminPortFolioEntity
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity existAdminPortFolioEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity existAdminPortFolioEntity) {
 
-		//모델 상세 조회
-		AdminPortFolioEntity findPortFolio = queryFactory.selectFrom(adminPortFolioEntity)
-				.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx()))
-				.fetchOne();
+		try {
+			//모델 상세 조회
+			AdminPortFolioEntity findPortFolio = queryFactory.selectFrom(adminPortFolioEntity)
+					.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx()))
+					.fetchOne();
 
-		//포트폴리오 이미지 조회
-		List<CommonImageEntity> portFolioImageList = queryFactory
-				.selectFrom(commonImageEntity)
-				.where(commonImageEntity.typeIdx.eq(existAdminPortFolioEntity.getIdx()),
-						commonImageEntity.visible.eq("Y"),
-						commonImageEntity.typeName.eq("portfolio")).fetch();
+			//포트폴리오 이미지 조회
+			List<CommonImageEntity> portFolioImageList = queryFactory
+					.selectFrom(commonImageEntity)
+					.where(commonImageEntity.typeIdx.eq(existAdminPortFolioEntity.getIdx()),
+							commonImageEntity.visible.eq("Y"),
+							commonImageEntity.typeName.eq("portfolio")).fetch();
 
-		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
+			ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
-		portFolioMap.put("portFolioInfo", PortFolioMapper.INSTANCE.toDto(findPortFolio));
-		portFolioMap.put("portFolioImageList", ModelImageMapper.INSTANCE.toDtoList(portFolioImageList));
+			portFolioMap.put("portFolioInfo", PortFolioMapper.INSTANCE.toDto(findPortFolio));
+			portFolioMap.put("portFolioImageList", ModelImageMapper.INSTANCE.toDtoList(portFolioImageList));
 
-		return portFolioMap;
+			return portFolioMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO);
+		}
 
 	}
 
@@ -174,19 +188,25 @@ public class PortFolioRepository {
 	 * @param existAdminPortFolioEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
-	public Integer insertPortFolio(AdminPortFolioEntity existAdminPortFolioEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) throws Exception {
-		existAdminPortFolioEntity.builder().createTime(new Date()).creator(1).build();
-		em.persist(adminPortFolioEntity);
-		em.flush();
-		em.clear();
+	public Integer insertPortFolio(AdminPortFolioEntity existAdminPortFolioEntity,
+								   CommonImageEntity commonImageEntity,
+								   MultipartFile[] files) {
 
-		commonImageEntity.builder().typeName("portfolio").typeIdx(existAdminPortFolioEntity.getIdx()).build();
+		try {
+			existAdminPortFolioEntity.builder().createTime(new Date()).creator(1).build();
+			em.persist(adminPortFolioEntity);
+			em.flush();
+			em.clear();
 
-		imageRepository.uploadImageFile(commonImageEntity, files);
+			commonImageEntity.builder().typeName("portfolio").typeIdx(existAdminPortFolioEntity.getIdx()).build();
 
-		return existAdminPortFolioEntity.getIdx();
+			imageRepository.uploadImageFile(commonImageEntity, files);
+
+			return existAdminPortFolioEntity.getIdx();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+		}
 	}
 
 	/**
@@ -201,36 +221,39 @@ public class PortFolioRepository {
 	 * @param existAdminPortFolioEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
 	public Integer updatePortFolio(AdminPortFolioEntity existAdminPortFolioEntity, CommonImageEntity commonImageEntity,
-								   MultipartFile[] files, ConcurrentHashMap<String, Object> portFolioMap) throws Exception {
+								   MultipartFile[] files, ConcurrentHashMap<String, Object> portFolioMap) {
 
-		JPAUpdateClause update = new JPAUpdateClause(em, adminPortFolioEntity);
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminPortFolioEntity);
 
-		existAdminPortFolioEntity.builder().updateTime(new Date()).updater(1).build();
+			existAdminPortFolioEntity.builder().updateTime(new Date()).updater(1).build();
 
-		update.set(adminPortFolioEntity.title, existAdminPortFolioEntity.getTitle())
-				.set(adminPortFolioEntity.description, existAdminPortFolioEntity.getDescription())
-				.set(adminPortFolioEntity.hashTag, existAdminPortFolioEntity.getHashTag())
-				.set(adminPortFolioEntity.videoUrl, existAdminPortFolioEntity.getVideoUrl())
-				.set(adminPortFolioEntity.visible, "Y")
-				.set(adminPortFolioEntity.updateTime, new Date())
-				.set(adminPortFolioEntity.updater, 1)
-				.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx())).execute();
+			update.set(adminPortFolioEntity.title, existAdminPortFolioEntity.getTitle())
+					.set(adminPortFolioEntity.description, existAdminPortFolioEntity.getDescription())
+					.set(adminPortFolioEntity.hashTag, existAdminPortFolioEntity.getHashTag())
+					.set(adminPortFolioEntity.videoUrl, existAdminPortFolioEntity.getVideoUrl())
+					.set(adminPortFolioEntity.visible, "Y")
+					.set(adminPortFolioEntity.updateTime, new Date())
+					.set(adminPortFolioEntity.updater, 1)
+					.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx())).execute();
 
-		commonImageEntity.builder()
-				.typeName("portfolio")
-				.typeIdx(existAdminPortFolioEntity.getIdx())
-				.build();
+			commonImageEntity.builder()
+					.typeName("portfolio")
+					.typeIdx(existAdminPortFolioEntity.getIdx())
+					.build();
 
-		portFolioMap.put("typeName", "portfolio");
-		if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, portFolioMap))) {
-			return 1;
-		} else {
-			return 0;
+			portFolioMap.put("typeName", "portfolio");
+			if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, portFolioMap))) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
 		}
 	}
 
@@ -244,19 +267,22 @@ public class PortFolioRepository {
 	 * </pre>
 	 *
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
-	public Long deletePortFolio(Map<String, Object> portFolioMap) throws Exception {
+	public Long deletePortFolio(Map<String, Object> portFolioMap) {
 
-		JPAUpdateClause update = new JPAUpdateClause(em, adminPortFolioEntity);
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminPortFolioEntity);
 
-		Long[] deleteIdx = (Long[]) portFolioMap.get("deleteIdx");
+			Long[] deleteIdx = (Long[]) portFolioMap.get("deleteIdx");
 
-		return update.set(adminPortFolioEntity.visible, "N")
-				.set(adminPortFolioEntity.updateTime, new Date())
-				.set(adminPortFolioEntity.updater, 1)
-				.where(adminPortFolioEntity.idx.in(deleteIdx)).execute();
+			return update.set(adminPortFolioEntity.visible, "N")
+					.set(adminPortFolioEntity.updateTime, new Date())
+					.set(adminPortFolioEntity.updater, 1)
+					.where(adminPortFolioEntity.idx.in(deleteIdx)).execute();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+		}
 	}
 }

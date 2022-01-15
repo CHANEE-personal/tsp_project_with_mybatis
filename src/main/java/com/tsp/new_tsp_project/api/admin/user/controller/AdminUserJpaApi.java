@@ -58,7 +58,6 @@ public class AdminUserJpaApi {
 	 * </pre>
 	 *
 	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "회원 조회", notes = "회원을 조회한다.")
 	@ApiResponses({
@@ -68,7 +67,7 @@ public class AdminUserJpaApi {
 	})
 	@PostMapping(value = "/users")
 	public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap,
-										   Page page) throws Exception {
+										   Page page) {
 		// 페이징 및 검색
 		ConcurrentHashMap<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
 
@@ -85,7 +84,6 @@ public class AdminUserJpaApi {
 	 * </pre>
 	 *
 	 * @param  authenticationRequest
-	 * @param  request
 	 * @throws Exception
 	 */
 	@ApiOperation(value = "회원 로그인 처리", notes = "회원 로그인을 처리한다.")
@@ -95,17 +93,14 @@ public class AdminUserJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(value = "/admin-login")
-	public ConcurrentHashMap adminLogin(@RequestBody AuthenticationRequest authenticationRequest,
-										HttpServletRequest request,
-										HttpServletResponse response,
-										BindingResult bindingResult) throws Exception {
+	public ConcurrentHashMap adminLogin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
 		AdminUserEntity adminUserEntity = builder()
 				.userId(authenticationRequest.getUserId())
 				.password(authenticationRequest.getPassword())
 				.build();
 
-		String resultValue = adminUserJpaService.adminLogin(adminUserEntity, request, bindingResult);
+		String resultValue = adminUserJpaService.adminLogin(adminUserEntity);
 
 		ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
 
@@ -135,7 +130,6 @@ public class AdminUserJpaApi {
 	 * </pre>
 	 *
 	 * @param  adminUserEntity
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "관리자 회원가입 처리", notes = "관리자 회원가입을 처리한다.")
 	@ApiResponses({
@@ -144,7 +138,7 @@ public class AdminUserJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping
-	public String insertAdminUser(AdminUserEntity adminUserEntity) throws Exception {
+	public String insertAdminUser(AdminUserEntity adminUserEntity) {
 		String result;
 
 		if (this.adminUserJpaService.insertAdminUser(adminUserEntity) > 0) {

@@ -39,10 +39,9 @@ public class AdminUserJpaService {
 	 * </pre>
 	 *
 	 * @param userMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws Exception {
+	public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
 		return userRepository.findUserList(userMap);
 	}
 
@@ -58,14 +57,9 @@ public class AdminUserJpaService {
 	 * @param adminUserEntity
 	 * @param request
 	 * @return result
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public String adminLogin(@Validated AdminUserEntity adminUserEntity, HttpServletRequest request, BindingResult bindingResult) throws Exception {
-
-		if(bindingResult.hasErrors()) {
-			return "redirect:/login";
-		}
+	public String adminLogin(@Validated AdminUserEntity adminUserEntity) {
 
 		String password = StringUtil.getString(this.userRepository.adminLogin(adminUserEntity).get("password"),"");
 
@@ -92,11 +86,10 @@ public class AdminUserJpaService {
 	 *
 	 * @param adminUserEntity
 	 * @return result
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
-	public Integer insertUserToken(AdminUserEntity adminUserEntity) throws Exception {
+	public Integer insertUserToken(AdminUserEntity adminUserEntity) {
 		return this.userRepository.insertUserToken(adminUserEntity);
 	}
 
@@ -111,10 +104,9 @@ public class AdminUserJpaService {
 	 *
 	 * @param adminUserEntity
 	 * @return result
-	 * @throws Exception
 	 */
 	@Transactional
-	public Integer insertAdminUser(AdminUserEntity adminUserEntity) throws Exception {
+	public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
 
 		String userId = StringUtil.getString(this.userRepository.adminLogin(adminUserEntity).get("userId"),"");
 

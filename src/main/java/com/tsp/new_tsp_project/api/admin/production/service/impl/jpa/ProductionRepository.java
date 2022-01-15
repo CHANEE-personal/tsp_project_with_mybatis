@@ -9,6 +9,9 @@ import com.tsp.new_tsp_project.api.admin.production.domain.entity.AdminProductio
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.image.service.jpa.ImageRepository;
 import com.tsp.new_tsp_project.common.utils.StringUtil;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,13 +58,16 @@ public class ProductionRepository {
 	 * </pre>
 	 *
 	 * @param productionMap
-	 * @throws Exception
 	 */
-	public Long findProductionCount(Map<String, Object> productionMap) throws Exception {
+	public Long findProductionCount(Map<String, Object> productionMap) {
 
-		return queryFactory.selectFrom(adminProductionEntity)
-				.where(searchProduction(productionMap))
-				.fetchCount();
+		try {
+			return queryFactory.selectFrom(adminProductionEntity)
+					.where(searchProduction(productionMap))
+					.fetchCount();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
+		}
 	}
 
 	/**
@@ -74,26 +80,28 @@ public class ProductionRepository {
 	 * </pre>
 	 *
 	 * @param productionMap
-	 * @throws Exception
 	 */
-	public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) throws Exception {
+	public List<AdminProductionDTO> findProductionList(Map<String, Object> productionMap) {
 
-		List<AdminProductionEntity> productionList = queryFactory
-				.selectFrom(adminProductionEntity)
-				.where(searchProduction(productionMap))
-				.orderBy(adminProductionEntity.idx.desc())
-				.offset(StringUtil.getInt(productionMap.get("jpaStartPage"),0))
-				.limit(StringUtil.getInt(productionMap.get("size"),0))
-				.fetch();
+		try {
+			List<AdminProductionEntity> productionList = queryFactory
+					.selectFrom(adminProductionEntity)
+					.where(searchProduction(productionMap))
+					.orderBy(adminProductionEntity.idx.desc())
+					.offset(StringUtil.getInt(productionMap.get("jpaStartPage"),0))
+					.limit(StringUtil.getInt(productionMap.get("size"),0))
+					.fetch();
 
-		List<AdminProductionDTO> productionDtoList = ProductionMapper.INSTANCE.toDtoList(productionList);
+			List<AdminProductionDTO> productionDtoList = ProductionMapper.INSTANCE.toDtoList(productionList);
 
-		for(int i = 0; i < productionDtoList.size(); i++) {
-			productionDtoList.get(i).setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-i));
+			for(int i = 0; i < productionDtoList.size(); i++) {
+				productionDtoList.get(i).setRnum(StringUtil.getInt(productionMap.get("startPage"),1)*(StringUtil.getInt(productionMap.get("size"),1))-(2-i));
+			}
+
+			return productionDtoList;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
 		}
-
-		return productionDtoList;
-
 	}
 
 	/**
@@ -106,27 +114,31 @@ public class ProductionRepository {
 	 * </pre>
 	 *
 	 * @param existAdminProductionEntity
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity existAdminProductionEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity existAdminProductionEntity) {
 
-		//모델 상세 조회
-		AdminProductionEntity findOneProduction = queryFactory.selectFrom(adminProductionEntity)
-				.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx()))
-				.fetchOne();
+		try {
+			//모델 상세 조회
+			AdminProductionEntity findOneProduction = queryFactory.selectFrom(adminProductionEntity)
+					.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx()))
+					.fetchOne();
 
-		//포트폴리오 이미지 조회
-		List<CommonImageEntity> productionImageList = queryFactory.selectFrom(commonImageEntity)
-				.where(commonImageEntity.typeIdx.eq(existAdminProductionEntity.getIdx()),
-						commonImageEntity.visible.eq("Y"),
-						commonImageEntity.typeName.eq("production")).fetch();
+			//포트폴리오 이미지 조회
+			List<CommonImageEntity> productionImageList = queryFactory.selectFrom(commonImageEntity)
+					.where(commonImageEntity.typeIdx.eq(existAdminProductionEntity.getIdx()),
+							commonImageEntity.visible.eq("Y"),
+							commonImageEntity.typeName.eq("production")).fetch();
 
-		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
-		productionMap.put("productionInfo", ProductionMapper.INSTANCE.toDto(findOneProduction));
-		productionMap.put("productionImageList", ModelImageMapper.INSTANCE.toDtoList(productionImageList));
+			productionMap.put("productionInfo", ProductionMapper.INSTANCE.toDto(findOneProduction));
+			productionMap.put("productionImageList", ModelImageMapper.INSTANCE.toDtoList(productionImageList));
 
-		return productionMap;
+			return productionMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
+		}
+
 	}
 
 	/**
@@ -145,21 +157,25 @@ public class ProductionRepository {
 	 */
 	public Integer insertProduction(AdminProductionEntity adminProductionEntity,
 									CommonImageEntity commonImageEntity,
-									MultipartFile[] files) throws Exception {
+									MultipartFile[] files) {
 
-		adminProductionEntity.builder().createTime(new Date()).creator(1).build();
-		em.persist(adminProductionEntity);
-		em.flush();
-		em.clear();
+		try {
+			adminProductionEntity.builder().createTime(new Date()).creator(1).build();
+			em.persist(adminProductionEntity);
+			em.flush();
+			em.clear();
 
-		commonImageEntity.builder()
-				.typeName("production")
-				.typeIdx(adminProductionEntity.getIdx())
-				.build();
+			commonImageEntity.builder()
+					.typeName("production")
+					.typeIdx(adminProductionEntity.getIdx())
+					.build();
 
-		imageRepository.uploadImageFile(commonImageEntity, files);
+			imageRepository.uploadImageFile(commonImageEntity, files);
 
-		return adminProductionEntity.getIdx();
+			return adminProductionEntity.getIdx();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+		}
 	}
 
 	/**
@@ -180,28 +196,32 @@ public class ProductionRepository {
 									CommonImageEntity commonImageEntity,
 									MultipartFile[] files) throws Exception {
 
-		JPAUpdateClause update = new JPAUpdateClause(em, adminProductionEntity);
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminProductionEntity);
 
-		existAdminProductionEntity.builder().updateTime(new Date()).updater(1).build();
+			existAdminProductionEntity.builder().updateTime(new Date()).updater(1).build();
 
-		update.set(adminProductionEntity.title, existAdminProductionEntity.getTitle())
-				.set(adminProductionEntity.description, existAdminProductionEntity.getDescription())
-				.set(adminProductionEntity.visible, "Y")
-				.set(adminProductionEntity.updateTime, new Date())
-				.set(adminProductionEntity.updater, 1)
-				.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())).execute();
+			update.set(adminProductionEntity.title, existAdminProductionEntity.getTitle())
+					.set(adminProductionEntity.description, existAdminProductionEntity.getDescription())
+					.set(adminProductionEntity.visible, "Y")
+					.set(adminProductionEntity.updateTime, new Date())
+					.set(adminProductionEntity.updater, 1)
+					.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())).execute();
 
-		commonImageEntity.builder()
-				.typeName("production")
-				.typeIdx(existAdminProductionEntity.getIdx())
-				.build();
+			commonImageEntity.builder()
+					.typeName("production")
+					.typeIdx(existAdminProductionEntity.getIdx())
+					.build();
 
-		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
-		productionMap.put("typeName", "portfolio");
+			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+			productionMap.put("typeName", "portfolio");
 
-		imageRepository.uploadImageFile(commonImageEntity, files);
+			imageRepository.uploadImageFile(commonImageEntity, files);
 
-		return 1;
+			return 1;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+		}
 	}
 
 	/**
@@ -216,17 +236,22 @@ public class ProductionRepository {
 	 * @param existAdminProductionEntity
 	 * @throws Exception
 	 */
-	public Long deleteProduction(AdminProductionEntity existAdminProductionEntity) throws Exception {
-		JPAUpdateClause update = new JPAUpdateClause(em, adminProductionEntity);
+	public Long deleteProduction(AdminProductionEntity existAdminProductionEntity) {
 
-		Date currentTime = new Date();
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminProductionEntity);
 
-		existAdminProductionEntity.builder().updateTime(currentTime).updater(1).build();
+			Date currentTime = new Date();
 
-		return update.set(adminProductionEntity.title, existAdminProductionEntity.getTitle())
-				.set(adminProductionEntity.visible, "N")
-				.set(adminProductionEntity.updateTime, currentTime)
-				.set(adminProductionEntity.updater, 1)
-				.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())).execute();
+			existAdminProductionEntity.builder().updateTime(currentTime).updater(1).build();
+
+			return update.set(adminProductionEntity.title, existAdminProductionEntity.getTitle())
+					.set(adminProductionEntity.visible, "N")
+					.set(adminProductionEntity.updateTime, currentTime)
+					.set(adminProductionEntity.updater, 1)
+					.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())).execute();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
+		}
 	}
 }

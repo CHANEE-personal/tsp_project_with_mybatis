@@ -3,6 +3,7 @@ package com.tsp.new_tsp_project.api.admin.portfolio.service.jpa;
 import com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO;
 import com.tsp.new_tsp_project.api.admin.portfolio.domain.entity.AdminPortFolioEntity;
 import com.tsp.new_tsp_project.api.admin.portfolio.service.Impl.jpa.PortFolioRepository;
+import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonCodeEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.exception.ApiExceptionType;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity.builder;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +36,9 @@ public class AdminPortFolioJpaService {
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public Long findPortFolioCount(ConcurrentHashMap<String, Object> searchMap) throws Exception {
+	public Long findPortFolioCount(ConcurrentHashMap<String, Object> searchMap) {
 		return this.portFolioRepository.findPortFolioCount(searchMap);
 	}
 
@@ -50,10 +52,9 @@ public class AdminPortFolioJpaService {
 	 * </pre>
 	 *
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AdminPortFolioDTO> findPortFolioList(Map<String, Object> portFolioMap) throws Exception {
+	public List<AdminPortFolioDTO> findPortFolioList(Map<String, Object> portFolioMap) {
 		return portFolioRepository.findPortFolioList(portFolioMap);
 	}
 
@@ -66,10 +67,9 @@ public class AdminPortFolioJpaService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> portFolioCommonCode(CommonCodeEntity modelCodeEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> portFolioCommonCode(CommonCodeEntity modelCodeEntity) {
 		return portFolioRepository.portFolioCommonCode(modelCodeEntity);
 	}
 
@@ -83,10 +83,9 @@ public class AdminPortFolioJpaService {
 	 * </pre>
 	 *
 	 * @param adminPortFolioEntity
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity adminPortFolioEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity adminPortFolioEntity) {
 		return portFolioRepository.findOnePortFolio(adminPortFolioEntity);
 	}
 
@@ -100,10 +99,9 @@ public class AdminPortFolioJpaService {
 	 * </pre>
 	 *
 	 * @param adminPortFolioEntity
-	 * @throws Exception
 	 */
 	@Transactional
-	public Integer insertPortFolio(AdminPortFolioEntity adminPortFolioEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) throws Exception {
+	public Integer insertPortFolio(AdminPortFolioEntity adminPortFolioEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) {
 		return portFolioRepository.insertPortFolio(adminPortFolioEntity, commonImageEntity, files);
 	}
 
@@ -119,19 +117,17 @@ public class AdminPortFolioJpaService {
 	 * @param adminPortFolioEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
 	public Integer updatePortFolio(AdminPortFolioEntity adminPortFolioEntity,
 								   CommonImageEntity commonImageEntity,
-								   MultipartFile[] files, ConcurrentHashMap<String, Object> portFolioMap) throws Exception {
+								   MultipartFile[] files, ConcurrentHashMap<String, Object> portFolioMap) {
 		int num;
 
 		try {
 			if(this.portFolioRepository.updatePortFolio(adminPortFolioEntity, commonImageEntity, files, portFolioMap) > 0) {
-				commonImageEntity.setTypeName("portfolio");
-				commonImageEntity.setTypeIdx(adminPortFolioEntity.getIdx());
+				builder().typeIdx(adminPortFolioEntity.getIdx()).typeName("portfolio").build();
 				num = 1;
 			} else {
 				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
@@ -152,10 +148,9 @@ public class AdminPortFolioJpaService {
 	 * </pre>
 	 *
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
 	@Transactional
-	public Long deletePortFolio(Map<String, Object> portFolioMap) throws Exception {
+	public Long deletePortFolio(Map<String, Object> portFolioMap) {
 		return portFolioRepository.deletePortFolio(portFolioMap);
 	}
 }

@@ -46,7 +46,6 @@ public class AdminProductionJpaApi {
 	 * </pre>
 	 *
 	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
 	@ApiResponses({
@@ -55,7 +54,7 @@ public class AdminProductionJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+	public ConcurrentHashMap getProductionList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
 		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
 		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
@@ -90,7 +89,6 @@ public class AdminProductionJpaApi {
 	 * </pre>
 	 *
 	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
 	@ApiResponses({
@@ -99,7 +97,7 @@ public class AdminProductionJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
+	public ConcurrentHashMap getProductionInfo(@PathVariable("idx") Integer idx) {
 		ConcurrentHashMap<String, Object> productionMap;
 
 		AdminProductionEntity adminProductionEntity = builder().idx(idx).build();
@@ -119,7 +117,6 @@ public class AdminProductionJpaApi {
 	 * </pre>
 	 *
 	 * @param
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 등록", notes = "프로덕션을 등록한다")
 	@ApiResponses({
@@ -130,7 +127,7 @@ public class AdminProductionJpaApi {
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String insertProduction(@Valid AdminProductionEntity adminProductionEntity,
 								   CommonImageEntity commonImageEntity,
-								   @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+								   @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) {
 
 		String result;
 
@@ -154,7 +151,6 @@ public class AdminProductionJpaApi {
 	 * @param adminProductionEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
 	@ApiResponses({
@@ -166,7 +162,7 @@ public class AdminProductionJpaApi {
 	public String updateProduction(@PathVariable("idx") Integer idx,
 								   @Valid AdminProductionEntity adminProductionEntity,
 								   CommonImageEntity commonImageEntity,
-								   @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+								   @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) {
 		String result;
 
 		builder().idx(idx).build();
@@ -190,7 +186,6 @@ public class AdminProductionJpaApi {
 	 * </pre>
 	 *
 	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제한다.")
 	@ApiResponses({
@@ -199,7 +194,7 @@ public class AdminProductionJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@DeleteMapping(value = "/{idx}")
-	public String deleteProduction(@PathVariable("idx") Integer idx) throws Exception {
+	public String deleteProduction(@PathVariable("idx") Integer idx) {
 		String result;
 
 		AdminProductionEntity adminProductionEntity = builder().visible("N").idx(idx).build();

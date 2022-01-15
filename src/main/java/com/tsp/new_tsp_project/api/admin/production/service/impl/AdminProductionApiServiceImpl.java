@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
+
 @Slf4j
 @Service("AdminProductionApiService")
 @Transactional
@@ -52,11 +54,14 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
 	@Override
-	public List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) throws Exception {
-		return this.adminProductionMapper.getProductionList(searchMap);
+	public List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) {
+		try {
+			return this.adminProductionMapper.getProductionList(searchMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
+		}
 	}
 
 	/**
@@ -69,10 +74,9 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * </pre>
 	 *
 	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception {
+	public ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
 
 		try {
 			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
@@ -95,20 +99,16 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * </pre>
 	 *
 	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@Override
 	public Integer insertProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									MultipartFile[] files) throws Exception {
+									MultipartFile[] files) {
 		int num;
 
 		try {
 			if(this.adminProductionMapper.insertProduction(adminProductionDTO) > 0) {
-				commonImageDTO.setTypeName("production");
-				commonImageDTO.setTypeIdx(adminProductionDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
+				builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
@@ -133,20 +133,16 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * </pre>
 	 *
 	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@Override
 	public Integer updateProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									MultipartFile[] files) throws Exception {
+									MultipartFile[] files) {
 		int num;
 
 		try {
 			if(this.adminProductionMapper.updateProduction(adminProductionDTO) > 0) {
-				commonImageDTO.setTypeName("production");
-				commonImageDTO.setTypeIdx(adminProductionDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
+				builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "update"))) {
 					num = 1;
 				} else {
@@ -174,7 +170,11 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * @throws Exception
 	 */
 	@Override
-	public Integer deleteProduction(AdminProductionDTO adminProductionDTO) throws Exception {
-		return this.adminProductionMapper.deleteProduction(adminProductionDTO);
+	public Integer deleteProduction(AdminProductionDTO adminProductionDTO) {
+		try {
+			return this.adminProductionMapper.deleteProduction(adminProductionDTO);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
+		}
 	}
 }

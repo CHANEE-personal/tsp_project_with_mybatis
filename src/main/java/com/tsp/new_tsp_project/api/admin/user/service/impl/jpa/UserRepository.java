@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import com.tsp.new_tsp_project.api.admin.user.entity.AdminUserEntity;
 import com.tsp.new_tsp_project.common.utils.StringUtil;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -33,24 +35,27 @@ public class UserRepository {
 	 * </pre>
 	 *
 	 * @param userMap
-	 * @throws Exception
 	 */
-	public List<AdminUserDTO> findUserList(Map<String, Object> userMap) throws Exception {
+	public List<AdminUserDTO> findUserList(Map<String, Object> userMap) {
 
-		List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
-				.where(adminUserEntity.visible.eq("Y"))
-				.orderBy(adminUserEntity.idx.desc())
-				.offset(StringUtil.getInt(userMap.get("jpaStartPage"), 0))
-				.limit(StringUtil.getInt(userMap.get("size"), 0))
-				.fetch();
+		try {
+			List<AdminUserEntity> userList = queryFactory.selectFrom(adminUserEntity)
+					.where(adminUserEntity.visible.eq("Y"))
+					.orderBy(adminUserEntity.idx.desc())
+					.offset(StringUtil.getInt(userMap.get("jpaStartPage"), 0))
+					.limit(StringUtil.getInt(userMap.get("size"), 0))
+					.fetch();
 
-		List<AdminUserDTO> userDtoList = UserMapper.INSTANCE.toDtoList(userList);
+			List<AdminUserDTO> userDtoList = UserMapper.INSTANCE.toDtoList(userList);
 
-		for (int i = 0; i < userDtoList.size(); i++) {
-			userDtoList.get(i).setRnum(StringUtil.getInt(userMap.get("startPage"), 1) * (StringUtil.getInt(userMap.get("size"), 1)) - (2 - i));
+			for (int i = 0; i < userDtoList.size(); i++) {
+				userDtoList.get(i).setRnum(StringUtil.getInt(userMap.get("startPage"), 1) * (StringUtil.getInt(userMap.get("size"), 1)) - (2 - i));
+			}
+
+			return userDtoList;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_USER_LIST);
 		}
-
-		return userDtoList;
 	}
 
 	/**
@@ -63,9 +68,8 @@ public class UserRepository {
 	 * </pre>
 	 *
 	 * @param existAdminUserEntity
-	 * @throws Exception
 	 */
-	public Map<String, Object> adminLogin(AdminUserEntity existAdminUserEntity) throws Exception {
+	public Map<String, Object> adminLogin(AdminUserEntity existAdminUserEntity) {
 
 		Map<String, Object> userMap = new HashMap<>();
 
@@ -82,7 +86,7 @@ public class UserRepository {
 			userMap.put("password", NewAdminUserEntity.getPassword());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new TspException(ApiExceptionType.NOT_FOUND_USER);
 		}
 
 		return userMap;
@@ -99,17 +103,21 @@ public class UserRepository {
 	 * </pre>
 	 *
 	 * @param existAdminUserEntity
-	 * @throws Exception
 	 */
-	public Integer insertUserToken(AdminUserEntity existAdminUserEntity) throws Exception {
-		JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
+	public Integer insertUserToken(AdminUserEntity existAdminUserEntity) {
 
-		update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
-				.set(adminUserEntity.updater, 1)
-				.set(adminUserEntity.updateTime, new Date())
-				.where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminUserEntity);
 
-		return existAdminUserEntity.getIdx();
+			update.set(adminUserEntity.userToken, existAdminUserEntity.getUserToken())
+					.set(adminUserEntity.updater, 1)
+					.set(adminUserEntity.updateTime, new Date())
+					.where(adminUserEntity.userId.eq(existAdminUserEntity.getUserId())).execute();
+
+			return existAdminUserEntity.getIdx();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_USER);
+		}
 	}
 
 	/**
@@ -122,22 +130,25 @@ public class UserRepository {
 	 * </pre>
 	 *
 	 * @param adminUserEntity
-	 * @throws Exception
 	 */
-	public Integer insertAdminUser(AdminUserEntity adminUserEntity) throws Exception {
+	public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
 
-		//회원 등록
-		em.persist(adminUserEntity);
-		em.flush();
-		em.clear();
+		try {
+			//회원 등록
+			em.persist(adminUserEntity);
+			em.flush();
+			em.clear();
 
-		//회원 등록된 IDX
-		AdminUserEntity newAdminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
-		Integer newIdx = newAdminUserEntity.getIdx();
+			//회원 등록된 IDX
+			AdminUserEntity newAdminUserEntity = em.find(AdminUserEntity.class, adminUserEntity.getIdx());
+			Integer newIdx = newAdminUserEntity.getIdx();
 
-		em.flush();
-		em.close();
+			em.flush();
+			em.close();
 
-		return newIdx;
+			return newIdx;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_USER);
+		}
 	}
 }

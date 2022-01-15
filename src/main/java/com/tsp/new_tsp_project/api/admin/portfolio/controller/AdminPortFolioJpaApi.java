@@ -49,7 +49,6 @@ public class AdminPortFolioJpaApi {
 	 * </pre>
 	 *
 	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
 	@ApiResponses({
@@ -58,7 +57,7 @@ public class AdminPortFolioJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+	public ConcurrentHashMap getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) {
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
 		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
@@ -93,7 +92,6 @@ public class AdminPortFolioJpaApi {
 	 * </pre>
 	 *
 	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
 	@ApiResponses({
@@ -102,7 +100,7 @@ public class AdminPortFolioJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
+	public ConcurrentHashMap getPortFolioInfo(@PathVariable("idx") Integer idx) {
 		ConcurrentHashMap<String, Object> portFolioMap;
 
 		AdminPortFolioEntity adminPortFolioEntity = builder().idx(idx).build();
@@ -121,7 +119,6 @@ public class AdminPortFolioJpaApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 공통 코드 조회", notes = "포트폴리오 공통 코드를 조회한다.")
 	@ApiResponses({
@@ -130,7 +127,7 @@ public class AdminPortFolioJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/common")
-	public ConcurrentHashMap<String, Object> portFolioCommonCode() throws Exception {
+	public ConcurrentHashMap<String, Object> portFolioCommonCode() {
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
 		CommonCodeEntity portFolioCodeEntity = CommonCodeEntity.builder().cmmType("portFolio").build();
@@ -152,7 +149,6 @@ public class AdminPortFolioJpaApi {
 	 * @param adminPortFolioEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 등록", notes = "포트폴리오를 등록한다.")
 	@ApiResponses({
@@ -163,7 +159,7 @@ public class AdminPortFolioJpaApi {
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String insertPortFolio(@Valid AdminPortFolioEntity adminPortFolioEntity,
 								  CommonImageEntity commonImageEntity,
-								  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+								  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) {
 		String result;
 
 		if (this.adminPortFolioJpaService.insertPortFolio(adminPortFolioEntity, commonImageEntity, files) > 0) {
@@ -186,7 +182,6 @@ public class AdminPortFolioJpaApi {
 	 * @param adminPortFolioEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
 	@ApiResponses({
@@ -198,7 +193,7 @@ public class AdminPortFolioJpaApi {
 	public String updatePortFolio(@Valid AdminPortFolioEntity adminPortFolioEntity,
 								  CommonImageEntity commonImageEntity,
 								  HttpServletRequest request,
-								  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+								  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) {
 
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
@@ -229,7 +224,6 @@ public class AdminPortFolioJpaApi {
 	 * </pre>
 	 * @param deleteIdx
 	 * @param request
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
 	@ApiResponses({
@@ -239,7 +233,7 @@ public class AdminPortFolioJpaApi {
 	})
 	@DeleteMapping("/deletePortfolio")
 	public String deleteAllPortFolio(Long[] deleteIdx,
-									 HttpServletRequest request) throws Exception {
+									 HttpServletRequest request) {
 		Map<String, Object> portFolioMap = new HashMap<>();
 		String result;
 

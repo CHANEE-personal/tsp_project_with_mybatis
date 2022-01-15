@@ -56,7 +56,6 @@ public class AdminUserApi {
 	 * </pre>
 	 *
 	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "회원 조회", notes = "회원을 조회한다.")
 	@ApiResponses({
@@ -65,7 +64,7 @@ public class AdminUserApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(value = "/users")
-	public List<AdminUserDTO> getUserList(@RequestParam ConcurrentHashMap<String, Object> paramMap, Page page) throws Exception {
+	public List<AdminUserDTO> getUserList(@RequestParam ConcurrentHashMap<String, Object> paramMap, Page page) {
 		// 페이징 및 검색
 		ConcurrentHashMap<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
 
@@ -93,16 +92,14 @@ public class AdminUserApi {
 	})
 	@PostMapping(value = "/admin-login")
 	public ConcurrentHashMap adminLogin(@RequestBody AuthenticationRequest authenticationRequest,
-										HttpServletRequest request,
-										HttpServletResponse response,
-										BindingResult bindingResult) throws Exception {
+										HttpServletRequest request) throws Exception {
 
 		AdminUserDTO newUserDTO = new AdminUserDTO();
 
 		newUserDTO.setUserId(authenticationRequest.getUserId());
 		newUserDTO.setPassword(authenticationRequest.getPassword());
 
-		String resultValue = adminUserApiService.adminLogin(newUserDTO, request, bindingResult);
+		String resultValue = adminUserApiService.adminLogin(newUserDTO, request);
 
 		ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
 

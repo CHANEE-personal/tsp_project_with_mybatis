@@ -27,10 +27,9 @@ public class AdminSupportJpaService {
 	 * </pre>
 	 *
 	 * @param supportMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public Long findSupportModelCount(Map<String, Object> supportMap) throws Exception {
+	public Long findSupportModelCount(Map<String, Object> supportMap) {
 		return this.supportRepository.findSupportModelCount(supportMap);
 	}
 
@@ -44,10 +43,9 @@ public class AdminSupportJpaService {
 	 * </pre>
 	 *
 	 * @param supportMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AdminSupportDTO> findSupportModelList(Map<String, Object> supportMap) throws Exception {
+	public List<AdminSupportDTO> findSupportModelList(Map<String, Object> supportMap) {
 		return this.supportRepository.findSupportModelList(supportMap);
 	}
 
@@ -61,10 +59,9 @@ public class AdminSupportJpaService {
 	 * </pre>
 	 *
 	 * @param adminSupportEntity
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public Map<String, Object> findOneSupportModel(AdminSupportEntity adminSupportEntity) throws Exception {
+	public Map<String, Object> findOneSupportModel(AdminSupportEntity adminSupportEntity) {
 		return this.supportRepository.findOneSupportModel(adminSupportEntity);
 	}
 }

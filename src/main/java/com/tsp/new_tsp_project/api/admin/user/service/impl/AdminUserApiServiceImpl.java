@@ -3,12 +3,12 @@ package com.tsp.new_tsp_project.api.admin.user.service.impl;
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import com.tsp.new_tsp_project.common.utils.StringUtils;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -39,24 +39,23 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * @param adminUserDTO
 	 * @param request
 	 * @return result
-	 * @throws Exception
 	 */
-	public String adminLogin(@Validated AdminUserDTO adminUserDTO, HttpServletRequest request, BindingResult bindingResult) throws Exception {
+	public String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) {
 
-		if (bindingResult.hasErrors()) {
-			return "redirect:/login";
+		try {
+			final String db_pw = StringUtils.nullStrToStr(this.adminUserMapper.adminLogin(adminUserDTO));
+
+			String result = "";
+
+			if (passwordEncoder.matches(adminUserDTO.getPassword(), db_pw)) {
+				result = "Y";
+			} else {
+				result = "N";
+			}
+			return result;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_USER);
 		}
-
-		final String db_pw = StringUtils.nullStrToStr(this.adminUserMapper.adminLogin(adminUserDTO));
-
-		String result = "";
-
-		if (passwordEncoder.matches(adminUserDTO.getPassword(), db_pw)) {
-			result = "Y";
-		} else {
-			result = "N";
-		}
-		return result;
 	}
 
 	/**
@@ -72,7 +71,11 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * @return result
 	 * @throws Exception
 	 */
-	public Integer insertUserToken(AdminUserDTO adminUserDTO) throws Exception {
-		return this.adminUserMapper.insertUserToken(adminUserDTO);
+	public Integer insertUserToken(AdminUserDTO adminUserDTO) {
+		try {
+			return this.adminUserMapper.insertUserToken(adminUserDTO);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_USER);
+		}
 	}
 }

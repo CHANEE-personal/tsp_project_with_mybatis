@@ -32,10 +32,9 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param modelMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public Long findModelsCount(Map<String, Object> modelMap) throws Exception{
+	public Long findModelsCount(Map<String, Object> modelMap) {
 		return modelRepository.findModelsCount(modelMap);
 	}
 
@@ -49,10 +48,9 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param modelMap
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws Exception{
+	public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
 		return modelRepository.findModelsList(modelMap);
 	}
 
@@ -66,10 +64,9 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @throws Exception
 	 */
 	@Transactional
-	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity adminModelEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity adminModelEntity) {
 		return modelRepository.findOneModel(adminModelEntity);
 	}
 
@@ -82,10 +79,9 @@ public class AdminModelJpaService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity modelCodeEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity modelCodeEntity) {
 		return modelRepository.modelCommonCode(modelCodeEntity);
 	}
 
@@ -99,10 +95,9 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @throws Exception
 	 */
 	@Transactional
-	public Integer insertModel(AdminModelEntity adminModelEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) throws Exception {
+	public Integer insertModel(AdminModelEntity adminModelEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) {
 		return modelRepository.insertModel(adminModelEntity, commonImageEntity, files);
 	}
 
@@ -116,11 +111,10 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @throws Exception
 	 */
 	@Transactional
 	public Integer updateModel(AdminModelEntity adminModelEntity, CommonImageEntity commonImageEntity,
-							   MultipartFile[] files, ConcurrentHashMap<String, Object> modelMap) throws Exception {
+							   MultipartFile[] files, ConcurrentHashMap<String, Object> modelMap) {
 
 		int num;
 
@@ -148,10 +142,9 @@ public class AdminModelJpaService {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @throws Exception
 	 */
 	@Transactional
-	public Long deleteModel(AdminModelEntity adminModelEntity) throws Exception {
+	public Long deleteModel(AdminModelEntity adminModelEntity) {
 		return this.modelRepository.deleteModel(adminModelEntity);
 	}
 }

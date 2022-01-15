@@ -12,10 +12,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -32,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 
 @Slf4j
+@Validated
 @RequestMapping(value = "/api/model")
 @RestController
 @RequiredArgsConstructor
@@ -62,7 +61,9 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists/{categoryCd}")
-	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd") Integer categoryCd,
+	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
+														  Integer categoryCd,
 										  @RequestParam(required = false) Map<String, Object> paramMap,
 										  Page page) throws Exception {
 
@@ -111,7 +112,9 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{categoryCd}/{idx}")
-	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd") Integer categoryCd,
+	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd")
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
+														  Integer categoryCd,
 														  @PathVariable("idx") Integer idx) throws Exception {
 		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
 		ConcurrentHashMap<String, Object> modelMap;
@@ -148,7 +151,7 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public String insertModel(@Valid AdminModelDTO adminModelDTO,
+	public String insertModel(AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,

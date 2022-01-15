@@ -9,6 +9,8 @@ import com.tsp.new_tsp_project.api.common.domain.entity.CommonCodeEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.image.service.jpa.ImageRepository;
 import com.tsp.new_tsp_project.common.utils.StringUtil;
+import com.tsp.new_tsp_project.exception.ApiExceptionType;
+import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
@@ -62,13 +64,16 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param modelMap
-	 * @throws Exception
 	 */
-	public Long findModelsCount(Map<String, Object> modelMap) throws Exception {
+	public Long findModelsCount(Map<String, Object> modelMap) {
 
-		return queryFactory.selectFrom(adminModelEntity)
-				.where(searchModel(modelMap))
-				.fetchCount();
+		try {
+			return queryFactory.selectFrom(adminModelEntity)
+					.where(searchModel(modelMap))
+					.fetchCount();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+		}
 	}
 
 
@@ -82,23 +87,26 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param modelMap
-	 * @throws Exception
 	 */
-	public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) throws Exception{
+	public List<AdminModelDTO> findModelsList(Map<String, Object> modelMap) {
 
-		List<AdminModelEntity> modelList = queryFactory
-				.selectFrom(adminModelEntity)
-				.orderBy(adminModelEntity.idx.desc())
-				.where(searchModel(modelMap))
-				.offset(StringUtil.getInt(modelMap.get("jpaStartPage"),0))
-				.limit(StringUtil.getInt(modelMap.get("size"),0))
-				.fetch();
+		try {
+			List<AdminModelEntity> modelList = queryFactory
+					.selectFrom(adminModelEntity)
+					.orderBy(adminModelEntity.idx.desc())
+					.where(searchModel(modelMap))
+					.offset(StringUtil.getInt(modelMap.get("jpaStartPage"),0))
+					.limit(StringUtil.getInt(modelMap.get("size"),0))
+					.fetch();
 
-		for(int i = 0; i < modelList.size(); i++) {
-			modelList.get(i).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-i));
+			for(int i = 0; i < modelList.size(); i++) {
+				modelList.get(i).setRnum(StringUtil.getInt(modelMap.get("startPage"),1)*(StringUtil.getInt(modelMap.get("size"),1))-(2-i));
+			}
+
+			return ModelMapper.INSTANCE.toDtoList(modelList);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
 		}
-
-		return ModelMapper.INSTANCE.toDtoList(modelList);
 	}
 
 	/**
@@ -111,19 +119,22 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param existModelCodeEntity
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity existModelCodeEntity) throws Exception {
-		ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
+	public ConcurrentHashMap<String, Object> modelCommonCode(CommonCodeEntity existModelCodeEntity) {
+		try {
+			ConcurrentHashMap<String, Object> modelCommonMap = new ConcurrentHashMap<>();
 
-		List<CommonCodeEntity> codeEntityList = queryFactory
-				.selectFrom(commonCodeEntity)
-				.where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
-				.fetch();
+			List<CommonCodeEntity> codeEntityList = queryFactory
+					.selectFrom(commonCodeEntity)
+					.where(commonCodeEntity.cmmType.eq(existModelCodeEntity.getCmmType()))
+					.fetch();
 
-		modelCommonMap.put("codeEntityList", codeEntityList);
+			modelCommonMap.put("codeEntityList", codeEntityList);
 
-		return modelCommonMap;
+			return modelCommonMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_COMMON);
+		}
 	}
 
 	/**
@@ -136,30 +147,32 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param existAdminModelEntity
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity existAdminModelEntity) throws Exception {
+	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity existAdminModelEntity) {
 
-		//모델 상세 조회
-		AdminModelEntity findModel = queryFactory
-				.selectFrom(adminModelEntity)
-				.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
-				.fetchOne();
+		try {
+			//모델 상세 조회
+			AdminModelEntity findModel = queryFactory
+					.selectFrom(adminModelEntity)
+					.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
+					.fetchOne();
 
-		//모델 이미지 조회
-		List<CommonImageEntity> modelImageList = queryFactory
-				.selectFrom(commonImageEntity)
-				.where(commonImageEntity.typeIdx.eq(existAdminModelEntity.getIdx()),
-						commonImageEntity.visible.eq("Y"),
-						commonImageEntity.typeName.eq("model")).fetch();
+			//모델 이미지 조회
+			List<CommonImageEntity> modelImageList = queryFactory
+					.selectFrom(commonImageEntity)
+					.where(commonImageEntity.typeIdx.eq(existAdminModelEntity.getIdx()),
+							commonImageEntity.visible.eq("Y"),
+							commonImageEntity.typeName.eq("model")).fetch();
 
-		ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
+			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
-		modelMap.put("modelInfo", ModelMapper.INSTANCE.toDto(findModel));
-		modelMap.put("modelImageList", ModelImageMapper.INSTANCE.toDtoList(modelImageList));
+			modelMap.put("modelInfo", ModelMapper.INSTANCE.toDto(findModel));
+			modelMap.put("modelImageList", ModelImageMapper.INSTANCE.toDtoList(modelImageList));
 
-		return modelMap;
-
+			return modelMap;
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+		}
 	}
 
 	/**
@@ -174,27 +187,30 @@ public class ModelRepository {
 	 * @param adminModelEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
 	public Integer insertModel(AdminModelEntity adminModelEntity,
 							   CommonImageEntity commonImageEntity,
-							   MultipartFile[] files) throws Exception {
+							   MultipartFile[] files) {
 
-		adminModelEntity.builder().createTime(new Date()).creator(1).build();
-		em.persist(adminModelEntity);
-		em.flush();
-		em.clear();
+		try {
+			adminModelEntity.builder().createTime(new Date()).creator(1).build();
+			em.persist(adminModelEntity);
+			em.flush();
+			em.clear();
 
-		commonImageEntity.builder()
-				.typeName("model")
-				.typeIdx(adminModelEntity.getIdx())
-				.build();
+			commonImageEntity.builder()
+					.typeName("model")
+					.typeIdx(adminModelEntity.getIdx())
+					.build();
 
-		imageRepository.uploadImageFile(commonImageEntity, files);
+			imageRepository.uploadImageFile(commonImageEntity, files);
 
-		return adminModelEntity.getIdx();
+			return adminModelEntity.getIdx();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_MODEL);
+		}
 	}
 
 	/**
@@ -209,40 +225,43 @@ public class ModelRepository {
 	 * @param existAdminModelEntity
 	 * @param commonImageEntity
 	 * @param files
-	 * @throws Exception
 	 */
 	@Modifying
 	@Transactional
 	public Integer updateModel(AdminModelEntity existAdminModelEntity, CommonImageEntity commonImageEntity,
-							   MultipartFile[] files, ConcurrentHashMap<String, Object> modelMap) throws Exception {
+							   MultipartFile[] files, ConcurrentHashMap<String, Object> modelMap) {
 
-		JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-		existAdminModelEntity.builder().updateTime(new Date()).updater(1).build();
+			existAdminModelEntity.builder().updateTime(new Date()).updater(1).build();
 
-		update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
-				.set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
-				.set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
-				.set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
-				.set(adminModelEntity.height, existAdminModelEntity.getHeight())
-				.set(adminModelEntity.size3, existAdminModelEntity.getSize3())
-				.set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
-				.set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
-				.set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-				.set(adminModelEntity.updater, 1)
-				.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+			update.set(adminModelEntity.modelKorName, existAdminModelEntity.getModelKorName())
+					.set(adminModelEntity.categoryCd, existAdminModelEntity.getCategoryCd())
+					.set(adminModelEntity.modelEngName, existAdminModelEntity.getModelEngName())
+					.set(adminModelEntity.modelDescription, existAdminModelEntity.getModelDescription())
+					.set(adminModelEntity.height, existAdminModelEntity.getHeight())
+					.set(adminModelEntity.size3, existAdminModelEntity.getSize3())
+					.set(adminModelEntity.shoes, existAdminModelEntity.getShoes())
+					.set(adminModelEntity.categoryAge, existAdminModelEntity.getCategoryAge())
+					.set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+					.set(adminModelEntity.updater, 1)
+					.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
 
-		commonImageEntity.builder()
-				.typeName("model")
-				.typeIdx(existAdminModelEntity.getIdx())
-				.build();
+			commonImageEntity.builder()
+					.typeName("model")
+					.typeIdx(existAdminModelEntity.getIdx())
+					.build();
 
-		modelMap.put("typeName", "model");
+			modelMap.put("typeName", "model");
 
-		if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, modelMap))) {
-			return 1;
-		} else {
-			return 0;
+			if("Y".equals(imageRepository.updateMultipleFile(commonImageEntity, files, modelMap))) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_MODEL);
 		}
 	}
 
@@ -256,19 +275,20 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param existAdminModelEntity
-	 * @throws Exception
 	 */
-	public Long deleteModel(AdminModelEntity existAdminModelEntity) throws Exception {
+	public Long deleteModel(AdminModelEntity existAdminModelEntity) {
 
-		JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
+		try {
+			JPAUpdateClause update = new JPAUpdateClause(em, adminModelEntity);
 
-		existAdminModelEntity.builder().updateTime(new Date ()).updater(1).build();
+			existAdminModelEntity.builder().updateTime(new Date ()).updater(1).build();
 
-		long result = update.set(adminModelEntity.visible, "N")
-				.set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
-				.set(adminModelEntity.updater, 1)
-				.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
-
-		return result;
+			return update.set(adminModelEntity.visible, "N")
+					.set(adminModelEntity.updateTime, existAdminModelEntity.getUpdateTime())
+					.set(adminModelEntity.updater, 1)
+					.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())).execute();
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL);
+		}
 	}
 }

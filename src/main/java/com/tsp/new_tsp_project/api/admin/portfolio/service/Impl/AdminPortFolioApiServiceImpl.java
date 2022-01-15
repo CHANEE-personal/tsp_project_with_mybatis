@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
+
 @Slf4j
 @Service("AdminPortFolioApiService")
 @Transactional
@@ -35,10 +37,13 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
-	public Integer getPortFolioCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception {
-		return this.adminPortFolioMapper.getPortFolioCnt(searchMap);
+	public Integer getPortFolioCnt(ConcurrentHashMap<String, Object> searchMap) {
+		try {
+			return this.adminPortFolioMapper.getPortFolioCnt(searchMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+		}
 	}
 
 	/**
@@ -51,10 +56,13 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 * @param searchMap
-	 * @throws Exception
 	 */
-	public List<AdminPortFolioDTO> getPortFolioList(ConcurrentHashMap<String, Object> searchMap) throws Exception {
-		return this.adminPortFolioMapper.getPortFolioList(searchMap);
+	public List<AdminPortFolioDTO> getPortFolioList(ConcurrentHashMap<String, Object> searchMap) {
+		try {
+			return this.adminPortFolioMapper.getPortFolioList(searchMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+		}
 	}
 
 	/**
@@ -67,18 +75,17 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) throws Exception {
+	public ConcurrentHashMap<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) {
+
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
 		try {
-			CommonImageDTO commonImageDTO = new CommonImageDTO();
-			commonImageDTO.setTypeIdx(adminPortFolioDTO.getIdx());
-			commonImageDTO.setTypeName("portFolio");
+			CommonImageDTO commonImageDTO = builder().typeIdx(adminPortFolioDTO.getIdx()).typeName("portFolio").build();
 
 			portFolioMap.put("portFolioInfo", this.adminPortFolioMapper.getPortFolioInfo(adminPortFolioDTO));
 			portFolioMap.put("portFolioImageList", this.adminPortFolioMapper.getImageList(commonImageDTO));
+
 			return portFolioMap;
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO);
@@ -95,20 +102,16 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	public Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
-								   MultipartFile[] files) throws Exception {
+								   MultipartFile[] files) {
 
 		int num;
 
 		try {
 			if(this.adminPortFolioMapper.insertPortFolio(adminPortFolioDTO) > 0) {
-				commonImageDTO.setTypeName("portfolio");
-				commonImageDTO.setTypeIdx(adminPortFolioDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
+				builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
@@ -134,21 +137,17 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	public Integer updatePortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
 								   MultipartFile[] files,
-								   Map<String, Object> portFolioMap) throws Exception {
+								   Map<String, Object> portFolioMap) {
 
 		int num;
 
 		try {
 			if(this.adminPortFolioMapper.updatePortFolio(adminPortFolioDTO) > 0) {
-				commonImageDTO.setTypeName("portfolio");
-				commonImageDTO.setTypeIdx(adminPortFolioDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
+				builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, files, portFolioMap))) {
 					num = 1;
 				} else {
@@ -175,8 +174,12 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * @param adminPortFolioDTO
 	 * @throws Exception
 	 */
-	public Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) throws Exception {
-		return this.adminPortFolioMapper.deletePortFolio(adminPortFolioDTO);
+	public Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) {
+		try {
+			return this.adminPortFolioMapper.deletePortFolio(adminPortFolioDTO);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+		}
 	}
 
 	/**
@@ -190,8 +193,12 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 *
 	 * @throws Exception
 	 */
-	public Integer deleteAllPortFolio(Map<String, Object> portFolioMap) throws Exception {
-		return this.adminPortFolioMapper.deleteAllPortFolio(portFolioMap);
+	public Integer deleteAllPortFolio(Map<String, Object> portFolioMap) {
+		try {
+			return this.adminPortFolioMapper.deleteAllPortFolio(portFolioMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+		}
 	}
 
 	/**
@@ -203,9 +210,12 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 * @param portFolioMap
-	 * @throws Exception
 	 */
-	public Integer deletePartPortFolio(Map<String, Object> portFolioMap) throws Exception {
-		return this.adminPortFolioMapper.deletePartPortFolio(portFolioMap);
+	public Integer deletePartPortFolio(Map<String, Object> portFolioMap) {
+		try {
+			return this.adminPortFolioMapper.deletePartPortFolio(portFolioMap);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+		}
 	}
 }

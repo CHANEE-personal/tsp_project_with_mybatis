@@ -39,7 +39,7 @@ public interface AdminUserApiService {
 	 * @return result
 	 * @throws Exception
 	 */
-	String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request, BindingResult bindingResult) throws Exception;
+	String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) throws Exception;
 
 	/**
 	 * <pre>

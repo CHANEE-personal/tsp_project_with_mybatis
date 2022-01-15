@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
+
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
@@ -52,10 +54,9 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 * @param modelMap
-	 * @throws Exception
 	 */
 	@Override
-	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws Exception {
+	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) {
 		try {
 			return this.adminModelMapper.getModelList(modelMap);
 		} catch (Exception e) {
@@ -73,14 +74,13 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception {
+	public ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) {
 		try {
 			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
-			CommonImageDTO commonImageDTO = CommonImageDTO.builder()
+			CommonImageDTO commonImageDTO = builder()
 					.typeIdx(adminModelDTO.getIdx())
 					.typeName("model")
 					.build();
@@ -106,11 +106,10 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * @param adminModelDTO
 	 * @param commonImageDTO
 	 * @param fileName
-	 * @throws Exception
 	 */
 	public Integer insertModel(AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
-							  MultipartFile[] fileName) throws Exception {
+							  MultipartFile[] fileName) {
 		int num;
 
 		try {
@@ -145,20 +144,16 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * @param adminModelDTO
 	 * @param commonImageDTO
 	 * @param fileName
-	 * @throws Exception
 	 */
 	public Integer updateModel(AdminModelDTO adminModelDTO,
 							   CommonImageDTO commonImageDTO,
 							   MultipartFile[] fileName,
-							   Map<String, Object> modelMap) throws Exception {
+							   Map<String, Object> modelMap) {
 		int num;
 
 		try {
 			if(this.adminModelMapper.updateModel(adminModelDTO) > 0) {
-				commonImageDTO.setTypeName("model");
-				commonImageDTO.setTypeIdx(adminModelDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
+				builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, fileName, modelMap))) {
 					num = 1;
 				} else {
