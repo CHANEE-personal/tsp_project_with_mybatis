@@ -13,10 +13,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +53,6 @@ public class AdminUserJpaService {
 	 * </pre>
 	 *
 	 * @param adminUserEntity
-	 * @param request
 	 * @return result
 	 */
 	@Transactional(readOnly = true)
@@ -65,7 +62,7 @@ public class AdminUserJpaService {
 
 		final String db_pw = StringUtils.nullStrToStr(password);
 
-		String result = "";
+		String result;
 
 		if (passwordEncoder.matches(adminUserEntity.getPassword(), db_pw)) {
 			result = "Y";
@@ -108,26 +105,30 @@ public class AdminUserJpaService {
 	@Transactional
 	public Integer insertAdminUser(AdminUserEntity adminUserEntity) {
 
-		String userId = StringUtil.getString(this.userRepository.adminLogin(adminUserEntity).get("userId"),"");
+		try {
+			String userId = StringUtil.getString(this.userRepository.adminLogin(adminUserEntity).get("userId"),"");
 
-		if(userId.equals(adminUserEntity.getUserId())) {
-			throw new TspException(ApiExceptionType.ID_EXIST);
+			if(userId.equals(adminUserEntity.getUserId())) {
+				throw new TspException(ApiExceptionType.ID_EXIST);
+			}
+			// 패스워드 인코딩
+			String password = passwordEncoder.encode(adminUserEntity.getPassword());
+
+			AdminUserEntity encodeUserEntity = AdminUserEntity.builder()
+					.userId(adminUserEntity.getUserId())
+					.password(password)
+					.email(adminUserEntity.getEmail())
+					.name(adminUserEntity.getName())
+					.visible("Y")
+					.creator(1)
+					.createTime(new Date())
+					.updater(1)
+					.updateTime(new Date())
+					.build();
+
+			return this.userRepository.insertAdminUser(encodeUserEntity);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_USER);
 		}
-		// 패스워드 인코딩
-		String password = passwordEncoder.encode(adminUserEntity.getPassword());
-
-		AdminUserEntity encodeUserEntity = AdminUserEntity.builder()
-				.userId(adminUserEntity.getUserId())
-				.password(password)
-				.email(adminUserEntity.getEmail())
-				.name(adminUserEntity.getName())
-				.visible("Y")
-				.creator(1)
-				.createTime(new Date())
-				.updater(1)
-				.updateTime(new Date())
-				.build();
-
-		return this.userRepository.insertAdminUser(encodeUserEntity);
 	}
 }

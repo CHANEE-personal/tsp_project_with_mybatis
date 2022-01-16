@@ -22,6 +22,18 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	private final AdminUserMapper adminUserMapper;
 	private final PasswordEncoder passwordEncoder;
 
+	/**
+	 * <pre>
+	 * 1. MethodName : getUserList
+	 * 2. ClassName  : AdminUserApiServiceImpl.java
+	 * 3. Comment    : 회원 조회
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 * @param commandMap
+	 * @return result
+	 */
 	@Override
 	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) {
 		return adminUserMapper.getUserList(commandMap);
@@ -45,7 +57,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 		try {
 			final String db_pw = StringUtils.nullStrToStr(this.adminUserMapper.adminLogin(adminUserDTO));
 
-			String result = "";
+			String result;
 
 			if (passwordEncoder.matches(adminUserDTO.getPassword(), db_pw)) {
 				result = "Y";

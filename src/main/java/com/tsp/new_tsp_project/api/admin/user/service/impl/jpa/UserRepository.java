@@ -85,12 +85,11 @@ public class UserRepository {
 			userMap.put("userId", NewAdminUserEntity.getUserId());
 			userMap.put("password", NewAdminUserEntity.getPassword());
 
+			return userMap;
+
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_USER);
 		}
-
-		return userMap;
-
 	}
 
 	/**

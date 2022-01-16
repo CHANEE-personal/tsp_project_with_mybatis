@@ -10,6 +10,18 @@ import java.util.Map;
 @Mapper
 public interface AdminUserMapper {
 
+	/**
+	 * <pre>
+	 * 1. MethodName : getUserList
+	 * 2. ClassName  : AdminUserMapper.java
+	 * 3. Comment    : 관리자 유저 조회
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 * @param  commandMap
+	 * @throws Exception
+	 */
 	List<AdminUserDTO> getUserList(Map<String, Object> commandMap);
 
 	/**
