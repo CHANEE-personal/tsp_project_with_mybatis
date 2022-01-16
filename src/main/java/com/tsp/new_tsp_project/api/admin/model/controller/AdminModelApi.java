@@ -150,7 +150,7 @@ public class AdminModelApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String insertModel(AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,

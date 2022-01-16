@@ -223,7 +223,6 @@ public class AdminPortFolioJpaApi {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 * @param deleteIdx
-	 * @param request
 	 */
 	@ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
 	@ApiResponses({
@@ -232,8 +231,7 @@ public class AdminPortFolioJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@DeleteMapping("/deletePortfolio")
-	public String deleteAllPortFolio(Long[] deleteIdx,
-									 HttpServletRequest request) {
+	public String deleteAllPortFolio(Long[] deleteIdx) {
 		Map<String, Object> portFolioMap = new HashMap<>();
 		String result;
 

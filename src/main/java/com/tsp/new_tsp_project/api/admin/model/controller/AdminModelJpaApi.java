@@ -22,7 +22,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
