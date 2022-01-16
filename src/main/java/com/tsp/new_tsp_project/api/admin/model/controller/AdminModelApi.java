@@ -64,8 +64,8 @@ public class AdminModelApi {
 	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
 														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
 														  Integer categoryCd,
-										  @RequestParam(required = false) Map<String, Object> paramMap,
-										  Page page) throws Exception {
+														  @RequestParam(required = false) Map<String, Object> paramMap,
+														  Page page) throws Exception {
 
 		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
 		// 페이징 및 검색
