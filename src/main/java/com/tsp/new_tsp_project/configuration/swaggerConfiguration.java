@@ -41,7 +41,7 @@ public class swaggerConfiguration {
 	/**
 	 * <pre>
 	 * 1. MethodName : commonApi
-	 * 2. ClassName  : commonApi.java
+	 * 2. ClassName  : swaggerConfiguration.java
 	 * 3. Comment    : swagger api 경로 설정
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 02. 09.
@@ -62,6 +62,17 @@ public class swaggerConfiguration {
 				.securitySchemes(Arrays.asList(apikey()));
 	}
 
+	/**
+	 * <pre>
+	 * 1. MethodName : apiKey
+	 * 2. ClassName  : swaggerConfiguration.java
+	 * 3. Comment    : swagger api key 설정
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 02. 09.
+	 * </pre>
+	 *
+	 * @return
+	 */
 	private ApiKey apikey() {
 		return new ApiKey("JWT", "Authorization", "header");
 	}
