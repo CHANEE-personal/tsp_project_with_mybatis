@@ -20,6 +20,17 @@ import java.util.List;
 @Profile({"local","kang"})
 public class swaggerConfiguration {
 
+	/**
+	 * <pre>
+	 * 1. MethodName : apiInfo
+	 * 2. ClassName  : swaggerConfiguration.java
+	 * 3. Comment    : swagger api 정보
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 02. 09.
+	 * </pre>
+	 *
+	 * @return
+	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("Tsp Model")
@@ -27,6 +38,17 @@ public class swaggerConfiguration {
 				.build();
 	}
 
+	/**
+	 * <pre>
+	 * 1. MethodName : commonApi
+	 * 2. ClassName  : commonApi.java
+	 * 3. Comment    : swagger api 경로 설정
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 02. 09.
+	 * </pre>
+	 *
+	 * @return
+	 */
 	@Bean
 	public Docket commonApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
