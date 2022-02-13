@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
-
 @Slf4j
 @Service("AdminPortFolioApiService")
 @Transactional
@@ -81,7 +79,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
 		try {
-			CommonImageDTO commonImageDTO = builder().typeIdx(adminPortFolioDTO.getIdx()).typeName("portFolio").build();
+			CommonImageDTO commonImageDTO = CommonImageDTO.builder().typeIdx(adminPortFolioDTO.getIdx()).typeName("portFolio").build();
 
 			portFolioMap.put("portFolioInfo", this.adminPortFolioMapper.getPortFolioInfo(adminPortFolioDTO));
 			portFolioMap.put("portFolioImageList", this.adminPortFolioMapper.getImageList(commonImageDTO));
@@ -111,7 +109,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 
 		try {
 			if(this.adminPortFolioMapper.insertPortFolio(adminPortFolioDTO) > 0) {
-				builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
@@ -147,7 +145,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 
 		try {
 			if(this.adminPortFolioMapper.updatePortFolio(adminPortFolioDTO) > 0) {
-				builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("portfolio").typeIdx(adminPortFolioDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, files, portFolioMap))) {
 					num = 1;
 				} else {

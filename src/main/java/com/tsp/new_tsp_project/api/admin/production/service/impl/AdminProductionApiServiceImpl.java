@@ -15,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
-
 @Slf4j
 @Service("AdminProductionApiService")
 @Transactional
@@ -108,7 +106,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 
 		try {
 			if(this.adminProductionMapper.insertProduction(adminProductionDTO) > 0) {
-				builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
@@ -142,7 +140,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 
 		try {
 			if(this.adminProductionMapper.updateProduction(adminProductionDTO) > 0) {
-				builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "update"))) {
 					num = 1;
 				} else {

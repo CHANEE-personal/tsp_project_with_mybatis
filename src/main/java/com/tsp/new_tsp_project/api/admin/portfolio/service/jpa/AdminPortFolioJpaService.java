@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity.builder;
-
 @Service
 @RequiredArgsConstructor
 public class AdminPortFolioJpaService {
@@ -127,7 +125,7 @@ public class AdminPortFolioJpaService {
 
 		try {
 			if(this.portFolioRepository.updatePortFolio(adminPortFolioEntity, commonImageEntity, files, portFolioMap) > 0) {
-				builder().typeIdx(adminPortFolioEntity.getIdx()).typeName("portfolio").build();
+				CommonImageDTO.builder().typeIdx(adminPortFolioEntity.getIdx()).typeName("portfolio").build();
 				num = 1;
 			} else {
 				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);

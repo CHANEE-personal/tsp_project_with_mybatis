@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO.builder;
-
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
@@ -80,7 +78,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 		try {
 			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
-			CommonImageDTO commonImageDTO = builder()
+			CommonImageDTO commonImageDTO = CommonImageDTO.builder()
 					.typeIdx(adminModelDTO.getIdx())
 					.typeName("model")
 					.build();
@@ -153,7 +151,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 		try {
 			if(this.adminModelMapper.updateModel(adminModelDTO) > 0) {
-				builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, fileName, modelMap))) {
 					num = 1;
 				} else {
