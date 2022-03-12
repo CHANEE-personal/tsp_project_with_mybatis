@@ -62,7 +62,7 @@ public class AdminUserJpaApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/users")
+	@GetMapping(value = "/users")
 	public List<AdminUserDTO> findUserList(@RequestParam(required = false) Map<String, Object> paramMap,
 										   Page page) {
 		// 페이징 및 검색

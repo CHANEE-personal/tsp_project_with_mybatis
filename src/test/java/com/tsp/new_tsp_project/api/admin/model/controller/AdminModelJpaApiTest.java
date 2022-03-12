@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.model.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,6 +58,7 @@ class AdminModelJpaApiTest {
     @Test
     @DisplayName("남성모델상세조회")
     public void 남성모델상세조회() throws Exception {
+        // 사용
         mockMvc.perform(get("/api/jpa-model/1/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -72,6 +72,12 @@ class AdminModelJpaApiTest {
                 .andExpect(jsonPath("$.modelMap.modelInfo.size3").value("34-24-34"))
                 .andExpect(jsonPath("$.modelMap.modelInfo.shoes").value("270"))
                 .andExpect(jsonPath("$.modelMap.modelInfo.modelDescription").value("chaneeCho"));
+
+        // 미사용
+        mockMvc.perform(get("/api/jpa-model/1/-1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("NOT_FOUND_MODEL"));
     }
 
     @Test
