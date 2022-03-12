@@ -2,16 +2,21 @@ package com.tsp.new_tsp_project.api.admin.model.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
+import com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-local.properties")
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdminModelJpaApiTest {
 
     @Autowired
@@ -31,6 +36,17 @@ class AdminModelJpaApiTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private WebApplicationContext wac;
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+                .alwaysDo(print())
+                .build();
+    }
 
     @Test
     @DisplayName("남성모델리스트조회")
@@ -62,7 +78,7 @@ class AdminModelJpaApiTest {
     @DisplayName("남성모델등록")
     public void 남성모델등록() throws Exception {
 
-        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
                 .categoryCd(1)
                 .modelKorName("조찬희")
                 .modelEngName("chanhee")
@@ -81,7 +97,13 @@ class AdminModelJpaApiTest {
                 .createTime(new Date())
                 .build();
 
-        mockMvc.perform(post("/api/jpa-model"))
-                .andExpect(status().isOk());
+        final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
+
+//        mockMvc.perform(post("/api/jpa-model")
+////                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+////                        .content(jsonStr))
+////                .andDo(print())
+////                .andExpect(status().isOk());
     }
+
 }
