@@ -17,7 +17,6 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-@Profile({"local","kang"})
 public class swaggerConfiguration {
 
 	/**

@@ -9,18 +9,20 @@ import org.springframework.validation.DefaultMessageCodesResolver;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-	@Autowired
-	private HandlerInterceptor loginCheckInterceptor;
+//	private final HandlerInterceptor loginCheckInterceptor;
+//
+//	@Autowired
+//	public WebConfiguration(HandlerInterceptor loginCheckInterceptor) {
+//		this.loginCheckInterceptor = loginCheckInterceptor;
+//	}
 
 	private static final String[] CLASSPATH_RESOURCE_LOCATIONS =
 			{"classpath:/static/",
