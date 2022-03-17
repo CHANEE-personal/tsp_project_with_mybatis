@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.model.domain.dto;
 
+import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -80,4 +83,7 @@ public class AdminModelDTO extends NewCommonDTO {
 	@NotNull(message = "모델 국문 이름 입력은 필수입니다.")
 	@ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희")
 	private String modelKorSecondName;
+
+	@ApiModelProperty(required = true, value = "modelImageList", hidden = true)
+	private List<CommonImageDTO> modelImage = new ArrayList<>();
 }

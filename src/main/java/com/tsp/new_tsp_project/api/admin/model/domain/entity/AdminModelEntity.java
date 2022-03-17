@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.model.domain.entity;
 
+import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.NewCodeEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.NewCommonMappedClass;
 import lombok.*;
@@ -8,6 +9,9 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
@@ -88,5 +92,8 @@ public class AdminModelEntity extends NewCommonMappedClass {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "category_cd", insertable = false, updatable = false)
 	private NewCodeEntity newModelCodeJpaDTO;
+
+	@OneToMany(mappedBy = "adminModelEntity")
+	private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 }
 

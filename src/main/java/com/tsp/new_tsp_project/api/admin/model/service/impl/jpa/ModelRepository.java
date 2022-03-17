@@ -154,20 +154,17 @@ public class ModelRepository {
 			//모델 상세 조회
 			AdminModelEntity findModel = queryFactory
 					.selectFrom(adminModelEntity)
-					.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx()))
+					.orderBy(adminModelEntity.idx.desc())
+					.leftJoin(adminModelEntity.commonImageEntityList, commonImageEntity)
+					.fetchJoin()
+					.where(adminModelEntity.idx.eq(existAdminModelEntity.getIdx())
+							.and(adminModelEntity.visible.eq("Y"))
+							.and(commonImageEntity.typeName.eq("model")))
 					.fetchOne();
-
-			//모델 이미지 조회
-			List<CommonImageEntity> modelImageList = queryFactory
-					.selectFrom(commonImageEntity)
-					.where(commonImageEntity.typeIdx.eq(existAdminModelEntity.getIdx()),
-							commonImageEntity.visible.eq("Y"),
-							commonImageEntity.typeName.eq("model")).fetch();
 
 			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
 
 			modelMap.put("modelInfo", ModelMapper.INSTANCE.toDto(findModel));
-			modelMap.put("modelImageList", ModelImageMapper.INSTANCE.toDtoList(modelImageList));
 
 			return modelMap;
 		} catch (Exception e) {

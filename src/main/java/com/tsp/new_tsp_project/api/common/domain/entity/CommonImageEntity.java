@@ -1,9 +1,12 @@
 package com.tsp.new_tsp_project.api.common.domain.entity;
 
+import com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -59,4 +62,8 @@ public class CommonImageEntity {
 	@Column(name = "reg_date", insertable = false, updatable = false)
 	@ApiModelProperty(value = "등록일자", hidden = true)
 	private String regDate;
+
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+	private AdminModelEntity adminModelEntity;
 }
