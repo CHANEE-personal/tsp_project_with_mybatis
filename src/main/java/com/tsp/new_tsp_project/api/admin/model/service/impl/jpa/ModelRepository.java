@@ -148,7 +148,7 @@ public class ModelRepository {
 	 *
 	 * @param existAdminModelEntity
 	 */
-	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity existAdminModelEntity) {
+	public AdminModelDTO findOneModel(AdminModelEntity existAdminModelEntity) {
 
 		try {
 			//모델 상세 조회
@@ -162,11 +162,7 @@ public class ModelRepository {
 							.and(commonImageEntity.typeName.eq("model")))
 					.fetchOne();
 
-			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
-
-			modelMap.put("modelInfo", ModelMapper.INSTANCE.toDto(findModel));
-
-			return modelMap;
+			return ModelMapper.INSTANCE.toDto(findModel);
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
 		}

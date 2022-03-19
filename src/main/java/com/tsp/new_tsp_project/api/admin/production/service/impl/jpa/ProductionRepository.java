@@ -119,20 +119,19 @@ public class ProductionRepository {
 
 		try {
 			//모델 상세 조회
-			AdminProductionEntity findOneProduction = queryFactory.selectFrom(adminProductionEntity)
-					.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx()))
+			AdminProductionEntity findOneProduction = queryFactory
+					.selectFrom(adminProductionEntity)
+					.orderBy(adminProductionEntity.idx.desc())
+					.leftJoin(adminProductionEntity.commonImageEntityList, commonImageEntity)
+					.fetchJoin()
+					.where(adminProductionEntity.idx.eq(existAdminProductionEntity.getIdx())
+						.and(adminProductionEntity.visible.eq("Y"))
+						.and(commonImageEntity.typeName.eq("production")))
 					.fetchOne();
-
-			//포트폴리오 이미지 조회
-			List<CommonImageEntity> productionImageList = queryFactory.selectFrom(commonImageEntity)
-					.where(commonImageEntity.typeIdx.eq(existAdminProductionEntity.getIdx()),
-							commonImageEntity.visible.eq("Y"),
-							commonImageEntity.typeName.eq("production")).fetch();
 
 			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
 			productionMap.put("productionInfo", ProductionMapper.INSTANCE.toDto(findOneProduction));
-			productionMap.put("productionImageList", ModelImageMapper.INSTANCE.toDtoList(productionImageList));
 
 			return productionMap;
 		} catch (Exception e) {

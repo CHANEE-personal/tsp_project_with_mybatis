@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,5 +36,6 @@ public class AdminProductionDTO extends NewCommonDTO {
 	@ApiModelProperty(required = true, value = "visible")
 	String visible;
 
-	private List<CommonImageDTO> commonImageDTOList;
+	@ApiModelProperty(required = true, value = "productionImageList", hidden = true)
+	private List<CommonImageDTO> productionImage = new ArrayList<>();
 }

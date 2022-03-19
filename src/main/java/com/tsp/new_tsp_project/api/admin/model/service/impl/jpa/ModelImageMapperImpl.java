@@ -2,11 +2,13 @@ package com.tsp.new_tsp_project.api.admin.model.service.impl.jpa;
 
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
+import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelImageMapperImpl implements ModelImageMapper{
+@Mapper
+public class ModelImageMapperImpl implements ModelImageMapper {
 
 	@Override
 	public CommonImageDTO toDto(CommonImageEntity entity) {

@@ -24,6 +24,7 @@ public class ProductionMapperImpl implements ProductionMapper {
 				.createTime(entity.getCreateTime())
 				.updater(entity.getUpdater())
 				.updateTime(entity.getUpdateTime())
+				.productionImage(ProductionImageMapperImpl.INSTANCE.toDtoList(entity.getCommonImageEntityList()))
 				.build();
 	}
 

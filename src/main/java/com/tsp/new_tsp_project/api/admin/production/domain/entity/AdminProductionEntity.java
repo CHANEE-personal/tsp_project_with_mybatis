@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.production.domain.entity;
 
+import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.NewCommonMappedClass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,5 +40,8 @@ public class AdminProductionEntity extends NewCommonMappedClass {
 
 	@Column(name = "visible")
 	private String visible;
+
+	@OneToMany(mappedBy = "adminProductionEntity")
+	private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 
 }

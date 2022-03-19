@@ -108,18 +108,14 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{categoryCd}/{idx}")
-	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd")
+	public AdminModelDTO getModelEdit(@PathVariable("categoryCd")
 														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
 														  Integer categoryCd,
 														  @PathVariable("idx") Integer idx) {
 
-		ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
-
 		AdminModelEntity adminModelEntity = builder().idx(idx).categoryCd(categoryCd).build();
 
-		modelMap.put("modelMap", this.adminModelJpaService.findOneModel(adminModelEntity));
-
-		return modelMap;
+		return this.adminModelJpaService.findOneModel(adminModelEntity);
 	}
 
 	/**

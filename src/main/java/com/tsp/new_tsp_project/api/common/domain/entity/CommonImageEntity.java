@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_project.api.common.domain.entity;
 
 import com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity;
+import com.tsp.new_tsp_project.api.admin.production.domain.entity.AdminProductionEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -66,4 +67,8 @@ public class CommonImageEntity {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
 	private AdminModelEntity adminModelEntity;
+
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "type_idx", referencedColumnName = "idx", insertable = false, updatable = false)
+	private AdminProductionEntity adminProductionEntity;
 }

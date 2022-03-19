@@ -66,7 +66,7 @@ public class AdminModelJpaService {
 	 * @param adminModelEntity
 	 */
 	@Transactional
-	public ConcurrentHashMap<String, Object> findOneModel(AdminModelEntity adminModelEntity) {
+	public AdminModelDTO findOneModel(AdminModelEntity adminModelEntity) {
 		return modelRepository.findOneModel(adminModelEntity);
 	}
 
