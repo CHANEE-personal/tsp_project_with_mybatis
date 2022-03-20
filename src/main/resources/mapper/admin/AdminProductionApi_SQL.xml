@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tsp.new_tsp_project.api.admin.production.service.impl.AdminProductionMapper">
+<mapper namespace="com.tsp.new_tsp_project.api.admin.mapper.AdminProductionMapper">
 
 	<!-- 프로덕션 수 조회 -->
 	<select id="getProductionCnt" parameterType="java.util.HashMap" resultType="Integer">

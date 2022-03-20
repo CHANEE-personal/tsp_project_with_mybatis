@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_project.api.admin.production.service.impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO;
 import org.apache.ibatis.annotations.Mapper;

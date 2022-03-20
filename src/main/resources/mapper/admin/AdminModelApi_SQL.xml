@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tsp.new_tsp_project.api.admin.model.service.impl.AdminModelMapper">
+<mapper namespace="com.tsp.new_tsp_project.api.admin.mapper.AdminModelMapper">
 
-<!--	<resultMap type="adminModelDto" id="modelResult">-->
-<!--		<result column="idx" property="idx"/>-->
-<!--		<result column="category_cd" property="categoryCd"/>-->
-<!--		<result column="category_nm" property="categoryNm"/>-->
-<!--		<result column="model_kor_name" property="modelKorName"/>-->
-<!--		<result column="model_eng_name" property="modelEngName"/>-->
-<!--		<result column="model_description" property="modelDescription"/>-->
-<!--		<result column="visible" property="visible"/>-->
-<!--		<result column="height" property="height"/>-->
-<!--		<result column="size3" property="size3"/>-->
-<!--		<result column="shoes" property="shoes"/>-->
-<!--		<collection property="commonImageDTOList" column="type_idx" javaType="java.util.ArrayList" ofType="commonImageDto"-->
-<!--					select="getImageList"/>-->
-<!--	</resultMap>-->
 	<!-- 모델 수 조회 -->
 	<select id="getModelListCnt" parameterType="java.util.HashMap" resultType="Integer">
 		/*[AdminModelApi_SQL.xml].[getModelListCnt] */

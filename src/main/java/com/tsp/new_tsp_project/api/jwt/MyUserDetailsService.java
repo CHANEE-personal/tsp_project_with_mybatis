@@ -1,6 +1,6 @@
 package com.tsp.new_tsp_project.api.jwt;
 
-import com.tsp.new_tsp_project.api.admin.user.service.impl.AdminUserMapper;
+import com.tsp.new_tsp_project.api.admin.mapper.AdminUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;

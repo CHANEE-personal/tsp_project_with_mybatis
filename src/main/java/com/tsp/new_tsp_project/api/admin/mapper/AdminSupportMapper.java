@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_project.api.admin.support.service.Impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO;
 import org.apache.ibatis.annotations.Mapper;

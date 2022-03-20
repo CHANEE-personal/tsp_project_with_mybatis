@@ -1,6 +1,6 @@
 package com.tsp.new_tsp_project.api.common;
 
-import com.tsp.new_tsp_project.api.admin.user.service.impl.AdminUserMapper;
+import com.tsp.new_tsp_project.api.admin.mapper.AdminUserMapper;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import com.tsp.new_tsp_project.common.paging.Page;
 import com.tsp.new_tsp_project.common.utils.StringUtil;

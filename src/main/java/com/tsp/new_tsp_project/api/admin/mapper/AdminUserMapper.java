@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_project.api.admin.user.service.impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import com.tsp.new_tsp_project.api.jwt.SecurityUser;

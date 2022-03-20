@@ -1,8 +1,9 @@
-package com.tsp.new_tsp_project.api.admin.model.service.impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;

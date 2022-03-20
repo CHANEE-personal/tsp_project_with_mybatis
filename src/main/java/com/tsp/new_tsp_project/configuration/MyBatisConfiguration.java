@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,11 +25,14 @@ import javax.sql.DataSource;
 @Configuration
 @Lazy
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.tsp")
+@MapperScan(value = "com.tsp.new_tsp_project.api.admin.mapper")
 public class MyBatisConfiguration {
 
-	@Autowired
-	ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
+
+	public MyBatisConfiguration(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
 	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {

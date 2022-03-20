@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.common.image.service.impl;
 
+import com.tsp.new_tsp_project.api.admin.mapper.ImageMapper;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
 import com.tsp.new_tsp_project.common.utils.StringUtil;

@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_project.api.admin.portfolio.service.Impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;

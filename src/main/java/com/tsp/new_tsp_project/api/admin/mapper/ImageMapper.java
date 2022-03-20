@@ -1,4 +1,4 @@
-package com.tsp.new_tsp_project.api.common.image.service.impl;
+package com.tsp.new_tsp_project.api.admin.mapper;
 
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.apache.ibatis.annotations.Mapper;
