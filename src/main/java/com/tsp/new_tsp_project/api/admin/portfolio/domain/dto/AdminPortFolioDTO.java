@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.portfolio.domain.dto;
 
+import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,4 +45,7 @@ public class AdminPortFolioDTO extends NewCommonDTO {
 
 	@ApiModelProperty(required = true, value = "visible")
 	String visible;
+
+	@ApiModelProperty(required = true, value = "portfolioImageList", hidden = true)
+	private List<CommonImageDTO> portfolioImage = new ArrayList<>();
 }

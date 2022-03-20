@@ -60,7 +60,7 @@ public class AdminSupportJpaService {
 	 * @param adminSupportEntity
 	 */
 	@Transactional(readOnly = true)
-	public Map<String, Object> findOneSupportModel(AdminSupportEntity adminSupportEntity) {
+	public AdminSupportDTO findOneSupportModel(AdminSupportEntity adminSupportEntity) {
 		return this.supportRepository.findOneSupportModel(adminSupportEntity);
 	}
 }

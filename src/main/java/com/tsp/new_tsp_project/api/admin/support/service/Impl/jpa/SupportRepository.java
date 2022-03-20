@@ -102,7 +102,7 @@ public class SupportRepository {
 	 *
 	 * @param existAdminSupportEntity
 	 */
-	public Map<String, Object> findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
+	public AdminSupportDTO findOneSupportModel(AdminSupportEntity existAdminSupportEntity) {
 
 		try {
 			//모델 상세 조회
@@ -110,11 +110,7 @@ public class SupportRepository {
 					.where(adminSupportEntity.idx.eq(existAdminSupportEntity.getIdx()))
 					.fetchOne();
 
-			Map<String, Object> supportMap = new HashMap<>();
-
-			supportMap.put("supportModelInfo", SupportMapper.INSTANCE.toDto(findOneSupportModel));
-
-			return supportMap;
+			return SupportMapper.INSTANCE.toDto(findOneSupportModel);
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
 		}

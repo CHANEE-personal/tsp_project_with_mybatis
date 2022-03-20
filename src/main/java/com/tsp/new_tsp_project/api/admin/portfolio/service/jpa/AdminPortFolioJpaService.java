@@ -83,7 +83,7 @@ public class AdminPortFolioJpaService {
 	 * @param adminPortFolioEntity
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity adminPortFolioEntity) {
+	public AdminPortFolioDTO findOnePortFolio(AdminPortFolioEntity adminPortFolioEntity) {
 		return portFolioRepository.findOnePortFolio(adminPortFolioEntity);
 	}
 

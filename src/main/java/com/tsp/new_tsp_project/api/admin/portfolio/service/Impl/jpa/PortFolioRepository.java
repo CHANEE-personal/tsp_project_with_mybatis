@@ -149,27 +149,21 @@ public class PortFolioRepository {
 	 *
 	 * @param existAdminPortFolioEntity
 	 */
-	public ConcurrentHashMap<String, Object> findOnePortFolio(AdminPortFolioEntity existAdminPortFolioEntity) {
+	public AdminPortFolioDTO findOnePortFolio(AdminPortFolioEntity existAdminPortFolioEntity) {
 
 		try {
-			//모델 상세 조회
-			AdminPortFolioEntity findPortFolio = queryFactory.selectFrom(adminPortFolioEntity)
-					.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx()))
+			// 포트폴리오 상세 조회
+			AdminPortFolioEntity findPortFolio = queryFactory
+					.selectFrom(adminPortFolioEntity)
+					.orderBy(adminPortFolioEntity.idx.desc())
+					.leftJoin(adminPortFolioEntity.commonImageEntityList, commonImageEntity)
+					.fetchJoin()
+					.where(adminPortFolioEntity.idx.eq(existAdminPortFolioEntity.getIdx())
+							.and(adminPortFolioEntity.visible.eq("Y"))
+							.and(commonImageEntity.typeName.eq("portfolio")))
 					.fetchOne();
 
-			//포트폴리오 이미지 조회
-			List<CommonImageEntity> portFolioImageList = queryFactory
-					.selectFrom(commonImageEntity)
-					.where(commonImageEntity.typeIdx.eq(existAdminPortFolioEntity.getIdx()),
-							commonImageEntity.visible.eq("Y"),
-							commonImageEntity.typeName.eq("portfolio")).fetch();
-
-			ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
-
-			portFolioMap.put("portFolioInfo", PortFolioMapper.INSTANCE.toDto(findPortFolio));
-			portFolioMap.put("portFolioImageList", ModelImageMapper.INSTANCE.toDtoList(portFolioImageList));
-
-			return portFolioMap;
+			return PortFolioMapper.INSTANCE.toDto(findPortFolio);
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO);
 		}

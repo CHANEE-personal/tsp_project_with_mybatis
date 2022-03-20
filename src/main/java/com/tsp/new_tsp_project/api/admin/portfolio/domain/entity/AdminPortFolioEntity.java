@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.portfolio.domain.entity;
 
+import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.NewCodeEntity;
 import com.tsp.new_tsp_project.api.common.domain.entity.NewCommonMappedClass;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -56,4 +60,7 @@ public class AdminPortFolioEntity extends NewCommonMappedClass {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "category_cd", insertable = false, updatable = false)
 	private NewCodeEntity newPortFolioJpaDTO;
+
+	@OneToMany(mappedBy = "adminPortfolioEntity")
+	private List<CommonImageEntity> commonImageEntityList = new ArrayList<>();
 }

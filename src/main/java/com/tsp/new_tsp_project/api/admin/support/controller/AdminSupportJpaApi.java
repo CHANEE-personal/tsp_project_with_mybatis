@@ -98,13 +98,10 @@ public class AdminSupportJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{idx}")
-	public ConcurrentHashMap<String, Object> findOneSupportModel(@PathVariable("idx") Integer idx) throws Exception {
-		ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+	public AdminSupportDTO findOneSupportModel(@PathVariable("idx") Integer idx) throws Exception {
 
 		AdminSupportEntity adminSupportEntity = builder().idx(idx).build();
 
-		supportMap.put("supportModelInfo", this.adminSupportJpaService.findOneSupportModel(adminSupportEntity));
-
-		return supportMap;
+		return this.adminSupportJpaService.findOneSupportModel(adminSupportEntity);
 	}
 }

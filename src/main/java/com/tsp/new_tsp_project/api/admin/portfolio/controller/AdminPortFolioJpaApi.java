@@ -100,14 +100,11 @@ public class AdminPortFolioJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getPortFolioInfo(@PathVariable("idx") Integer idx) {
-		ConcurrentHashMap<String, Object> portFolioMap;
+	public AdminPortFolioDTO getPortFolioInfo(@PathVariable("idx") Integer idx) {
 
 		AdminPortFolioEntity adminPortFolioEntity = builder().idx(idx).build();
 
-		portFolioMap = this.adminPortFolioJpaService.findOnePortFolio(adminPortFolioEntity);
-
-		return portFolioMap;
+		return this.adminPortFolioJpaService.findOnePortFolio(adminPortFolioEntity);
 	}
 
 	/**
