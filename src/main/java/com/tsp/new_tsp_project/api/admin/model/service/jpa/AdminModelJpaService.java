@@ -97,8 +97,8 @@ public class AdminModelJpaService {
 	 * @param adminModelEntity
 	 */
 	@Transactional
-	public Integer insertModel(AdminModelEntity adminModelEntity, CommonImageEntity commonImageEntity, MultipartFile[] files) {
-		return modelRepository.insertModel(adminModelEntity, commonImageEntity, files);
+	public Integer insertModel(AdminModelEntity adminModelEntity) {
+		return modelRepository.insertModel(adminModelEntity);
 	}
 
 	/**

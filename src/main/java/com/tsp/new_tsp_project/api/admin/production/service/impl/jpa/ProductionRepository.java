@@ -115,7 +115,7 @@ public class ProductionRepository {
 	 *
 	 * @param existAdminProductionEntity
 	 */
-	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity existAdminProductionEntity) {
+	public AdminProductionDTO findOneProduction(AdminProductionEntity existAdminProductionEntity) {
 
 		try {
 			//모델 상세 조회
@@ -129,11 +129,7 @@ public class ProductionRepository {
 						.and(commonImageEntity.typeName.eq("production")))
 					.fetchOne();
 
-			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
-
-			productionMap.put("productionInfo", ProductionMapper.INSTANCE.toDto(findOneProduction));
-
-			return productionMap;
+			return ProductionMapper.INSTANCE.toDto(findOneProduction);
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
 		}

@@ -97,14 +97,11 @@ public class AdminProductionJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getProductionInfo(@PathVariable("idx") Integer idx) {
-		ConcurrentHashMap<String, Object> productionMap;
+	public AdminProductionDTO getProductionInfo(@PathVariable("idx") Integer idx) {
 
 		AdminProductionEntity adminProductionEntity = builder().idx(idx).build();
 
-		productionMap = this.adminProductionJpaService.findOneProduction(adminProductionEntity);
-
-		return productionMap;
+		return adminProductionJpaService.findOneProduction(adminProductionEntity);
 	}
 
 	/**

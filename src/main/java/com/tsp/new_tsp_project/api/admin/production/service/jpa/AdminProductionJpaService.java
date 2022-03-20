@@ -65,7 +65,7 @@ public class AdminProductionJpaService {
 	 * @param adminProductionEntity
 	 */
 	@Transactional(readOnly = true)
-	public ConcurrentHashMap<String, Object> findOneProduction(AdminProductionEntity adminProductionEntity) {
+	public AdminProductionDTO findOneProduction(AdminProductionEntity adminProductionEntity) {
 		return productionRepository.findOneProduction(adminProductionEntity);
 	}
 

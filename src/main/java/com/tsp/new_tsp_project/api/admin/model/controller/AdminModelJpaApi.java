@@ -167,7 +167,7 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping
 	public String insertModel(AdminModelEntity adminModelEntity,
 							  CommonImageEntity commonImageEntity,
 							  NewCommonDTO newCommonDTO,
@@ -178,7 +178,7 @@ public class AdminModelJpaApi {
 
 		searchCommon.giveAuth(request, newCommonDTO);
 
-		if (this.adminModelJpaService.insertModel(adminModelEntity, commonImageEntity, files) > 0) {
+		if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
 			result = "Y";
 		} else {
 			result = "N";

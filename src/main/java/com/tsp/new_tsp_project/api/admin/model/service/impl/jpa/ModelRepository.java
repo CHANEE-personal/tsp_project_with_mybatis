@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -181,24 +182,10 @@ public class ModelRepository {
 	 * @param commonImageEntity
 	 * @param files
 	 */
-	@Modifying
 	@Transactional
-	public Integer insertModel(AdminModelEntity adminModelEntity,
-							   CommonImageEntity commonImageEntity,
-							   MultipartFile[] files) {
-
+	public Integer insertModel(AdminModelEntity adminModelEntity) {
 		try {
-			adminModelEntity.builder().createTime(new Date()).creator(1).build();
 			em.persist(adminModelEntity);
-			em.flush();
-			em.clear();
-
-			commonImageEntity.builder()
-					.typeName("model")
-					.typeIdx(adminModelEntity.getIdx())
-					.build();
-
-			imageRepository.uploadImageFile(commonImageEntity, files);
 
 			return adminModelEntity.getIdx();
 		} catch (Exception e) {

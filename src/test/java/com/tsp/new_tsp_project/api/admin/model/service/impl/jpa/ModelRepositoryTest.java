@@ -12,7 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 @DataJpaTest
+@Transactional
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(MockitoExtension.class)
@@ -109,6 +112,30 @@ class ModelRepositoryTest {
         assertThat(modelInfo.getModelImage().get(1).getImageType()).isEqualTo("sub1");
         assertThat(modelInfo.getModelImage().get(1).getFileName()).isEqualTo("e13f6930-17a5-407c-96ed-fd625b720d21.jpg");
         assertThat(modelInfo.getModelImage().get(1).getFilePath()).isEqualTo("/var/www/dist/upload/1223023959823.jpg");
+    }
+
+    @Test
+    public void 모델등록테스트() throws Exception {
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelDescription("chaneeCho")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder().typeName("model").build();
+
+        Integer idx = modelRepository.insertModel(adminModelEntity);
+
+        System.out.println(idx);
+
     }
 
     @Test
