@@ -52,7 +52,8 @@ class AdminSupportJpaApiTest {
     public void 지원하기상세조회() throws Exception {
         // 사용
         mockMvc.perform(get("/api/support/1"))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(status().isOk());
 
         // 미사용
         mockMvc.perform(get("/api/support/-1"))
