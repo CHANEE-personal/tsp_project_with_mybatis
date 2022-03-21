@@ -29,9 +29,6 @@ class AdminProductionJpaApiTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private WebApplicationContext wac;
 
     @BeforeEach
