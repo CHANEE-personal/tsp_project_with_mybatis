@@ -1,9 +1,12 @@
 package com.tsp.new_tsp_project.api.admin.model.service.impl.jpa;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.admin.model.domain.entity.AdminModelEntity;
+import com.tsp.new_tsp_project.api.admin.model.domain.entity.QAdminModelEntity;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.entity.CommonImageEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,10 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +42,15 @@ class ModelRepositoryTest {
 
     @Mock
     private ModelRepository mockModelRepository;
+
+    @Autowired
+    private EntityManager em;
+    JPAQueryFactory queryFactory;
+
+    @BeforeEach
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+    }
 
     @Test
     public void 모델리스트조회테스트() throws Exception {
@@ -116,26 +128,21 @@ class ModelRepositoryTest {
 
     @Test
     public void 모델등록테스트() throws Exception {
-        AdminModelEntity adminModelEntity = AdminModelEntity.builder()
-                .categoryCd(1)
-                .categoryAge("2")
-                .modelKorFirstName("조")
-                .modelKorSecondName("찬희")
-                .modelFirstName("CHO")
-                .modelSecondName("CHANHEE")
-                .modelDescription("chaneeCho")
-                .height("170")
-                .size3("34-24-34")
-                .shoes("270")
-                .visible("Y")
-                .build();
-
-        CommonImageEntity commonImageEntity = CommonImageEntity.builder().typeName("model").build();
+        AdminModelEntity adminModelEntity = AdminModelEntity.builder().idx(1).build();
 
         Integer idx = modelRepository.insertModel(adminModelEntity);
 
+        System.out.println("===idx===");
         System.out.println(idx);
 
+        CommonImageEntity commonImageEntity = CommonImageEntity.builder().typeName("model").build();
+
+        QAdminModelEntity qAdminModelEntity = QAdminModelEntity.adminModelEntity;
+        AdminModelEntity findOneModel = queryFactory.selectFrom(qAdminModelEntity).fetchFirst();
+
+        System.out.println(findOneModel);
+        System.out.println(adminModelEntity);
+        assertThat(findOneModel).isEqualTo(qAdminModelEntity);
     }
 
     @Test
