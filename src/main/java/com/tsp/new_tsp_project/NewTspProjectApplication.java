@@ -13,8 +13,11 @@ import org.springframework.context.annotation.ComponentScans;
 @SpringBootApplication(scanBasePackages = "com")
 public class NewTspProjectApplication extends SpringBootServletInitializer {
 
+	public static final String APPLICATION_LOCATIONS = "spring.config.location="
+			+ "classpath:application.properties";
+
 	public static void main(String[] args) {
-		SpringApplication.run(NewTspProjectApplication.class, args);
+		new SpringApplicationBuilder(NewTspProjectApplication.class).properties(APPLICATION_LOCATIONS).run(args);
 	}
 
 	@Override
