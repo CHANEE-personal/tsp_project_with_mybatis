@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import net.sf.json.JSON;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -83,6 +84,9 @@ public class AdminModelDTO extends NewCommonDTO {
     @NotNull(message = "모델 국문 이름 입력은 필수입니다.")
     @ApiModelProperty(position = 6, required = true, value = "모델 국문 이름((ex)찬희")
     private String modelKorSecondName;
+
+    @ApiModelProperty(position = 13, value = "모델 경력 사항")
+    private String career;
 
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();

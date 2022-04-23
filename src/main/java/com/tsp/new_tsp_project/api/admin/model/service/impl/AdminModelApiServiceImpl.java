@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -112,10 +113,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 		try {
 			if(this.adminModelMapper.insertModel(adminModelDTO) > 0) {
-				commonImageDTO.setTypeName("model");
-				commonImageDTO.setTypeIdx(adminModelDTO.getIdx());
-				commonImageDTO.setVisible("Y");
-//				commonImageDTO.builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
+				CommonImageDTO.builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, fileName, "insert"))) {
 					num = 1;
 				} else {
