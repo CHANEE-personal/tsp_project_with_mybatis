@@ -1,9 +1,13 @@
 package com.tsp.new_tsp_project.api.admin.model.domain.dto;
 
 import com.google.gson.Gson;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class careerJson {
 
     private String title;

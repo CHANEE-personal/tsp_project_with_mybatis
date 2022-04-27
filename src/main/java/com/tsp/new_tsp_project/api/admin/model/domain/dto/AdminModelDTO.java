@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.model.domain.dto;
 
+import com.google.gson.Gson;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
@@ -86,8 +87,10 @@ public class AdminModelDTO extends NewCommonDTO {
     private String modelKorSecondName;
 
     @ApiModelProperty(position = 13, value = "모델 경력 사항")
-    private List<String> careerList;
+    private List<careerJson> careerList = new ArrayList<>();
 
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
+
+    @Override public String toString() { return new Gson().toJson(this); }
 }
