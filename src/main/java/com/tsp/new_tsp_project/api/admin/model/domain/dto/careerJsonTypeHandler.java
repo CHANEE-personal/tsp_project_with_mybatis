@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.sql.CallableStatement;

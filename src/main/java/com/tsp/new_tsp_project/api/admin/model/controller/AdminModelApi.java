@@ -62,8 +62,7 @@ public class AdminModelApi {
 	})
 	@GetMapping(value = "/lists/{categoryCd}")
 	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
-														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
-														  Integer categoryCd,
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
 														  @RequestParam(required = false) Map<String, Object> paramMap,
 														  Page page) throws Exception {
 
@@ -113,8 +112,7 @@ public class AdminModelApi {
 	})
 	@GetMapping("/{categoryCd}/{idx}")
 	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd")
-														  @Range(min = 1, max = 3, message = "{modelCategory.Range}")
-														  Integer categoryCd,
+														  @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
 														  @PathVariable("idx") Integer idx) throws Exception {
 		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
 		ConcurrentHashMap<String, Object> modelMap;
@@ -207,11 +205,8 @@ public class AdminModelApi {
 
 		Map<String, Object> modelMap = new ConcurrentHashMap<>();
 
-		String[] arrayState = request.getParameter("imageState").split(",");
-		String[] arrayIdx = request.getParameter("idxState").split(",");
-
-		modelMap.put("arrayState", arrayState);
-		modelMap.put("arrayIdx", arrayIdx);
+		modelMap.put("arrayState", request.getParameter("imageState").split(","));
+		modelMap.put("arrayIdx", request.getParameter("idxState").split(","));
 
 		builder().idx(idx).categoryCd(categoryCd).build();
 
