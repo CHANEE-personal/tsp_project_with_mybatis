@@ -13,7 +13,7 @@ import lombok.*;
 public class careerJson {
 
     private String title;
-    private String text;
+    private String txt;
 
     @Override
     public String toString() {

@@ -40,7 +40,7 @@ public class TspAop {
 		Method method = getMethod(joinPoint);
 		log.info("======= method name = {} =======", method.getName());
 
-		log.info("return type = {}", returnObj.getClass().getSimpleName());
+//		log.info("return type = {}", returnObj.getClass().getSimpleName());
 		log.info("return value = {}", returnObj);
 	}
 

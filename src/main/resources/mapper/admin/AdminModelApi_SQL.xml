@@ -190,7 +190,7 @@
 		        #{modelSecondName},
 		        #{modelKorFirstName},
 				#{modelKorSecondName},
-		        #{careerJson, typeHandler = com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler},
+		        #{careerList, typeHandler = com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler},
 		        '1',
 		        now(),
 		        '1',
