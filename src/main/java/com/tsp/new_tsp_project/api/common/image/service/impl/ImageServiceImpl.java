@@ -89,7 +89,8 @@ public class ImageServiceImpl implements ImageService {
 		if (files != null) {
 			if ("update".equals(flag)) {
 				if ("production".equals(commonImageDTO.getTypeName())) {
-					CommonImageDTO.builder().imageType("main").typeIdx(commonImageDTO.getIdx()).build();
+					commonImageDTO.setImageType("main");
+					commonImageDTO.setTypeIdx(commonImageDTO.getIdx());
 					imageMapper.deleteImageFile(commonImageDTO);
 				}
 			}
@@ -110,19 +111,19 @@ public class ImageServiceImpl implements ImageService {
 
 					if ("insert".equals(flag)) {
 						if (mainCnt == 0) {
-							CommonImageDTO.builder().imageType("main").build();
+							commonImageDTO.setImageType("main");
 						} else {
-							CommonImageDTO.builder().imageType("sub" + mainCnt).build();
+							commonImageDTO.setImageType("sub" + mainCnt);
 						}
 					} else {
 						if ("production".equals(commonImageDTO.getTypeName())) {
-							CommonImageDTO.builder().imageType("main").build();
+							commonImageDTO.setImageType("main");
 						} else {
 							if (imageMapper.selectSubCnt(commonImageDTO) == 1) {
-								CommonImageDTO.builder().imageType("main").build();
+								commonImageDTO.setImageType("main");
 							} else {
-								CommonImageDTO.builder().imageType("sub" + StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0))
-										.fileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0)).build();
+								commonImageDTO.setImageType("sub" + StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0));
+								commonImageDTO.setFileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0));
 							}
 						}
 					}
@@ -132,8 +133,13 @@ public class ImageServiceImpl implements ImageService {
 
 					Runtime.getRuntime().exec("chmod -R 755 " + filePath);
 
-					CommonImageDTO.builder().fileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0))
-							.fileName(file.getOriginalFilename()).fileSize(fileSize).fileMask(fileMask).filePath(uploadPath + fileMask).visible("Y").build();
+					commonImageDTO.setFileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0));
+					commonImageDTO.setFileName(file.getOriginalFilename());                   // 파일명
+					commonImageDTO.setFileSize(fileSize);  // 파일Size
+					commonImageDTO.setFileMask(fileMask);                                        // 파일Mask
+					commonImageDTO.setFilePath(uploadPath + fileMask);
+					commonImageDTO.setVisible("Y");
+
 					// 이미지 정보 insert
 					if (imageMapper.addImageFile(commonImageDTO) > 0) {
 						mainCnt++;
@@ -193,14 +199,18 @@ public class ImageServiceImpl implements ImageService {
 						Runtime.getRuntime().exec("chmod -R 755 " + filePath);
 
 						if (i == 0) {
-							CommonImageDTO.builder().fileNum(0).visible("N").imageType("main").build();
+							commonImageDTO.setFileNum(0);
+							commonImageDTO.setVisible("N");
+							commonImageDTO.setImageType("main");// 파일Mask
 							imageMapper.deleteImageFile(commonImageDTO);
 						} else {
-							CommonImageDTO.builder().fileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0))
-									.imageType("sub"+StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0)).build();
+							commonImageDTO.setFileNum(StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0));
+							commonImageDTO.setImageType("sub" + StringUtil.getInt(imageMapper.selectSubCnt(commonImageDTO), 0));// 파일Mask
 						}
-						CommonImageDTO.builder().fileName(files[fileCnt].getOriginalFilename())
-										.fileSize(fileSize).fileMask(fileMask).filePath(uploadPath + fileMask).build();
+						commonImageDTO.setFileName(files[fileCnt].getOriginalFilename());                   // 파일명
+						commonImageDTO.setFileSize(fileSize);  // 파일Size
+						commonImageDTO.setFileMask(fileMask);
+						commonImageDTO.setFilePath(uploadPath + fileMask);
 
 						// 이미지 정보 insert
 						if (imageMapper.addImageFile(commonImageDTO) > 0) {
@@ -208,7 +218,7 @@ public class ImageServiceImpl implements ImageService {
 					}
 					fileCnt++;
 				} else if ("D".equals(arrayState[i]) || "H".equals(arrayState[i])) {
-					CommonImageDTO.builder().idx(StringUtil.getInt(arrayIdx[i],0)).build();
+					commonImageDTO.setIdx(StringUtil.getInt(arrayIdx[i], 0));
 					imageMapper.deleteImageFile(commonImageDTO);
 				}
 			}

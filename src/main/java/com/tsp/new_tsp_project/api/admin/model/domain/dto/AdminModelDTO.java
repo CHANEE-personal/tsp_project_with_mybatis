@@ -87,7 +87,7 @@ public class AdminModelDTO extends NewCommonDTO {
     private String modelKorSecondName;
 
     @ApiModelProperty(position = 13, value = "모델 경력 사항")
-    private List<careerJson> careerList = new ArrayList<>();
+    private String careerList;
 
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();

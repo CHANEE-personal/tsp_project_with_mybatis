@@ -113,7 +113,9 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 		try {
 			if(this.adminModelMapper.insertModel(adminModelDTO) > 0) {
-				CommonImageDTO.builder().typeName("model").typeIdx(adminModelDTO.getIdx()).visible("Y").build();
+				commonImageDTO.setTypeName("model");
+				commonImageDTO.setTypeIdx(adminModelDTO.getIdx());
+				commonImageDTO.setVisible("Y");
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, fileName, "insert"))) {
 					num = 1;
 				} else {

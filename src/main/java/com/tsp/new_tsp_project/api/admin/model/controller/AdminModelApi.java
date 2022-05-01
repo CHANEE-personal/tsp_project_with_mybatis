@@ -1,5 +1,8 @@
 package com.tsp.new_tsp_project.api.admin.model.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJson;
 import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
@@ -13,6 +16,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -156,7 +164,6 @@ public class AdminModelApi {
 							  @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 
 		String result;
-
 		searchCommon.giveAuth(request, newCommonDTO);
 
 		if (this.adminModelApiService.insertModel(adminModelDTO, commonImageDTO, files) > 0) {
