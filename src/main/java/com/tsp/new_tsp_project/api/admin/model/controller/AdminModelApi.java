@@ -1,8 +1,5 @@
 package com.tsp.new_tsp_project.api.admin.model.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJson;
 import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
