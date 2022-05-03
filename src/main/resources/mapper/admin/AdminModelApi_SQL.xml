@@ -128,7 +128,7 @@
 			   tm.model_second_name,
 			   tm.model_kor_first_name,
 			   tm.model_kor_second_name,
-		       tm.career
+		       tm.careerList
 		FROM tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 		  ON tm.category_cd = tc.category_cd
 		  WHERE tm.visible = 'Y'
@@ -172,7 +172,7 @@
 							  model_second_name,
 							  model_kor_first_name,
 		                      model_kor_second_name,
-							  career,
+							  careerList,
 							  creator,
 							  create_time,
 							  updater,
@@ -218,7 +218,7 @@
 		<if test="modelSecondName != null and modelSecondName != ''">model_second_name = #{modelSecondName},</if>
 		<if test="modelKorFirstName != null and modelKorFirstName != ''">model_kor_first_name = #{modelKorFirstName},</if>
 		<if test="modelKorSecondName != null and modelKorSecondName != ''">model_kor_second_name = #{modelKorSecondName},</if>
-		<if test="careerList != null and careerList != ''">career = #{careerList},</if>
+		<if test="careerList != null and careerList != ''">careerList = #{careerList},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}
