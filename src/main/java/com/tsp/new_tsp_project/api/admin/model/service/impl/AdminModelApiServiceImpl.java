@@ -5,10 +5,14 @@ import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
+import com.tsp.new_tsp_project.common.utils.StringUtil;
 import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,6 +93,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 			return modelMap;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
 		}
 	}

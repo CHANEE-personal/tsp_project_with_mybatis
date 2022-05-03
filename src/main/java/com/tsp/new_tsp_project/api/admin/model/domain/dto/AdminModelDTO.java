@@ -9,10 +9,13 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import net.sf.json.JSON;
 import org.hibernate.validator.constraints.Length;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -87,7 +90,10 @@ public class AdminModelDTO extends NewCommonDTO {
     private String modelKorSecondName;
 
     @ApiModelProperty(position = 13, value = "모델 경력 사항")
-    private String careerList;
+    private String career;
+
+    @ApiModelProperty(position = 14, value = "모델 경력 사항")
+    private ArrayList<careerJson> careerList;
 
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();

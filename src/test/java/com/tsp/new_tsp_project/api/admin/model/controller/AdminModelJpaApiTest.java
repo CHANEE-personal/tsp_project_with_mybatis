@@ -9,14 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,26 +64,21 @@ class AdminModelJpaApiTest {
         mockMvc.perform(get("/api/jpa-model/1/3"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.modelMap.modelInfo.idx").value("3"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.categoryCd").value("1"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.modelFirstName").value("CHO"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.modelSecondName").value("CHAN HEE"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.modelKorFirstName").value("조"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.modelKorSecondName").value("찬희"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.height").value("170"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.size3").value("34-24-34"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.shoes").value("270"))
-                .andExpect(jsonPath("$.modelMap.modelInfo.modelDescription").value("chaneeCho"));
-
-        // 미사용
-        mockMvc.perform(get("/api/jpa-model/1/-1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("NOT_FOUND_MODEL"));
+                .andExpect(jsonPath("$.idx").value("3"))
+                .andExpect(jsonPath("$.categoryCd").value("1"))
+                .andExpect(jsonPath("$.modelFirstName").value("CHO"))
+                .andExpect(jsonPath("$.modelSecondName").value("CHAN HEE"))
+                .andExpect(jsonPath("$.modelKorFirstName").value("조"))
+                .andExpect(jsonPath("$.modelKorSecondName").value("찬희"))
+                .andExpect(jsonPath("$.height").value("170"))
+                .andExpect(jsonPath("$.size3").value("34-24-34"))
+                .andExpect(jsonPath("$.shoes").value("270"))
+                .andExpect(jsonPath("$.modelDescription").value("chaneeCho"));
     }
 
     @Test
     @DisplayName("남성모델등록")
+    @Transactional
     public void 남성모델등록() throws Exception {
 
         AdminModelEntity adminModelEntity = AdminModelEntity.builder()
@@ -103,11 +102,10 @@ class AdminModelJpaApiTest {
 
         final String jsonStr = objectMapper.writeValueAsString(adminModelEntity);
 
-//        mockMvc.perform(post("/api/jpa-model")
-////                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-////                        .content(jsonStr))
-////                .andDo(print())
-////                .andExpect(status().isOk());
+        mockMvc.perform(post("/api/jpa-model")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(jsonStr))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
-
 }

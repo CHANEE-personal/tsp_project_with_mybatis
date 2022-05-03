@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -179,8 +178,6 @@ public class ModelRepository {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @param commonImageEntity
-	 * @param files
 	 */
 	@Transactional
 	public Integer insertModel(AdminModelEntity adminModelEntity) {

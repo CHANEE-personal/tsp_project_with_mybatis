@@ -155,10 +155,6 @@ public class AdminModelJpaApi {
 	 * </pre>
 	 *
 	 * @param adminModelEntity
-	 * @param commonImageEntity
-	 * @param newCommonDTO
-	 * @param request
-	 * @param files
 	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 등록", notes = "모델을 등록한다.")
@@ -168,15 +164,9 @@ public class AdminModelJpaApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping
-	public String insertModel(AdminModelEntity adminModelEntity,
-							  CommonImageEntity commonImageEntity,
-							  NewCommonDTO newCommonDTO,
-							  HttpServletRequest request,
-							  @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+	public String insertModel(@RequestBody AdminModelEntity adminModelEntity) throws Exception {
 
 		String result;
-
-		searchCommon.giveAuth(request, newCommonDTO);
 
 		if (this.adminModelJpaService.insertModel(adminModelEntity) > 0) {
 			result = "Y";

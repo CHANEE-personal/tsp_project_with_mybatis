@@ -110,11 +110,29 @@
 		AND RNUM <![CDATA[>]]> (#{startPage}-1)*#{size}
 	</select>
 
-	<select id="getModelInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<resultMap id="modelInfo" type="adminModelDto">
+		<result property="idx" column="idx" />
+		<result property="category_cd" column="categoryCd"/>
+		<result property="category_age" column="categoryAge"/>
+		<result property="model_kor_name" column="modelKorName"/>
+		<result property="model_eng_name" column="modelEngName"/>
+		<result property="model_description" column="modelDescription"/>
+		<result property="visible" column="visible"/>
+		<result property="height" column="height"/>
+		<result property="size3" column="size3"/>
+		<result property="shoes" column="shoes"/>
+		<result property="model_main_yn" column="modelMainYn"/>
+		<result property="model_first_name" column="modelFirstName"/>
+		<result property="model_second_name" column="modelSecondName"/>
+		<result property="model_kor_first_name" column="modelKorFirstName"/>
+		<result property="model_kor_second_name" column="modelKorSecondName"/>
+		<result property="careerList" column="careerList" typeHandler="com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler"/>
+	</resultMap>
+
+	<select id="getModelInfo" parameterType="java.util.HashMap" resultMap="modelInfo">
 		/*[AdminModelApi_SQL.xml].[getModelInfo] */
 		SELECT tm.idx,
 			   tm.category_cd,
-			   tc.category_nm,
 		       tm.category_age,
 			   tm.model_kor_name,
 		       tm.model_eng_name,
@@ -191,7 +209,7 @@
 		        #{modelSecondName},
 		        #{modelKorFirstName},
 				#{modelKorSecondName},
-				#{careerList},
+				#{career},
 		        '1',
 		        now(),
 		        '1',
@@ -218,7 +236,7 @@
 		<if test="modelSecondName != null and modelSecondName != ''">model_second_name = #{modelSecondName},</if>
 		<if test="modelKorFirstName != null and modelKorFirstName != ''">model_kor_first_name = #{modelKorFirstName},</if>
 		<if test="modelKorSecondName != null and modelKorSecondName != ''">model_kor_second_name = #{modelKorSecondName},</if>
-		<if test="careerList != null and careerList != ''">careerList = #{careerList},</if>
+		<if test="careerList != null and careerList != ''">careerList = #{career},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}

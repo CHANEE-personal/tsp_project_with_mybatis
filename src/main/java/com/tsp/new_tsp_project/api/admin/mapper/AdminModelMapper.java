@@ -50,7 +50,7 @@ public interface AdminModelMapper {
 	 * @param adminModelDTO
 	 * @throws Exception
 	 */
-	Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
+	AdminModelDTO getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
 
 	/**
 	 * <pre>
