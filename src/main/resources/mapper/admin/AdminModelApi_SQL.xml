@@ -110,22 +110,22 @@
 		AND RNUM <![CDATA[>]]> (#{startPage}-1)*#{size}
 	</select>
 
-	<resultMap id="modelInfo" type="adminModelDto">
+	<resultMap id="modelInfo" type="adminModelNewDto">
 		<result property="idx" column="idx" />
-		<result property="category_cd" column="categoryCd"/>
-		<result property="category_age" column="categoryAge"/>
-		<result property="model_kor_name" column="modelKorName"/>
-		<result property="model_eng_name" column="modelEngName"/>
-		<result property="model_description" column="modelDescription"/>
+		<result property="category_cd" column="category_cd"/>
+		<result property="category_age" column="category_age"/>
+		<result property="model_kor_name" column="model_kor_name"/>
+		<result property="model_eng_name" column="model_eng_name"/>
+		<result property="model_description" column="model_description"/>
 		<result property="visible" column="visible"/>
 		<result property="height" column="height"/>
 		<result property="size3" column="size3"/>
 		<result property="shoes" column="shoes"/>
-		<result property="model_main_yn" column="modelMainYn"/>
-		<result property="model_first_name" column="modelFirstName"/>
-		<result property="model_second_name" column="modelSecondName"/>
-		<result property="model_kor_first_name" column="modelKorFirstName"/>
-		<result property="model_kor_second_name" column="modelKorSecondName"/>
+		<result property="model_main_yn" column="model_main_yn"/>
+		<result property="model_first_name" column="model_first_name"/>
+		<result property="model_second_name" column="model_second_name"/>
+		<result property="model_kor_first_name" column="model_kor_first_name"/>
+		<result property="model_kor_second_name" column="model_kor_second_name"/>
 		<result property="careerList" column="careerList" typeHandler="com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler"/>
 	</resultMap>
 
