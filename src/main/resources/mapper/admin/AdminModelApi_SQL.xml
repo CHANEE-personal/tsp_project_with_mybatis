@@ -126,7 +126,7 @@
 		<result property="model_second_name" column="model_second_name"/>
 		<result property="model_kor_first_name" column="model_kor_first_name"/>
 		<result property="model_kor_second_name" column="model_kor_second_name"/>
-		<result property="careerList" column="careerList" typeHandler="com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler"/>
+		<result property="careerList" column="career_list" typeHandler="com.tsp.new_tsp_project.api.admin.model.domain.dto.careerJsonTypeHandler"/>
 	</resultMap>
 
 	<select id="getModelInfo" parameterType="java.util.HashMap" resultMap="modelInfo">
@@ -146,7 +146,7 @@
 			   tm.model_second_name,
 			   tm.model_kor_first_name,
 			   tm.model_kor_second_name,
-		       tm.careerList
+		       tm.career_list
 		FROM tsp_model tm LEFT OUTER JOIN tsp_cmm_code tc
 		  ON tm.category_cd = tc.category_cd
 		  WHERE tm.visible = 'Y'
@@ -190,7 +190,7 @@
 							  model_second_name,
 							  model_kor_first_name,
 		                      model_kor_second_name,
-							  careerList,
+							  career_list,
 							  creator,
 							  create_time,
 							  updater,
@@ -236,7 +236,7 @@
 		<if test="modelSecondName != null and modelSecondName != ''">model_second_name = #{modelSecondName},</if>
 		<if test="modelKorFirstName != null and modelKorFirstName != ''">model_kor_first_name = #{modelKorFirstName},</if>
 		<if test="modelKorSecondName != null and modelKorSecondName != ''">model_kor_second_name = #{modelKorSecondName},</if>
-		<if test="careerList != null and careerList != ''">careerList = #{career},</if>
+		<if test="careerList != null and careerList != ''">career_list = #{career},</if>
 		<if test="updater != null and updater != ''">updater = #{updater},</if>
 		update_time = NOW()
 		WHERE idx = #{idx}
