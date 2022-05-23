@@ -28,7 +28,7 @@ public class TspAop {
 		Object[] args = joinPoint.getArgs();
 		if (args.length <= 0) log.info("no parameter");
 		for (Object arg : args) {
-			log.info("parameter type = {}", arg.getClass().getSimpleName());
+//			log.info("parameter type = {}", arg.getClass().getSimpleName());
 			log.info("parameter value = {}", arg);
 		}
 	}
