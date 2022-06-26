@@ -20,8 +20,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	Integer getProductionCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception;
 
@@ -34,8 +32,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) throws Exception;
 
@@ -48,8 +44,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception;
 
@@ -62,8 +56,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer insertProduction(AdminProductionDTO adminProductionDTO,
 							 CommonImageDTO commonImageDTO,
@@ -78,8 +70,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer updateProduction(AdminProductionDTO adminProductionDTO,
 							 CommonImageDTO commonImageDTO,
@@ -94,8 +84,6 @@ public interface AdminProductionApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer deleteProduction(AdminProductionDTO adminProductionDTO) throws Exception;
 }

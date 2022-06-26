@@ -44,17 +44,17 @@ public class AdminProductionApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap getProductionList(Page page, @RequestParam Map<String, Object> paramMap) throws Exception {
+	public ConcurrentHashMap<String, Object> getProductionList(Page page, @RequestParam Map<String, Object> paramMap) throws Exception {
 
 		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
 
@@ -89,22 +89,20 @@ public class AdminProductionApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
+	public ConcurrentHashMap<String, Object> getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
 		ConcurrentHashMap<String, Object> productionMap;
 
-		AdminProductionDTO adminProductionDTO = builder().idx(idx).build();
-
-		productionMap = this.adminProductionApiService.getProductionInfo(adminProductionDTO);
+		productionMap = this.adminProductionApiService.getProductionInfo(builder().idx(idx).build());
 
 		return productionMap;
 	}
@@ -118,12 +116,12 @@ public class AdminProductionApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 등록", notes = "프로덕션을 등록한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -150,12 +148,12 @@ public class AdminProductionApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -186,12 +184,12 @@ public class AdminProductionApi {
 	 * 5. 작성일       : 2021. 10. 05
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})

@@ -34,8 +34,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	@Override
 	public Integer getProductionCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception {
@@ -52,7 +50,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
 	 */
 	@Override
 	public List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) {
@@ -72,7 +69,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
 	 */
 	@Override
 	public ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
@@ -97,7 +93,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
 	 */
 	@Override
 	public Integer insertProduction(AdminProductionDTO adminProductionDTO,
@@ -131,7 +126,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
 	 */
 	@Override
 	public Integer updateProduction(AdminProductionDTO adminProductionDTO,
@@ -165,8 +159,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 * 5. 작성일       : 2021. 10. 05
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	@Override
 	public Integer deleteProduction(AdminProductionDTO adminProductionDTO) {
