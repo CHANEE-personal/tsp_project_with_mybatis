@@ -1,18 +1,15 @@
 package com.tsp.new_tsp_project.api.admin.model.service.impl;
 
 import com.tsp.new_tsp_project.api.admin.mapper.AdminModelMapper;
+import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
-import com.tsp.new_tsp_project.common.utils.StringUtil;
 import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +70,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
 	 */
 	@Override
 	public ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) {
@@ -106,8 +102,8 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	public Integer insertModel(AdminModelDTO adminModelDTO,
-							  CommonImageDTO commonImageDTO,
-							  MultipartFile[] fileName) {
+							   CommonImageDTO commonImageDTO,
+							   MultipartFile[] fileName) {
 		int num;
 
 		try {
@@ -138,9 +134,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param fileName
 	 */
 	public Integer updateModel(AdminModelDTO adminModelDTO,
 							   CommonImageDTO commonImageDTO,
@@ -161,6 +154,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 			}
 			return num;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new TspException(ApiExceptionType.ERROR_MODEL);
 		}
 	}
@@ -173,8 +167,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @throws Exception
 	 */
 	public Integer deleteModelImage(CommonImageDTO commonImageDTO) throws Exception {
 		return this.adminModelMapper.deleteModelImage(commonImageDTO);
@@ -190,8 +182,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	public Integer deleteModel(AdminModelDTO adminModelDTO) throws Exception {
 		return this.adminModelMapper.deleteModel(adminModelDTO);

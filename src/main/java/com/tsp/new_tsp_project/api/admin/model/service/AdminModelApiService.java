@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_project.api.admin.model.service;
 
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
+import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +22,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
-	 * @throws Exception
 	 */
 	Integer getModelListCnt(Map<String, Object> modelMap) throws Exception;
 
@@ -35,8 +34,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
-	 * @throws Exception
 	 */
 	List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws Exception;
 
@@ -49,8 +46,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
 
@@ -63,14 +58,10 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param fileName
-	 * @throws Exception
 	 */
 	Integer insertModel(AdminModelDTO adminModelDTO,
-					   CommonImageDTO commonImageDTO,
-					   MultipartFile[] fileName) throws Exception;
+						CommonImageDTO commonImageDTO,
+						MultipartFile[] fileName) throws Exception;
 
 	/**
 	 * <pre>
@@ -81,10 +72,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param fileName
-	 * @throws Exception
 	 */
 	Integer updateModel(AdminModelDTO adminModelDTO,
 						CommonImageDTO commonImageDTO,
@@ -100,8 +87,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @throws Exception
 	 */
 	Integer deleteModelImage(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -114,8 +99,6 @@ public interface AdminModelApiService {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	Integer deleteModel(AdminModelDTO adminModelDTO) throws Exception;
 }

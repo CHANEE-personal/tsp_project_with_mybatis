@@ -6,7 +6,6 @@ import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.SearchCommon;
 import com.tsp.new_tsp_project.common.paging.Page;
-import com.tsp.new_tsp_project.common.utils.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,7 +13,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
-import org.json.simple.JSONArray;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
+import static org.springframework.http.MediaType.*;
 
 @Slf4j
 @Validated
@@ -51,14 +51,12 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param categoryCd
-	 * @param paramMap
-	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -102,13 +100,12 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param categoryCd
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -119,9 +116,7 @@ public class AdminModelApi {
 		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
 		ConcurrentHashMap<String, Object> modelMap;
 
-		AdminModelDTO adminModelDTO = builder().idx(idx).categoryCd(categoryCd).build();
-
-		modelMap = this.adminModelApiService.getModelInfo(adminModelDTO);
+		modelMap = this.adminModelApiService.getModelInfo(builder().idx(idx).categoryCd(categoryCd).build());
 
 		resultMap.put("modelMap", modelMap);
 
@@ -137,25 +132,21 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param newCommonDTO
-	 * @param request
-	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 등록", notes = "모델을 등록한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "브랜드 등록성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(consumes = { MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE })
 	public String insertModel(AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,
-							  @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+							  @RequestPart(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 
 		String result;
 		searchCommon.giveAuth(request, newCommonDTO);
@@ -178,22 +169,16 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param newCommonDTO
-	 * @param request
-	 * @param files
-	 * @param idx
-	 * @param categoryCd
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "브랜드 등록성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/{categoryCd}/{idx}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(value = "/{categoryCd}/{idx}", consumes = { MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public String updateModel(@PathVariable(value = "idx") Integer idx,
 							  @PathVariable(value = "categoryCd") Integer categoryCd,
 							  @Valid AdminModelDTO adminModelDTO,
@@ -204,7 +189,7 @@ public class AdminModelApi {
 
 		searchCommon.giveAuth(request, newCommonDTO);
 
-		Map<String, Object> modelMap = new ConcurrentHashMap<>();
+		Map<String, Object> modelMap = new HashMap<>();
 
 		modelMap.put("arrayState", request.getParameter("imageState").split(","));
 		modelMap.put("arrayIdx", request.getParameter("idxState").split(","));
@@ -231,12 +216,12 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -244,9 +229,7 @@ public class AdminModelApi {
 	public String deleteModelImage(@PathVariable(value = "idx") Integer idx) throws Exception {
 		String result;
 
-		CommonImageDTO commonImageDTO = CommonImageDTO.builder().idx(idx).build();
-
-		if (this.adminModelApiService.deleteModelImage(commonImageDTO) > 0) {
+		if (this.adminModelApiService.deleteModelImage(CommonImageDTO.builder().idx(idx).build()) > 0) {
 			result = "Y";
 		} else {
 			result = "N";
@@ -263,12 +246,12 @@ public class AdminModelApi {
 	 * 5. 작성일       : 2021. 10. 06.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -276,9 +259,7 @@ public class AdminModelApi {
 	public String deleteModel(@PathVariable(value = "idx") Integer idx) throws Exception {
 		String result;
 
-		AdminModelDTO adminModelDTO = AdminModelDTO.builder().visible("N").idx(idx).build();
-
-		if (this.adminModelApiService.deleteModel(adminModelDTO) > 0) {
+		if (this.adminModelApiService.deleteModel(AdminModelDTO.builder().visible("N").idx(idx).build()) > 0) {
 			result = "Y";
 		} else {
 			result = "N";

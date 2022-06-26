@@ -4,7 +4,6 @@ import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelNewDto;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
-	 * @throws Exception
 	 */
 	Integer getModelListCnt(Map<String, Object> modelMap) throws Exception;
 
@@ -34,8 +31,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
-	 * @throws Exception
 	 */
 	List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws  Exception;
 
@@ -48,8 +43,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	AdminModelNewDto getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
 
@@ -62,8 +55,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @throws Exception
 	 */
 	List<CommonImageDTO> getImageList(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -76,8 +67,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	Integer insertModel(AdminModelDTO adminModelDTO) throws Exception;
 
@@ -90,8 +79,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	Integer updateModel(AdminModelDTO adminModelDTO) throws Exception;
 
@@ -104,8 +91,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @throws Exception
 	 */
 	Integer deleteModelImage(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -118,8 +103,6 @@ public interface AdminModelMapper {
 	 * 5. 작성일       : 2021. 10. 06
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @throws Exception
 	 */
 	Integer deleteModel(AdminModelDTO adminModelDTO) throws Exception;
 }

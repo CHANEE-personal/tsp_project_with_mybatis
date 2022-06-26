@@ -2,6 +2,7 @@ package com.tsp.new_tsp_project.api.admin.model.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
+import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
+import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -87,9 +90,10 @@ class AdminModelApiTest {
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("Admin 모델 등록 테스트")
 	public void 모델등록Api테스트() throws Exception {
-		AdminModelDTO adminModelDTO = builder()
+		AdminModelPostReq adminModelPostReq = AdminModelPostReq.builder()
 				.categoryCd(1)
 				.categoryAge("2")
 				.modelKorFirstName("조")
@@ -106,6 +110,8 @@ class AdminModelApiTest {
 				.visible("Y")
 				.build();
 
+		MockMultipartFile modelJson = new MockMultipartFile("adminModelPostReq", "", "application/json", objectMapper.writeValueAsString(adminModelPostReq.toModel()).getBytes());
+
 		List<MultipartFile> imageFiles = List.of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
@@ -116,9 +122,9 @@ class AdminModelApiTest {
 		mockMvc.perform(multipart("/api/model")
 						.file("imageFiles", imageFiles.get(0).getBytes())
 						.file("imageFiles", imageFiles.get(1).getBytes())
-						.content(objectMapper.writeValueAsString(adminModelDTO))
-						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-						.contentType(MediaType.APPLICATION_JSON))
+						.file(modelJson)
+						.contentType(APPLICATION_JSON_VALUE)
+						.contentType(MULTIPART_FORM_DATA_VALUE))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));
@@ -153,8 +159,8 @@ class AdminModelApiTest {
 
 		mockMvc.perform(multipart("/api/model/1/156")
 						.content(objectMapper.writeValueAsString(adminModelDTO))
-						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-						.contentType(MediaType.APPLICATION_JSON))
+						.contentType(MULTIPART_FORM_DATA_VALUE)
+						.contentType(APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));
