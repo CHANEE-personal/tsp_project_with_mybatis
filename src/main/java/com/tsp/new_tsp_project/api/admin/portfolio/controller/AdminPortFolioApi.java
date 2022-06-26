@@ -46,17 +46,17 @@ public class AdminPortFolioApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 조회", notes = "포트폴리오를 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+	public ConcurrentHashMap<String, Object> getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
 		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
 
 		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
@@ -90,22 +90,20 @@ public class AdminPortFolioApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 상세 조회", notes = "포트폴리오를 상세 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
+	public ConcurrentHashMap<String, Object> getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
 		ConcurrentHashMap<String, Object> portFolioMap;
 
-		AdminPortFolioDTO adminPortFolioDTO = builder().idx(idx).build();
-
-		portFolioMap = this.adminPortFolioApiService.getPortFolioInfo(adminPortFolioDTO);
+		portFolioMap = this.adminPortFolioApiService.getPortFolioInfo(builder().idx(idx).build());
 
 		return portFolioMap;
 	}
@@ -119,14 +117,12 @@ public class AdminPortFolioApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @param commonImageDTO
-	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 등록", notes = "포트폴리오를 등록한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -153,14 +149,12 @@ public class AdminPortFolioApi {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @param commonImageDTO
-	 * @param files
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 수정", notes = "포트폴리오를 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -198,12 +192,12 @@ public class AdminPortFolioApi {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "포트폴리오 삭제", notes = "포트폴리오를 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -230,12 +224,13 @@ public class AdminPortFolioApi {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
-	 * @param deleteIdx
-	 * @throws Exception
+	 *
 	 */
 	@ApiOperation(value = "포트폴리오 전체 삭제", notes = "포트폴리오를 전체 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -255,5 +250,4 @@ public class AdminPortFolioApi {
 
 		return result;
 	}
-
 }
