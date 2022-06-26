@@ -125,8 +125,8 @@ public class AdminProductionApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public String insertProduction(@Valid AdminProductionDTO adminProductionDTO,
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public String insertProduction(AdminProductionDTO adminProductionDTO,
 								   CommonImageDTO commonImageDTO,
 								   @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 		String result;
