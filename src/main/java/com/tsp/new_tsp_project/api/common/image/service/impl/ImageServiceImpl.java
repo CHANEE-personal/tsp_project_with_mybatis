@@ -61,10 +61,6 @@ public class ImageServiceImpl implements ImageService {
 	 * 5. 작성일       : 2021. 06. 02.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @param files
-	 * @return
-	 * @throws Exception
 	 */
 	public String uploadImageFile(CommonImageDTO commonImageDTO,
 								  MultipartFile[] files,

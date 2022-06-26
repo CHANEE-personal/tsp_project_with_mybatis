@@ -102,7 +102,9 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 
 		try {
 			if(this.adminProductionMapper.insertProduction(adminProductionDTO) > 0) {
-				CommonImageDTO.builder().typeName("production").typeIdx(adminProductionDTO.getIdx()).visible("Y").build();
+				commonImageDTO.setTypeName("production");
+				commonImageDTO.setTypeIdx(adminProductionDTO.getIdx());
+				commonImageDTO.setVisible("Y");
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {

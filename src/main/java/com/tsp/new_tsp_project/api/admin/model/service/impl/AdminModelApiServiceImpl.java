@@ -39,8 +39,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
-	 * @throws Exception
 	 */
 	@Override
 	public Integer getModelListCnt(Map<String, Object> modelMap) throws Exception {
@@ -56,7 +54,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param modelMap
 	 */
 	@Override
 	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) {
@@ -107,9 +104,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminModelDTO
-	 * @param commonImageDTO
-	 * @param fileName
 	 */
 	public Integer insertModel(AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
