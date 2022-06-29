@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 
 import java.io.FileInputStream;
-import java.util.Collections;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
@@ -67,8 +66,8 @@ class AdminModelApiTest {
 	@DisplayName("Admin 모델 조회 테스트")
 	void 모델조회Api테스트() throws Exception {
 		MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
-		modelMap.put("jpaStartPage", Collections.singletonList("1"));
-		modelMap.put("size", Collections.singletonList("3"));
+		modelMap.add("jpaStartPage", "1");
+		modelMap.add("size", "3");
 		mockMvc.perform(get("/api/model/lists/1").params(modelMap))
 				.andDo(print())
 				.andExpect(status().isOk());
@@ -91,7 +90,7 @@ class AdminModelApiTest {
 	@Disabled
 	@DisplayName("Admin 모델 등록 테스트")
 	void 모델등록Api테스트() throws Exception {
-		AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+		AdminModelDTO adminModelDTO = builder()
 				.categoryCd(1)
 				.categoryAge("2")
 				.modelKorFirstName("조")
@@ -108,7 +107,8 @@ class AdminModelApiTest {
 				.visible("Y")
 				.build();
 
-		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "", "application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
+		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "",
+				"application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
 		List<MultipartFile> imageFiles = List.of(
 				new MockMultipartFile("0522045010647","0522045010647.png",

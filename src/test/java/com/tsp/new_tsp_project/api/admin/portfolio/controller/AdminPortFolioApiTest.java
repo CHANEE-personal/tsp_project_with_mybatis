@@ -24,10 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 
 import java.io.FileInputStream;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -66,8 +64,8 @@ class AdminPortFolioApiTest {
 	@DisplayName("Admin 포트폴리오 조회 테스트")
 	public void 포트폴리오조회Api테스트() throws Exception {
 		MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
-		portfolioMap.put("jpaStartPage", Collections.singletonList("1"));
-		portfolioMap.put("size", Collections.singletonList("3"));
+		portfolioMap.add("jpaStartPage", "1");
+		portfolioMap.add("size", "3");
 		mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap))
 				.andDo(print())
 				.andExpect(status().isOk());
@@ -93,6 +91,9 @@ class AdminPortFolioApiTest {
 				.videoUrl("https://youtube.com")
 				.visible("Y").build();
 
+		MockMultipartFile portfolioJson = new MockMultipartFile("adminPortFolioDTO", "",
+				"application/json", objectMapper.writeValueAsString(adminPortFolioDTO).getBytes());
+
 		List<MultipartFile> imageFiles = List.of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
@@ -103,7 +104,7 @@ class AdminPortFolioApiTest {
 		mockMvc.perform(multipart("/api/portfolio")
 						.file("imageFiles", imageFiles.get(0).getBytes())
 						.file("imageFiles", imageFiles.get(1).getBytes())
-						.content(objectMapper.writeValueAsString(adminPortFolioDTO))
+						.file(portfolioJson)
 						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
