@@ -18,8 +18,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	Integer getProductionCnt(Map<String, Object> searchMap) throws Exception;
 
@@ -32,8 +30,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	List<AdminProductionDTO> getProductionList(Map<String, Object> searchMap) throws Exception;
 
@@ -46,8 +42,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception;
 
@@ -60,8 +54,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer insertProduction(AdminProductionDTO adminProductionDTO) throws Exception;
 
@@ -74,8 +66,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer updateProduction(AdminProductionDTO adminProductionDTO) throws Exception;
 
@@ -88,8 +78,6 @@ public interface AdminProductionMapper {
 	 * 5. 작성일       : 2021. 10. 05.
 	 * </pre>
 	 *
-	 * @param adminProductionDTO
-	 * @throws Exception
 	 */
 	Integer deleteProduction(AdminProductionDTO adminProductionDTO) throws Exception;
 }

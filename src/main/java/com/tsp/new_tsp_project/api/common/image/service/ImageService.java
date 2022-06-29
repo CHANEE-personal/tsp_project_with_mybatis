@@ -4,7 +4,6 @@ import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,10 +18,6 @@ public interface ImageService {
 	 * 5. 작성일       : 2021. 06. 02.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @param files
-	 * @return
-	 * @throws Exception
 	 */
 	String uploadImageFile(CommonImageDTO commonImageDTO,
 						   MultipartFile[] files,

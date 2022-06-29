@@ -27,9 +27,9 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.rmi.ServerError;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequestMapping(value = "/api/auth")
@@ -53,18 +53,19 @@ public class AdminUserApi {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param page
 	 */
 	@ApiOperation(value = "회원 조회", notes = "회원을 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(value = "/users")
-	public List<AdminUserDTO> getUserList(@RequestParam ConcurrentHashMap<String, Object> paramMap, Page page) {
+	public List<AdminUserDTO> getUserList(@RequestParam Map<String, Object> paramMap, Page page) {
 		// 페이징 및 검색
-		ConcurrentHashMap<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
+		Map<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
 
 		return this.adminUserApiService.getUserList(userMap);
 	}
@@ -78,20 +79,18 @@ public class AdminUserApi {
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
 	 *
-	 * @param  authenticationRequest
-	 * @param  request
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "회원 로그인 처리", notes = "회원 로그인을 처리한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(value = "/admin-login")
-	public ConcurrentHashMap adminLogin(@RequestBody AuthenticationRequest authenticationRequest,
+	public Map<String, Object> adminLogin(@RequestBody AuthenticationRequest authenticationRequest,
 										HttpServletRequest request) throws Exception {
-
 		AdminUserDTO newUserDTO = new AdminUserDTO();
 
 		newUserDTO.setUserId(authenticationRequest.getUserId());
@@ -99,7 +98,7 @@ public class AdminUserApi {
 
 		String resultValue = adminUserApiService.adminLogin(newUserDTO, request);
 
-		ConcurrentHashMap<String, Object> userMap = new ConcurrentHashMap<>();
+		Map<String, Object> userMap = new HashMap<>();
 
 		if ("Y".equals(resultValue)) {
 			userMap.put("loginYn", resultValue);
@@ -125,8 +124,6 @@ public class AdminUserApi {
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
 	 *
-	 * @param  authenticationRequest
-	 * @throws Exception
 	 */
 	@ApiIgnore
 	@ApiOperation(value = "JWT 토근 발급", notes = "JWT 토근 발급")
@@ -152,9 +149,6 @@ public class AdminUserApi {
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
 	 *
-	 * @param  id
-	 * @param  password
-	 * @throws Exception
 	 */
 	private void authenticate(String id, String password) throws Exception {
 		try {
@@ -168,5 +162,4 @@ public class AdminUserApi {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
-
 }

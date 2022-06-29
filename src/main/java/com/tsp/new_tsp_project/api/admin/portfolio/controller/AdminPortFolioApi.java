@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
+import static java.lang.Math.ceil;
 
 @Slf4j
 @RestController
@@ -56,10 +56,10 @@ public class AdminPortFolioApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap<String, Object> getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
-		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
+	public Map<String, Object> getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+		Map<String, Object> portFolioMap = new HashMap<>();
 
-		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
+		Map<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
 
 		Integer portFolioCnt = this.adminPortFolioApiService.getPortFolioCnt(searchMap);
 
@@ -72,7 +72,7 @@ public class AdminPortFolioApi {
 		// 리스트 수
 		portFolioMap.put("pageSize", page.getSize());
 		// 전체 페이지 수
-		portFolioMap.put("perPageListCnt", Math.ceil((portFolioCnt - 1) / page.getSize() + 1));
+		portFolioMap.put("perPageListCnt", ceil((portFolioCnt - 1) / page.getSize() + 1));
 		// 전체 아이템 수
 		portFolioMap.put("portFolioListCnt", portFolioCnt);
 
@@ -100,12 +100,8 @@ public class AdminPortFolioApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap<String, Object> getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
-		ConcurrentHashMap<String, Object> portFolioMap;
-
-		portFolioMap = this.adminPortFolioApiService.getPortFolioInfo(builder().idx(idx).build());
-
-		return portFolioMap;
+	public Map<String, Object> getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
+		return this.adminPortFolioApiService.getPortFolioInfo(builder().idx(idx).build());
 	}
 
 	/**
@@ -164,7 +160,7 @@ public class AdminPortFolioApi {
 								  HttpServletRequest request,
 								  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 
-		Map<String, Object> portFolioMap = new ConcurrentHashMap<>();
+		Map<String, Object> portFolioMap = new HashMap<>();
 
 		String[] arrayState = request.getParameter("imageState").split(",");
 		String[] arrayIdx = request.getParameter("idxState").split(",");

@@ -2,7 +2,6 @@ package com.tsp.new_tsp_project.api.admin.model.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
-import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,7 +55,7 @@ class AdminModelApiTest {
 	private WebApplicationContext wac;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
@@ -67,7 +65,7 @@ class AdminModelApiTest {
 
 	@Test
 	@DisplayName("Admin 모델 조회 테스트")
-	public void 모델조회Api테스트() throws Exception {
+	void 모델조회Api테스트() throws Exception {
 		MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
 		modelMap.put("jpaStartPage", Collections.singletonList("1"));
 		modelMap.put("size", Collections.singletonList("3"));
@@ -78,7 +76,7 @@ class AdminModelApiTest {
 
 	@Test
 	@DisplayName("Admin 모델 상세 조회 테스트")
-	public void 모델상세조회Api테스트() throws Exception {
+	void 모델상세조회Api테스트() throws Exception {
 		mockMvc.perform(get("/api/model/1/156"))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -92,8 +90,8 @@ class AdminModelApiTest {
 	@Test
 	@Disabled
 	@DisplayName("Admin 모델 등록 테스트")
-	public void 모델등록Api테스트() throws Exception {
-		AdminModelPostReq adminModelPostReq = AdminModelPostReq.builder()
+	void 모델등록Api테스트() throws Exception {
+		AdminModelDTO adminModelDTO = AdminModelDTO.builder()
 				.categoryCd(1)
 				.categoryAge("2")
 				.modelKorFirstName("조")
@@ -110,7 +108,7 @@ class AdminModelApiTest {
 				.visible("Y")
 				.build();
 
-		MockMultipartFile modelJson = new MockMultipartFile("adminModelPostReq", "", "application/json", objectMapper.writeValueAsString(adminModelPostReq.toModel()).getBytes());
+		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "", "application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
 		List<MultipartFile> imageFiles = List.of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
@@ -132,7 +130,7 @@ class AdminModelApiTest {
 
 	@Disabled
 	@DisplayName("Admin 모델 수정 테스트")
-	public void 모델수정Api테스트() throws Exception {
+	void 모델수정Api테스트() throws Exception {
 		AdminModelDTO adminModelDTO = builder()
 				.categoryCd(1)
 				.categoryAge("2")
@@ -150,6 +148,8 @@ class AdminModelApiTest {
 				.visible("Y")
 				.build();
 
+		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "", "application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
+
 		List<MultipartFile> imageFiles = List.of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
@@ -158,6 +158,7 @@ class AdminModelApiTest {
 		);
 
 		mockMvc.perform(multipart("/api/model/1/156")
+						.file(modelJson)
 						.content(objectMapper.writeValueAsString(adminModelDTO))
 						.contentType(MULTIPART_FORM_DATA_VALUE)
 						.contentType(APPLICATION_JSON))
@@ -168,7 +169,7 @@ class AdminModelApiTest {
 
 	@Test
 	@DisplayName("Admin 모델 삭제 테스트")
-	public void 모델삭제Api테스트() throws Exception {
+	void 모델삭제Api테스트() throws Exception {
 		mockMvc.perform(delete("/api/model/156"))
 				.andDo(print())
 				.andExpect(status().isOk())

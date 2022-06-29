@@ -19,8 +19,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	Integer getPortFolioCnt(Map<String, Object> searchMap) throws Exception;
 
@@ -33,8 +31,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	List<AdminPortFolioDTO> getPortFolioList(Map<String, Object> searchMap) throws Exception;
 
@@ -47,8 +43,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	Map<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
@@ -61,8 +55,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
@@ -75,8 +67,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	Integer updatePortFolio(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
@@ -89,8 +79,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @throws Exception
 	 */
 	List<CommonImageDTO> getImageList(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -103,8 +91,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
@@ -117,7 +103,6 @@ public interface AdminPortFolioMapper {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	Integer deleteAllPortFolio(Map<String, Object> portFolioMap) throws Exception;
 
@@ -129,8 +114,6 @@ public interface AdminPortFolioMapper {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
-	 * @param portFolioMap
-	 * @throws Exception
 	 */
 	Integer deletePartPortFolio(Map<String, Object> portFolioMap) throws Exception;
 }

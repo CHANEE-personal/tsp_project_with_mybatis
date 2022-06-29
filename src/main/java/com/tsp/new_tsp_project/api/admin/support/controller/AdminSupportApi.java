@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.rmi.ServerError;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO.*;
 
@@ -39,26 +40,26 @@ public class AdminSupportApi {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param page
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/lists")
-	public ConcurrentHashMap getSupportModelList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
+	public Map<String, Object> getSupportModelList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
 
-		ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+		Map<String, Object> supportMap = new HashMap<>();
 
 		//페이징 및 조회조건
-		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
+		Map<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
 
 		Integer supportModelCnt = this.adminSupportService.getSupportModelCnt(searchMap);
 
-		List<AdminSupportDTO> supportModelList = null;
+		List<AdminSupportDTO> supportModelList = new ArrayList<>();
 
 		if(supportModelCnt > 0) {
 			supportModelList = this.adminSupportService.getSupportModelList(searchMap);
@@ -85,18 +86,18 @@ public class AdminSupportApi {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param idx
-	 * @throws Exception
 	 */
 	@ApiOperation(value = "지원모델 상세 조회", notes = "지원모델을 상세 조회한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{idx}")
-	public ConcurrentHashMap getSupportModelInfo(@PathVariable("idx") Integer idx) throws Exception {
-		ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+	public Map<String, Object> getSupportModelInfo(@PathVariable("idx") Integer idx) throws Exception {
+		Map<String, Object> supportMap = new HashMap<>();
 
 		AdminSupportDTO adminSupportDTO = builder().idx(idx).build();
 

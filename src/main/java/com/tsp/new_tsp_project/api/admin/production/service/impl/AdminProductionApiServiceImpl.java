@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 @Slf4j
 @Service("AdminProductionApiService")
@@ -36,7 +37,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public Integer getProductionCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception {
+	public Integer getProductionCnt(Map<String, Object> searchMap) throws Exception {
 		return this.adminProductionMapper.getProductionCnt(searchMap);
 	}
 
@@ -52,7 +53,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) {
+	public List<AdminProductionDTO> getProductionList(Map<String, Object> searchMap) {
 		try {
 			return this.adminProductionMapper.getProductionList(searchMap);
 		} catch (Exception e) {
@@ -71,10 +72,10 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
+	public Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
 
 		try {
-			ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+			Map<String, Object> productionMap = new HashMap<>();
 
 			productionMap.put("productionInfo", this.adminProductionMapper.getProductionInfo(adminProductionDTO));
 

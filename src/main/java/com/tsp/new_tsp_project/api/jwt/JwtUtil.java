@@ -45,9 +45,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param token
-     * @return
-     * @throws Exception
      */
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
@@ -62,9 +59,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param token
-     * @return
-     * @throws Exception
      */
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
@@ -79,9 +73,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param userDetails
-     * @return
-     * @throws Exception
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -97,10 +88,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param claims
-     * @param subject
-     * @return
-     * @throws Exception
      */
     private String createToken(Map<String, Object> claims, String subject) {
         byte[] keyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
@@ -120,9 +107,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param request
-     * @return
-     * @throws Exception
      */
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
@@ -137,10 +121,6 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      *
-     * @param token
-     * @param userDetails
-     * @return
-     * @throws Exception
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUserName(token);

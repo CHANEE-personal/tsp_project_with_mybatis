@@ -18,8 +18,6 @@ public interface AdminSupportMapper {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	Integer getSupportModelCnt(Map<String, Object> searchMap) throws Exception;
 
@@ -32,8 +30,6 @@ public interface AdminSupportMapper {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
 	List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) throws Exception;
 
@@ -46,8 +42,6 @@ public interface AdminSupportMapper {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param adminSupportDTO
-	 * @throws Exception
 	 */
 	Map<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) throws Exception;
 }

@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
+import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.*;
 
 @Slf4j
@@ -61,14 +61,14 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists/{categoryCd}")
-	public ConcurrentHashMap<String, Object> getModelList(@PathVariable("categoryCd")
-														  @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-														  @RequestParam(required = false) Map<String, Object> paramMap,
-														  Page page) throws Exception {
+	public Map<String, Object> getModelList(@PathVariable("categoryCd")
+										    @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+										    @RequestParam(required = false) Map<String, Object> paramMap,
+										    Page page) throws Exception {
 
-		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
+		Map<String, Object> resultMap = new HashMap<>();
 		// 페이징 및 검색
-		ConcurrentHashMap<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
+		Map<String, Object> modelMap = searchCommon.searchCommon(page, paramMap);
 		modelMap.put("categoryCd", categoryCd);
 
 		Integer modelListCnt = this.adminModelApiService.getModelListCnt(modelMap);
@@ -82,7 +82,7 @@ public class AdminModelApi {
 		// 리스트 수
 		resultMap.put("pageSize", page.getSize());
 		// 전체 페이지 수
-		resultMap.put("perPageListCnt", Math.ceil((modelListCnt - 1) / page.getSize() + 1));
+		resultMap.put("perPageListCnt", ceil((modelListCnt - 1) / page.getSize() + 1));
 		// 전체 아이템 수
 		resultMap.put("modelListTotalCnt", modelListCnt);
 
@@ -110,11 +110,11 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping("/{categoryCd}/{idx}")
-	public ConcurrentHashMap<String, Object> getModelEdit(@PathVariable("categoryCd")
-														  @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-														  @PathVariable("idx") Integer idx) throws Exception {
-		ConcurrentHashMap<String, Object> resultMap = new ConcurrentHashMap<>();
-		ConcurrentHashMap<String, Object> modelMap;
+	public Map<String, Object> getModelEdit(@PathVariable("categoryCd")
+										    @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+										    @PathVariable("idx") Integer idx) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		Map<String, Object> modelMap;
 
 		modelMap = this.adminModelApiService.getModelInfo(builder().idx(idx).categoryCd(categoryCd).build());
 
@@ -142,11 +142,11 @@ public class AdminModelApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@PostMapping(consumes = { MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE })
-	public String insertModel(AdminModelDTO adminModelDTO,
+	public String insertModel(@Valid AdminModelDTO adminModelDTO,
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,
-							  @RequestPart(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+							  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 
 		String result;
 		searchCommon.giveAuth(request, newCommonDTO);
@@ -185,7 +185,7 @@ public class AdminModelApi {
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,
-							  @RequestParam(name = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+							  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
 
 		searchCommon.giveAuth(request, newCommonDTO);
 

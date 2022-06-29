@@ -1,7 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.model.service.impl;
 
 import com.tsp.new_tsp_project.api.admin.mapper.AdminModelMapper;
-import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Transactional
@@ -72,9 +71,9 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) {
+	public Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) {
 		try {
-			ConcurrentHashMap<String, Object> modelMap = new ConcurrentHashMap<>();
+			Map<String, Object> modelMap = new HashMap<>();
 
 			CommonImageDTO commonImageDTO = CommonImageDTO.builder()
 					.typeIdx(adminModelDTO.getIdx())
@@ -86,7 +85,6 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 			return modelMap;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
 		}
 	}

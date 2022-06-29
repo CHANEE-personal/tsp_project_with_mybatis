@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public interface AdminPortFolioApiService {
@@ -21,10 +20,8 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
-	Integer getPortFolioCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception;
+	Integer getPortFolioCnt(Map<String, Object> searchMap) throws Exception;
 
 	/**
 	 * <pre>
@@ -35,10 +32,8 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
-	 * @throws Exception
 	 */
-	List<AdminPortFolioDTO> getPortFolioList(ConcurrentHashMap<String, Object> searchMap) throws Exception;
+	List<AdminPortFolioDTO> getPortFolioList(Map<String, Object> searchMap) throws Exception;
 
 	/**
 	 * <pre>
@@ -49,10 +44,8 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
-	ConcurrentHashMap<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
+	Map<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
 	/**
 	 * <pre>
@@ -63,10 +56,6 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @param commonImageDTO
-	 * @param files
-	 * @throws Exception
 	 */
 	Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO,
 							CommonImageDTO commonImageDTO,
@@ -81,10 +70,6 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @param commonImageDTO
-	 * @param files
-	 * @throws Exception
 	 */
 	Integer updatePortFolio(AdminPortFolioDTO adminPortFolioDTO,
 							CommonImageDTO commonImageDTO,
@@ -100,8 +85,6 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) throws Exception;
 
@@ -114,7 +97,6 @@ public interface AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	Integer deleteAllPortFolio(Map<String, Object> portFolioMap) throws Exception;
 
@@ -126,9 +108,7 @@ public interface AdminPortFolioApiService {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
-	 * @param portFolioMap
-	 * @throws Exception
+	 *
 	 */
 	Integer deletePartPortFolio(Map<String, Object> portFolioMap) throws Exception;
-
 }

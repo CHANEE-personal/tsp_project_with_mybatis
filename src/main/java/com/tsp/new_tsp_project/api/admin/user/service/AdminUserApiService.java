@@ -2,7 +2,6 @@ package com.tsp.new_tsp_project.api.admin.user.service;
 
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,8 +19,6 @@ public interface AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param commandMap
-	 * @throws Exception
 	 */
 	List<AdminUserDTO> getUserList(Map<String, Object> commandMap);
 
@@ -34,10 +31,6 @@ public interface AdminUserApiService {
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
 	 *
-	 * @param adminUserDTO
-	 * @param request
-	 * @return result
-	 * @throws Exception
 	 */
 	String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) throws Exception;
 
@@ -50,9 +43,6 @@ public interface AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminUserDTO
-	 * @return result
-	 * @throws Exception
 	 */
 	Integer insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
 }

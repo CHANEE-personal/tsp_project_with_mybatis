@@ -32,8 +32,6 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param commandMap
-	 * @return result
 	 */
 	@Override
 	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) {
@@ -49,9 +47,6 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminUserDTO
-	 * @param request
-	 * @return result
 	 */
 	public String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) {
 
@@ -80,9 +75,6 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param adminUserDTO
-	 * @return result
-	 * @throws Exception
 	 */
 	public Integer insertUserToken(AdminUserDTO adminUserDTO) {
 		try {

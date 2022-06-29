@@ -1,14 +1,12 @@
 package com.tsp.new_tsp_project.api.admin.model.service;
 
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
-import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelPostReq;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public interface AdminModelApiService {
@@ -47,7 +45,7 @@ public interface AdminModelApiService {
 	 * </pre>
 	 *
 	 */
-	ConcurrentHashMap<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
+	Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws Exception;
 
 	/**
 	 * <pre>

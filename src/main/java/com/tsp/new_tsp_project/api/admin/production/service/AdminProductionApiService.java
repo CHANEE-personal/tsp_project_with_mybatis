@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 @Service
 public interface AdminProductionApiService {
@@ -21,7 +21,7 @@ public interface AdminProductionApiService {
 	 * </pre>
 	 *
 	 */
-	Integer getProductionCnt(ConcurrentHashMap<String, Object> searchMap) throws Exception;
+	Integer getProductionCnt(Map<String, Object> searchMap) throws Exception;
 
 	/**
 	 * <pre>
@@ -33,7 +33,7 @@ public interface AdminProductionApiService {
 	 * </pre>
 	 *
 	 */
-	List<AdminProductionDTO> getProductionList(ConcurrentHashMap<String, Object> searchMap) throws Exception;
+	List<AdminProductionDTO> getProductionList(Map<String, Object> searchMap) throws Exception;
 
 	/**
 	 * <pre>
@@ -45,7 +45,7 @@ public interface AdminProductionApiService {
 	 * </pre>
 	 *
 	 */
-	ConcurrentHashMap<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception;
+	Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws Exception;
 
 	/**
 	 * <pre>

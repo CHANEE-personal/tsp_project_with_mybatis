@@ -8,9 +8,9 @@ import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service("AdminSupportService")
 @RequiredArgsConstructor
@@ -27,7 +27,6 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param searchMap
 	 */
 	@Override
 	public Integer getSupportModelCnt(Map<String, Object> searchMap) {
@@ -47,7 +46,6 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param searchMap
 	 */
 	@Override
 	public List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) {
@@ -67,13 +65,12 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 * 5. 작성일       : 2021. 09. 26.
 	 * </pre>
 	 *
-	 * @param adminSupportDTO
 	 */
 	@Override
-	public ConcurrentHashMap<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) {
+	public Map<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) {
 
 		try {
-			ConcurrentHashMap<String, Object> supportMap = new ConcurrentHashMap<>();
+			Map<String, Object> supportMap = new HashMap<>();
 
 			supportMap.put("supportModelInfo", this.adminSupportMapper.getSupportModelInfo(adminSupportDTO));
 

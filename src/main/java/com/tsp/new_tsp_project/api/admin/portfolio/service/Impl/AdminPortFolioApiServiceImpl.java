@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service("AdminPortFolioApiService")
@@ -35,9 +35,8 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
 	 */
-	public Integer getPortFolioCnt(ConcurrentHashMap<String, Object> searchMap) {
+	public Integer getPortFolioCnt(Map<String, Object> searchMap) {
 		try {
 			return this.adminPortFolioMapper.getPortFolioCnt(searchMap);
 		} catch (Exception e) {
@@ -54,9 +53,8 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param searchMap
 	 */
-	public List<AdminPortFolioDTO> getPortFolioList(ConcurrentHashMap<String, Object> searchMap) {
+	public List<AdminPortFolioDTO> getPortFolioList(Map<String, Object> searchMap) {
 		try {
 			return this.adminPortFolioMapper.getPortFolioList(searchMap);
 		} catch (Exception e) {
@@ -73,11 +71,10 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
 	 */
-	public ConcurrentHashMap<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) {
+	public Map<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) {
 
-		ConcurrentHashMap<String, Object> portFolioMap = new ConcurrentHashMap<>();
+		Map<String, Object> portFolioMap = new HashMap<>();
 
 		try {
 			CommonImageDTO commonImageDTO = CommonImageDTO.builder().typeIdx(adminPortFolioDTO.getIdx()).typeName("portFolio").build();
@@ -100,7 +97,6 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
 	 */
 	public Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
@@ -135,7 +131,6 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
 	 */
 	public Integer updatePortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
@@ -170,8 +165,6 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 22.
 	 * </pre>
 	 *
-	 * @param adminPortFolioDTO
-	 * @throws Exception
 	 */
 	public Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) {
 		try {
@@ -190,7 +183,6 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	public Integer deleteAllPortFolio(Map<String, Object> portFolioMap) {
 		try {
@@ -208,7 +200,6 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
-	 * @param portFolioMap
 	 */
 	public Integer deletePartPortFolio(Map<String, Object> portFolioMap) {
 		try {

@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
@@ -28,14 +28,10 @@ public class SearchCommon {
 	 * 5. 작성일       : 2021. 08. 08.
 	 * </pre>
 	 *
-	 * @param  page
-	 * @param  paramMap
-	 * @return ConcurrentHashMap
-	 * @throws Exception
 	 */
-	public ConcurrentHashMap<String, Object> searchCommon(Page page, Map<String, Object> paramMap) {
+	public Map<String, Object> searchCommon(Page page, Map<String, Object> paramMap) {
 
-		ConcurrentHashMap<String, Object> searchMap = new ConcurrentHashMap<>();
+		Map<String, Object> searchMap = new HashMap<>();
 
 		// 페이징 처리
 		Integer pageCnt = StringUtil.getInt(page.getPage(), 1);
@@ -62,9 +58,6 @@ public class SearchCommon {
 	 * 5. 작성일       : 2021. 08. 08.
 	 * </pre>
 	 *
-	 * @param  request
-	 * @return ConcurrentHashMap
-	 * @throws Exception
 	 */
 	public void giveAuth(HttpServletRequest request, NewCommonDTO newCommonDTO) throws Exception {
 		// creator, updater 공통 DTO

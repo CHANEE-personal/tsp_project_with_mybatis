@@ -8,13 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -49,25 +47,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(Error.create(tspException.getBaseExceptionType()), HttpStatus.OK);
 	}
 
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ResponseEntity<ErrorResponse> validException(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status) {
-//		Map<String, Object> body = new HashMap<>();
-//		body.put("timestamp", new Date());
-//		body.put("status", status.value());
-//
-//		List<String> errors = ex.getBindingResult()
-//				.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
-//				.collect(Collectors.toList());
-//
-//		body.put("errors", errors);
-//
-//		ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, body);
-//
-//		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-//
-//	}
-
 	/**
 	 * <pre>
 	 * 1. MethodName : handleConstraintViolation
@@ -77,8 +56,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @param e
-	 * @param request
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException e, WebRequest request) {
@@ -94,10 +71,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @param ex
-	 * @param headers
-	 * @param status
-	 * @param request
 	 */
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(

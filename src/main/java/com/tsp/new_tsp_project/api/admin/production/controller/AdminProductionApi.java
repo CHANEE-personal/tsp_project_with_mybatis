@@ -19,9 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 
@@ -54,11 +54,11 @@ public class AdminProductionApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/lists")
-	public ConcurrentHashMap<String, Object> getProductionList(Page page, @RequestParam Map<String, Object> paramMap) throws Exception {
+	public Map<String, Object> getProductionList(Page page, @RequestParam Map<String, Object> paramMap) throws Exception {
 
-		ConcurrentHashMap<String, Object> productionMap = new ConcurrentHashMap<>();
+		Map<String, Object> productionMap = new HashMap<>();
 
-		ConcurrentHashMap<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
+		Map<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
 
 		Integer productionCnt = this.adminProductionApiService.getProductionCnt(searchMap);
 
@@ -99,12 +99,8 @@ public class AdminProductionApi {
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
 	@GetMapping(value = "/{idx}")
-	public ConcurrentHashMap<String, Object> getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
-		ConcurrentHashMap<String, Object> productionMap;
-
-		productionMap = this.adminProductionApiService.getProductionInfo(builder().idx(idx).build());
-
-		return productionMap;
+	public Map<String, Object> getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
+		return this.adminProductionApiService.getProductionInfo(builder().idx(idx).build());
 	}
 
 	/**

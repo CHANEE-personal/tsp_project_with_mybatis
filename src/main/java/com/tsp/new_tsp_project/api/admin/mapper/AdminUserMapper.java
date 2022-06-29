@@ -19,8 +19,6 @@ public interface AdminUserMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param  commandMap
-	 * @throws Exception
 	 */
 	List<AdminUserDTO> getUserList(Map<String, Object> commandMap);
 
@@ -33,8 +31,6 @@ public interface AdminUserMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param  id
-	 * @throws Exception
 	 */
 	SecurityUser getUserId(String id) throws Exception;
 
@@ -47,8 +43,6 @@ public interface AdminUserMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param  adminUserDTO
-	 * @throws Exception
 	 */
 	String adminLogin(AdminUserDTO adminUserDTO) throws Exception;
 
@@ -61,8 +55,6 @@ public interface AdminUserMapper {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 *
-	 * @param  userToken
-	 * @throws Exception
 	 */
 	String selectAdminSeq(String userToken) throws Exception;
 
@@ -75,8 +67,6 @@ public interface AdminUserMapper {
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
 	 *
-	 * @param  adminUserDTO
-	 * @throws Exception
 	 */
 	Integer insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
 }

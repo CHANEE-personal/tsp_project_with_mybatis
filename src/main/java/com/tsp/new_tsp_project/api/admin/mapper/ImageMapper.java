@@ -15,9 +15,6 @@ public interface ImageMapper {
 	 * 5. 작성일       : 2021. 09. 18.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @return
-	 * @throws Exception
 	 */
 	Integer selectSubCnt(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -30,9 +27,6 @@ public interface ImageMapper {
 	 * 5. 작성일       : 2021. 09. 18.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @return
-	 * @throws Exception
 	 */
 	Integer addImageFile(CommonImageDTO commonImageDTO) throws Exception;
 
@@ -45,9 +39,6 @@ public interface ImageMapper {
 	 * 5. 작성일       : 2021. 09. 18.
 	 * </pre>
 	 *
-	 * @param commonImageDTO
-	 * @return
-	 * @throws Exception
 	 */
 	Integer deleteImageFile(CommonImageDTO commonImageDTO) throws Exception;
 
