@@ -22,7 +22,6 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class AdminProductionApiServiceImpl implements AdminProductionApiService {
-
 	private final AdminProductionMapper adminProductionMapper;
 	private final ImageService imageService;
 
@@ -57,7 +56,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 		try {
 			return this.adminProductionMapper.getProductionList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
 		}
 	}
 
@@ -73,7 +72,6 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 */
 	@Override
 	public Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
-
 		try {
 			Map<String, Object> productionMap = new HashMap<>();
 
@@ -81,7 +79,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 
 			return productionMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION);
+			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION, e);
 		}
 	}
 
@@ -109,14 +107,14 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+				throw new TspException(ApiExceptionType.ERROR_PRODUCTION, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+			throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
 		}
 	}
 
@@ -142,14 +140,14 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "update"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+				throw new TspException(ApiExceptionType.ERROR_PRODUCTION, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PRODUCTION);
+			throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
 		}
 	}
 
@@ -168,7 +166,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 		try {
 			return this.adminProductionMapper.deleteProduction(adminProductionDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION);
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION, e);
 		}
 	}
 }

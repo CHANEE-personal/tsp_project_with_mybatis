@@ -27,7 +27,6 @@ import static com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportD
 @RequestMapping("/api/support")
 @Api(tags = "지원모델관련 API")
 public class AdminSupportApi {
-
 	private final AdminSupportService adminSupportService;
 	private final SearchCommon searchCommon;
 

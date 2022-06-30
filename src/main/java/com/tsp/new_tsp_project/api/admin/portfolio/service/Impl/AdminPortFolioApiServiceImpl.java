@@ -40,7 +40,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		try {
 			return this.adminPortFolioMapper.getPortFolioCnt(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		try {
 			return this.adminPortFolioMapper.getPortFolioList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 
 			return portFolioMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO);
+			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO, e);
 		}
 	}
 
@@ -110,15 +110,15 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
 		}
 	}
 
@@ -145,13 +145,13 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, files, portFolioMap))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, new Throwable().getCause());
 			}	
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO);
+			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
 		}
 		return num;
 	}
@@ -170,7 +170,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		try {
 			return this.adminPortFolioMapper.deletePortFolio(adminPortFolioDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		try {
 			return this.adminPortFolioMapper.deleteAllPortFolio(portFolioMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 
@@ -205,7 +205,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 		try {
 			return this.adminPortFolioMapper.deletePartPortFolio(portFolioMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO);
+			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 }

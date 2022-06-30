@@ -13,6 +13,7 @@ public enum ApiExceptionType implements BaseExceptionType {
 	// Model 관련 Type
 	ERROR_MODEL("ERROR_MODEL", 500, "모델 등록 에러"),
 	ERROR_DELETE_MODEL("ERROR_DELETE_MODEL", 500, "모델 삭제 에러"),
+	ERROR_DELETE_MODEL_IMAGE("ERROR_DELETE_MODEL_IMAGE", 500, "모델 이미지 삭제 에러"),
 	NOT_FOUND_MODEL("NOT_FOUND_MODEL", 200, "해당 모델 없음"),
 	NOT_FOUND_MODEL_LIST("NOT_FOUND_MODEL_LIST", 200, "모델 리스트 없음"),
 	// Production 관련 Type

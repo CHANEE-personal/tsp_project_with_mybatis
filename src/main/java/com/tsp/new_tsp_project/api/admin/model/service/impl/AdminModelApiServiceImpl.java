@@ -56,7 +56,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 		try {
 			return this.adminModelMapper.getModelList(modelMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 			return modelMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL);
+			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
 		}
 	}
 
@@ -109,17 +109,17 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 				commonImageDTO.setTypeName("model");
 				commonImageDTO.setTypeIdx(adminModelDTO.getIdx());
 				commonImageDTO.setVisible("Y");
-				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, fileName, "insert"))) {
+				if ("Y".equals(this.imageService.uploadImageFile(commonImageDTO, fileName, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_MODEL);
+				throw new TspException(ApiExceptionType.ERROR_MODEL, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_MODEL);
+			throw new TspException(ApiExceptionType.ERROR_MODEL, e);
 		}
 	}
 
@@ -145,15 +145,14 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, fileName, modelMap))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE);
+					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_MODEL);
+				throw new TspException(ApiExceptionType.ERROR_MODEL, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new TspException(ApiExceptionType.ERROR_MODEL);
+			throw new TspException(ApiExceptionType.ERROR_MODEL, e);
 		}
 	}
 	/**
@@ -166,8 +165,12 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deleteModelImage(CommonImageDTO commonImageDTO) throws Exception {
-		return this.adminModelMapper.deleteModelImage(commonImageDTO);
+	public Integer deleteModelImage(CommonImageDTO commonImageDTO) {
+		try {
+			return this.adminModelMapper.deleteModelImage(commonImageDTO);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+		}
 	}
 
 
@@ -181,7 +184,11 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deleteModel(AdminModelDTO adminModelDTO) throws Exception {
-		return this.adminModelMapper.deleteModel(adminModelDTO);
+	public Integer deleteModel(AdminModelDTO adminModelDTO) {
+		try {
+			return this.adminModelMapper.deleteModel(adminModelDTO);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+		}
 	}
 }

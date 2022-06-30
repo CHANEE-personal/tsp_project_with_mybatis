@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -51,6 +53,7 @@ class AdminPortFolioApiTest {
 	private WebApplicationContext wac;
 
 	@BeforeEach
+	@EventListener(ApplicationReadyEvent.class)
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
@@ -62,7 +65,7 @@ class AdminPortFolioApiTest {
 	@Test
 	@Disabled
 	@DisplayName("Admin 포트폴리오 조회 테스트")
-	public void 포트폴리오조회Api테스트() throws Exception {
+	void 포트폴리오조회Api테스트() throws Exception {
 		MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
 		portfolioMap.add("jpaStartPage", "1");
 		portfolioMap.add("size", "3");
@@ -74,7 +77,7 @@ class AdminPortFolioApiTest {
 	@Test
 	@Disabled
 	@DisplayName("Admin 포트폴리오 상세 조회 테스트")
-	public void 포트폴리오상세조회Api테스트() throws Exception {
+	void 포트폴리오상세조회Api테스트() throws Exception {
 		mockMvc.perform(get("/api/portfolio/1"))
 				.andDo(print())
 				.andExpect(status().isOk());
@@ -83,7 +86,7 @@ class AdminPortFolioApiTest {
 	@Test
 	@Disabled
 	@DisplayName("Admin 포트폴리오 등록 테스트")
-	public void 포트폴리오등록Api테스트() throws Exception {
+	void 포트폴리오등록Api테스트() throws Exception {
 		AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
 				.categoryCd(1)
 				.title("test")
@@ -115,7 +118,7 @@ class AdminPortFolioApiTest {
 	@Test
 	@Disabled
 	@DisplayName("Admin 포트폴리오 삭제 테스트")
-	public void 포트폴리오삭제Api테스트() throws Exception {
+	void 포트폴리오삭제Api테스트() throws Exception {
 		mockMvc.perform(delete("/api/portfolio/1"))
 				.andDo(print())
 				.andExpect(status().isOk())

@@ -62,7 +62,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 			}
 			return result;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_USER);
+			throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
 		}
 	}
 
@@ -80,7 +80,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 		try {
 			return this.adminUserMapper.insertUserToken(adminUserDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_USER);
+			throw new TspException(ApiExceptionType.ERROR_USER, e);
 		}
 	}
 }
