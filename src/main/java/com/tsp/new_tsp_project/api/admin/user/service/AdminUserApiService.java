@@ -45,4 +45,16 @@ public interface AdminUserApiService {
 	 *
 	 */
 	Integer insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
+
+	/**
+	 * <pre>
+	 * 1. MethodName : findOneUserByToken
+	 * 2. ClassName  : AdminUserApiService.java
+	 * 3. Comment    : 토큰을 이용한 회원 아이디 조회
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 */
+	String findOneUserByToken(String token);
 }

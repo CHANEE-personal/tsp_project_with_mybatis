@@ -83,4 +83,22 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 			throw new TspException(ApiExceptionType.ERROR_USER, e);
 		}
 	}
+
+	/**
+	 * <pre>
+	 * 1. MethodName : findOneUserByToken
+	 * 2. ClassName  : AdminUserApiServiceImpl.java
+	 * 3. Comment    : 토큰을 이용한 회원 아이디 조회
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 */
+	public String findOneUserByToken(String token) {
+		try {
+			return this.adminUserMapper.findOneUserByToken(token);
+		} catch (Exception e) {
+			throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
+		}
+	}
 }

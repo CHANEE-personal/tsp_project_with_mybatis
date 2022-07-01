@@ -39,4 +39,11 @@
         UPDATE tsp_admin SET user_token = #{userToken}
         WHERE USER_ID = #{userId}
     </insert>
+
+    <select id="findOneUserByToken" parameterType="String" resultType="String">
+        /*[AdminUserApi_SQL.xml].[findOneUserByToken] */
+        SELECT user_id
+        FROM tsp_admin
+        WHERE user_token = #{userToken}
+    </select>
 </mapper>

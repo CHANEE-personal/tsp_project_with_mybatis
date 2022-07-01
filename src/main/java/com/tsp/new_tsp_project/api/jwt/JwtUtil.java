@@ -1,15 +1,19 @@
 package com.tsp.new_tsp_project.api.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -19,7 +23,11 @@ import java.util.function.Function;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
+    private final MyUserDetailsService myUserDetailsService;
+    private final AdminUserApiService adminUserApiService;
+
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
@@ -112,6 +120,20 @@ public class JwtUtil {
         return request.getHeader("Authorization");
     }
 
+    public String resolveAccessToken(HttpServletRequest request) {
+        if (request.getHeader("authorization") != null)   {
+            return request.getHeader("authorization").substring(7);
+        }
+        return null;
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        if (request.getHeader("refreshToken") != null) {
+            return request.getHeader("refreshToken").substring(7);
+        }
+        return null;
+    }
+
     /**
      * <pre>
      * 1. MethodName : validateToken
@@ -123,7 +145,37 @@ public class JwtUtil {
      *
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUserName(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
+        }
+
+        return false;
+    }
+
+    // JWT 에서 인증 정보 조회
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = myUserDetailsService.loadUserByUsername(adminUserApiService.findOneUserByToken(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    // 엑세스 토큰 헤더 설정
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader("authorization", "Bearer " + accessToken);
+    }
+
+    // 리프레시 토큰 헤더 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+        response.setHeader("refreshToken", "Bearer " + refreshToken);
     }
 }
