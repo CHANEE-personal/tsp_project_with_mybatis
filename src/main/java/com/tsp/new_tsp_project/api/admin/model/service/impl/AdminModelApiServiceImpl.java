@@ -101,7 +101,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 */
 	public Integer insertModel(AdminModelDTO adminModelDTO,
 							   CommonImageDTO commonImageDTO,
-							   MultipartFile[] fileName) {
+							   List<MultipartFile> fileName) {
 		int num;
 
 		try {

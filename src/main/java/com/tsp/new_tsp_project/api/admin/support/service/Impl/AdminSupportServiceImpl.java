@@ -33,7 +33,7 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 		try {
 			return this.adminSupportMapper.getSupportModelCnt(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 		try {
 			return this.adminSupportMapper.getSupportModelList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST);
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 
 			return supportMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT);
+			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT, e);
 		}
 	}
 }

@@ -146,7 +146,7 @@ public class AdminModelApi {
 							  CommonImageDTO commonImageDTO,
 							  NewCommonDTO newCommonDTO,
 							  HttpServletRequest request,
-							  @RequestParam(value = "imageFiles", required = false) MultipartFile[] files) throws Exception {
+							  @RequestParam(value = "imageFiles", required = false) List<MultipartFile> files) throws Exception {
 
 		String result;
 		searchCommon.giveAuth(request, newCommonDTO);

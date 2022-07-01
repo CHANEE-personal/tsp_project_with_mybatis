@@ -59,7 +59,7 @@ public interface AdminModelApiService {
 	 */
 	Integer insertModel(AdminModelDTO adminModelDTO,
 						CommonImageDTO commonImageDTO,
-						MultipartFile[] fileName) throws Exception;
+						List<MultipartFile> fileName) throws Exception;
 
 	/**
 	 * <pre>

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
 	 *
 	 */
 	public String uploadImageFile(CommonImageDTO commonImageDTO,
-								  MultipartFile[] files,
+								  List<MultipartFile> files,
 								  String flag) throws Exception {
 
 		// 파일 확장자

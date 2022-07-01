@@ -100,7 +100,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 */
 	public Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
-								   MultipartFile[] files) {
+								   List<MultipartFile> files) {
 
 		int num;
 

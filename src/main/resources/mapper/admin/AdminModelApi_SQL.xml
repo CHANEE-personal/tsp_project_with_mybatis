@@ -20,8 +20,10 @@
 			<when test='searchType == "1"'>
 				AND (model_kor_name LIKE CONCAT ('%', #{searchKeyword},'%') OR model_eng_name LIKE CONCAT ('%', #{searchKeyword}, '%'))
 			</when>
-			<otherwise>
+			<when test='searchType == "2"'>
 				AND model_description LIKE CONCAT ('%', #{searchKeyword},'%')
+			</when>
+			<otherwise>
 			</otherwise>
 		</choose>
 	</select>
@@ -96,14 +98,15 @@
 					LIKE CONCAT ('%', #{searchKeyword}, '%')
 					OR model_description LIKE CONCAT ('%', #{searchKeyword},'%'))
 				</when>
-						<when test='searchType == "1"'>
-							AND (model_kor_name LIKE CONCAT ('%', #{searchKeyword},'%') OR model_eng_name LIKE CONCAT ('%', #{searchKeyword}, '%'))
-						</when>
-						<otherwise>
-							AND model_description LIKE CONCAT ('%', #{searchKeyword},'%')
-						</otherwise>
-					</choose>
-					ORDER BY idx DESC
+				<when test='searchType == "1"'>
+					AND (model_kor_name LIKE CONCAT ('%', #{searchKeyword},'%') OR model_eng_name LIKE CONCAT ('%', #{searchKeyword}, '%'))
+				</when>
+				<when test='searchType == "2"'>
+					AND model_description LIKE CONCAT ('%', #{searchKeyword},'%')
+				</when>
+				<otherwise></otherwise>
+			</choose>
+			ORDER BY idx DESC
 			) AS A
 		) AS B
 		WHERE RNUM <![CDATA[<=]]> #{startPage}*#{size}

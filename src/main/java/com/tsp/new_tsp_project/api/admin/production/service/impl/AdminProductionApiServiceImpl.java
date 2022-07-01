@@ -96,7 +96,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	@Override
 	public Integer insertProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									MultipartFile[] files) {
+									List<MultipartFile> files) {
 		int num;
 
 		try {
@@ -131,7 +131,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	@Override
 	public Integer updateProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									MultipartFile[] files) {
+									List<MultipartFile> files) {
 		int num;
 
 		try {
