@@ -9,7 +9,7 @@
                password,
                name as user_name
         FROM tsp_admin
-        ORDER BY user_seq ASC
+        ORDER BY idx ASC
             LIMIT #{startPage}, #{size}
     </select>
 

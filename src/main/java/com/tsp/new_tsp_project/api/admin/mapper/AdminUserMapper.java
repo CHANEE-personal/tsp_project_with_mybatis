@@ -66,9 +66,8 @@ public interface AdminUserMapper {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 04. 23.
 	 * </pre>
-	 *
 	 */
-	Integer insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
+	void insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
 
 	/**
 	 * <pre>

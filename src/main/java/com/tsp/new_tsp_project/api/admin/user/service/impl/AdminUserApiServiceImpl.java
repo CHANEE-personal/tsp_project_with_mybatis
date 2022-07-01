@@ -74,11 +74,10 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * 4. 작성자       : CHO
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
-	 *
 	 */
-	public Integer insertUserToken(AdminUserDTO adminUserDTO) {
+	public void insertUserToken(AdminUserDTO adminUserDTO) {
 		try {
-			return this.adminUserMapper.insertUserToken(adminUserDTO);
+			this.adminUserMapper.insertUserToken(adminUserDTO);
 		} catch (Exception e) {
 			throw new TspException(ApiExceptionType.ERROR_USER, e);
 		}
