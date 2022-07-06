@@ -213,9 +213,9 @@
 		        #{modelKorFirstName},
 				#{modelKorSecondName},
 				#{career},
-		        '1',
+		        #{creator},
 		        now(),
-		        '1',
+		        #{updater},
 		        now())
 	</insert>
 

@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -44,7 +43,7 @@ public class AdminModelApi {
 
 	/**
 	 * <pre>
-	 * 1. MethodName : lists
+	 * 1. MethodName : getModelList
 	 * 2. ClassName  : AdminModelApi.java
 	 * 3. Comment    : 관리자 모델 조회
 	 * 4. 작성자       : CHO
@@ -178,7 +177,7 @@ public class AdminModelApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/{categoryCd}/{idx}", consumes = { MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(value = "/{categoryCd}/{idx}", consumes = { MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE })
 	public String updateModel(@PathVariable(value = "idx") Integer idx,
 							  @PathVariable(value = "categoryCd") Integer categoryCd,
 							  @Valid AdminModelDTO adminModelDTO,

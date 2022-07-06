@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Slf4j
 @RequestMapping(value = "/api/production")
@@ -121,7 +122,7 @@ public class AdminProductionApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	@PostMapping(consumes = { MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE })
 	public String insertProduction(AdminProductionDTO adminProductionDTO,
 								   CommonImageDTO commonImageDTO,
 								   @RequestParam(value = "imageFiles", required = false) List<MultipartFile> files) throws Exception {
@@ -153,7 +154,7 @@ public class AdminProductionApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/{idx}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/{idx}", consumes = MULTIPART_FORM_DATA_VALUE)
 	public String updateProduction(@PathVariable("idx") Integer idx,
 								   @Valid AdminProductionDTO adminProductionDTO,
 								   CommonImageDTO commonImageDTO,

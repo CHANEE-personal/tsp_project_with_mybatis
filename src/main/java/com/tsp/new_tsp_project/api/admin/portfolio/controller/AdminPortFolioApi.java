@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +25,7 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
 import static java.lang.Math.ceil;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Slf4j
 @RestController
@@ -122,7 +122,7 @@ public class AdminPortFolioApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
 	public String insertPortFolio(@Valid AdminPortFolioDTO adminPortFolioDTO,
 								  CommonImageDTO commonImageDTO,
 								  @RequestParam(value = "imageFiles", required = false) List<MultipartFile> files) throws Exception {
@@ -154,7 +154,7 @@ public class AdminPortFolioApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/{idx}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/{idx}", consumes = MULTIPART_FORM_DATA_VALUE)
 	public String updatePortFolio(@Valid AdminPortFolioDTO adminPortFolioDTO,
 								  CommonImageDTO commonImageDTO,
 								  HttpServletRequest request,

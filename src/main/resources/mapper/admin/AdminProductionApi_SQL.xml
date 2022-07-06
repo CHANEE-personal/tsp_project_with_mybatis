@@ -91,9 +91,9 @@
 		VALUES (#{title},
 				#{description},
 				#{visible},
-				'1',
+				#{creator},
 				now(),
-				'1',
+				#{updater},
 				now())
 	</insert>
 
