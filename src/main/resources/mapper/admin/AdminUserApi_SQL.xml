@@ -29,7 +29,7 @@
 
     <select id="selectAdminSeq" parameterType="String" resultType="String">
         /*[AdminUserApi_SQL.xml].[selectAdminSeq] */
-        SELECT idx
+        SELECT user_id
         FROM tsp_admin
         WHERE user_token = #{userToken}
     </select>

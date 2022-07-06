@@ -65,8 +65,8 @@ public class SearchCommon {
 		// JWT token 값 존재 시 유저 인증 값 부여
 		if (request.getHeader("Authorization") != null) {
 			String userSeq = adminUserMapper.selectAdminSeq(StringUtil.getString(request.getHeader("Authorization"), ""));
-			newCommonDTO.setCreator(StringUtil.getInt(userSeq, 0));
-			newCommonDTO.setUpdater(StringUtil.getInt(userSeq, 0));
+			newCommonDTO.setCreator(userSeq);
+			newCommonDTO.setUpdater(userSeq);
 		}
 	}
 }
