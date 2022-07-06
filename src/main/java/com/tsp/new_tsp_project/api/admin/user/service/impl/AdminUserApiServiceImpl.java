@@ -34,8 +34,23 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 *
 	 */
 	@Override
-	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) {
+	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws Exception {
 		return adminUserMapper.getUserList(commandMap);
+	}
+
+	/**
+	 * <pre>
+	 * 1. MethodName : insertAdminUser
+	 * 2. ClassName  : AdminUserApiServiceImpl.java
+	 * 3. Comment    : 회원 가입
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 */
+	@Override
+	public Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception {
+		return adminUserMapper.insertAdminUser(adminUserDTO);
 	}
 
 	/**

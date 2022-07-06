@@ -2,6 +2,7 @@ package com.tsp.new_tsp_project.api.jwt;
 
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,12 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Slf4j
@@ -30,6 +33,11 @@ public class JwtUtil {
 
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
+
+    private Key getSigningKey(String secretKey) {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,6 +54,28 @@ public class JwtUtil {
 
     /**
      * <pre>
+     * 1. MethodName : doGenerateToken
+     * 2. ClassName  : JwtUtil.java
+     * 3. Comment    : 토큰 발급
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 07. 07.
+     * </pre>
+     *
+     */
+    public String doGenerateToken(String username, long expireTime) {
+        Claims claims = Jwts.claims();
+        claims.put("username", username);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(SignatureAlgorithm.HS256, getSigningKey(SECRET_KEY))
+                .compact();
+    }
+
+    /**
+     * <pre>
      * 1. MethodName : extractAllClaims
      * 2. ClassName  : JwtUtil.java
      * 3. Comment    : JWT 토큰이 유효한 토큰인지 검사한 후, 토큰에 담긴 Payload 값을 가져온다
@@ -55,7 +85,7 @@ public class JwtUtil {
      *
      */
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token).getBody();
     }
 
     /**
@@ -121,15 +151,15 @@ public class JwtUtil {
     }
 
     public String resolveAccessToken(HttpServletRequest request) {
-        if (request.getHeader("authorization") != null)   {
-            return request.getHeader("authorization").substring(7);
+        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), ""))   {
+            return request.getHeader("Authorization");
         }
         return null;
     }
 
     public String resolveRefreshToken(HttpServletRequest request) {
-        if (request.getHeader("refreshToken") != null) {
-            return request.getHeader("refreshToken").substring(7);
+        if (request.getHeader("refreshToken") != null && !Objects.equals(request.getHeader("refreshToken"), "")) {
+            return request.getHeader("refreshToken");
         }
         return null;
     }
@@ -146,7 +176,7 @@ public class JwtUtil {
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
@@ -171,11 +201,11 @@ public class JwtUtil {
 
     // 엑세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("authorization", "Bearer " + accessToken);
+        response.setHeader("Authorization", accessToken);
     }
 
     // 리프레시 토큰 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("refreshToken", "Bearer " + refreshToken);
+        response.setHeader("refreshToken", refreshToken);
     }
 }

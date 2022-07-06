@@ -30,7 +30,7 @@ class AdminUserApiServiceTest {
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
-    void 관리자회원리스트조회테스트() {
+    void 관리자회원리스트조회테스트() throws Exception {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("startPage", 1);
         userMap.put("size", 3);

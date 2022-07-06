@@ -62,12 +62,25 @@ public class AdminUserApi {
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
-	@PostMapping(value = "/users")
-	public List<AdminUserDTO> getUserList(@RequestParam Map<String, Object> paramMap, Page page) {
+	@GetMapping(value = "/users")
+	public List<AdminUserDTO> getUserList(@RequestParam Map<String, Object> paramMap, Page page) throws Exception {
 		// 페이징 및 검색
 		Map<String, Object> userMap = searchCommon.searchCommon(page, paramMap);
 
 		return this.adminUserApiService.getUserList(userMap);
+	}
+
+	@ApiOperation(value = "회원 가입", notes = "회원가입을 처리한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공", response = Map.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
+			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
+	})
+	@PostMapping(value = "/users")
+	public Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception {
+		return adminUserApiService.insertAdminUser(adminUserDTO);
 	}
 
 	/**

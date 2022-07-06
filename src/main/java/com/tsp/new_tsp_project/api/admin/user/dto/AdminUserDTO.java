@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -40,4 +43,10 @@ public class AdminUserDTO extends NewCommonDTO {
 
 	@ApiModelProperty(required = false, value = "user Token", hidden = true)
 	String userToken;
+
+	@ApiModelProperty(required = false, value = "user refresh Token", hidden = true)
+	String userRefreshToken;
+
+	@Enumerated(EnumType.STRING)
+	private Role role;
 }

@@ -20,7 +20,19 @@ public interface AdminUserApiService {
 	 * </pre>
 	 *
 	 */
-	List<AdminUserDTO> getUserList(Map<String, Object> commandMap);
+	List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws Exception;
+
+	/**
+	 * <pre>
+	 * 1. MethodName : insertAdminUser
+	 * 2. ClassName  : AdminUserApiService.java
+	 * 3. Comment    : 관리자 회원 가입
+	 * 4. 작성자       : CHO
+	 * 5. 작성일       : 2021. 09. 08.
+	 * </pre>
+	 *
+	 */
+	Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception;
 
 	/**
 	 * <pre>

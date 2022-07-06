@@ -71,10 +71,10 @@ public class JwtAuthorizationFilter extends UsernamePasswordAuthenticationFilter
                 .signWith(SignatureAlgorithm.HS256, Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
                 .compact();
 
-        response.addHeader("authorization", "Bearer " + token);
+        response.addHeader("Authorization", token);
         response.addHeader("username", ((User) authResult.getPrincipal()).getUsername());
         response.addHeader("loginYn", "Y");
-        response.getWriter().write("Bearer " + token);
+        response.getWriter().write(token);
         response.getWriter().flush();
     }
 

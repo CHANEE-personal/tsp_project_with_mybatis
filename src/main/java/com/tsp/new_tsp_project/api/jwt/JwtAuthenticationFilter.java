@@ -33,11 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String accessToken = jwtUtil.resolveAccessToken(request);
             String refreshToken = jwtUtil.resolveRefreshToken(request);
 
-            String userId = adminUserApiService.findOneUserByToken(accessToken);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-
             // 유효한 토큰인지 검사
             if (accessToken != null) {
+                String userId = adminUserApiService.findOneUserByToken(accessToken);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+
                 if (Boolean.TRUE.equals(jwtUtil.validateToken(accessToken, userDetails))) {
                     this.setAuthentication(accessToken);
                 } else {

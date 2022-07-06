@@ -13,9 +13,33 @@
             LIMIT #{startPage}, #{size}
     </select>
 
-    <select id="getUserId" resultType="securityUser">
+    <insert id="insertAdminUser" parameterType="adminUserDto" useGeneratedKeys="true" keyProperty="idx">
+        /*[AdminModelApi_SQL.xml].[insertModel] */
+        INSERT INTO tsp_admin(user_id,
+                              password,
+                              name,
+                              email,
+                              user_token,
+                              role,
+                              creator,
+                              create_time,
+                              updater,
+                              update_time)
+        VALUES (#{userId},
+                #{password},
+                #{name},
+                #{email},
+                #{userToken},
+                #{role},
+                'admin',
+                now(),
+                'admin',
+                now())
+    </insert>
+
+    <select id="getUserId" resultType="adminUserDto">
         /*[AdminUserApi_SQL.xml].[getUserId] */
-        SELECT user_id as id, password
+        SELECT user_id as userId, password, user_token as userToken
         FROM tsp_admin
         WHERE user_id = #{id}
     </select>
@@ -36,7 +60,10 @@
 
     <insert id="insertUserToken" parameterType="adminUserDto">
         /*[AdminUserApi_SQL.xml].[insertUserToken] */
-        UPDATE tsp_admin SET user_token = #{userToken}
+        UPDATE tsp_admin
+        SET
+        <if test="userToken != null and userToken != ''">user_token = #{userToken}</if>
+        <if test="userRefreshToken != null and userRefreshToken != ''">,user_refresh_token = #{userRefreshToken}</if>
         WHERE USER_ID = #{userId}
     </insert>
 
