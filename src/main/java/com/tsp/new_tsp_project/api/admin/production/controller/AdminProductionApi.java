@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
+import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static org.springframework.web.client.HttpClientErrorException.*;
 
 @Slf4j
 @RequestMapping(value = "/api/production")
@@ -32,7 +34,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 @Api(tags = "프로덕션 관련 API")
 public class AdminProductionApi {
-
 	private final AdminProductionApiService adminProductionApiService;
 	private final SearchCommon searchCommon;
 
@@ -47,10 +48,10 @@ public class AdminProductionApi {
 	 *
 	 */
 	@ApiOperation(value = "프로덕션 조회", notes = "프로덕션을 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -72,7 +73,7 @@ public class AdminProductionApi {
 		// 리스트 수
 		productionMap.put("pageSize", page.getSize());
 		// 전체 페이지 수
-		productionMap.put("perPageListCnt", Math.ceil((productionCnt - 1) / page.getSize() + 1));
+		productionMap.put("perPageListCnt", ceil((productionCnt - 1) / page.getSize() + 1));
 		// 전체 아이템 수
 		productionMap.put("productionListCnt", productionCnt);
 
@@ -92,10 +93,10 @@ public class AdminProductionApi {
 	 *
 	 */
 	@ApiOperation(value = "프로덕션 상세 조회", notes = "프로덕션을 상세 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -115,10 +116,10 @@ public class AdminProductionApi {
 	 *
 	 */
 	@ApiOperation(value = "프로덕션 등록", notes = "프로덕션을 등록한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -147,10 +148,10 @@ public class AdminProductionApi {
 	 *
 	 */
 	@ApiOperation(value = "프로덕션 수정", notes = "프로덕션을 수정한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -183,10 +184,10 @@ public class AdminProductionApi {
 	 *
 	 */
 	@ApiOperation(value = "프로덕션 삭제", notes = "프로덕션을 삭제한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})

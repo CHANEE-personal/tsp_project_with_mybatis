@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO.*;
+import static java.lang.Math.ceil;
+import static org.springframework.web.client.HttpClientErrorException.*;
 
 @Slf4j
 @RestController
@@ -41,10 +43,10 @@ public class AdminSupportApi {
 	 *
 	 */
 	@ApiOperation(value = "지원모델 조회", notes = "지원모델을 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -67,7 +69,7 @@ public class AdminSupportApi {
 		// 리스트 수
 		supportMap.put("pageSize", page.getSize());
 		// 전체 페이지 수
-		supportMap.put("perPageListCnt", Math.ceil((supportModelCnt - 1) / page.getSize() + 1));
+		supportMap.put("perPageListCnt", ceil((supportModelCnt - 1) / page.getSize() + 1));
 		// 전체 아이템 수
 		supportMap.put("supportListCnt", supportModelCnt);
 
@@ -87,10 +89,10 @@ public class AdminSupportApi {
 	 *
 	 */
 	@ApiOperation(value = "지원모델 상세 조회", notes = "지원모델을 상세 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -98,9 +100,7 @@ public class AdminSupportApi {
 	public Map<String, Object> getSupportModelInfo(@PathVariable("idx") Integer idx) throws Exception {
 		Map<String, Object> supportMap = new HashMap<>();
 
-		AdminSupportDTO adminSupportDTO = builder().idx(idx).build();
-
-		supportMap.put("supportModelInfo", this.adminSupportService.getSupportModelInfo(adminSupportDTO));
+		supportMap.put("supportModelInfo", this.adminSupportService.getSupportModelInfo(builder().idx(idx).build()));
 
 		return supportMap;
 	}

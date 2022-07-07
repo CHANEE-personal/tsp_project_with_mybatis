@@ -5,7 +5,6 @@ import com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO;
 import com.tsp.new_tsp_project.api.admin.portfolio.service.AdminPortFolioApiService;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
-import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.*;
+
 @Slf4j
 @Service("AdminPortFolioApiService")
 @Transactional
 @RequiredArgsConstructor
 public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
-
 	private final AdminPortFolioMapper adminPortFolioMapper;
 	private final ImageService imageService;
 
@@ -36,11 +36,11 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer getPortFolioCnt(Map<String, Object> searchMap) {
+	public Integer getPortFolioCnt(Map<String, Object> searchMap) throws TspException {
 		try {
 			return this.adminPortFolioMapper.getPortFolioCnt(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
+			throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
 		}
 	}
 
@@ -54,11 +54,11 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 */
-	public List<AdminPortFolioDTO> getPortFolioList(Map<String, Object> searchMap) {
+	public List<AdminPortFolioDTO> getPortFolioList(Map<String, Object> searchMap) throws TspException {
 		try {
 			return this.adminPortFolioMapper.getPortFolioList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO_LIST, e);
+			throw new TspException(NOT_FOUND_PORTFOLIO_LIST, e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 */
-	public Map<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) {
+	public Map<String, Object> getPortFolioInfo(AdminPortFolioDTO adminPortFolioDTO) throws TspException {
 
 		Map<String, Object> portFolioMap = new HashMap<>();
 
@@ -84,7 +84,7 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 
 			return portFolioMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PORTFOLIO, e);
+			throw new TspException(NOT_FOUND_PORTFOLIO, e);
 		}
 	}
 
@@ -100,9 +100,9 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 */
 	public Integer insertPortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
-								   List<MultipartFile> files) {
+								   List<MultipartFile> files) throws TspException {
 
-		int num;
+		Integer num;
 
 		try {
 			if(this.adminPortFolioMapper.insertPortFolio(adminPortFolioDTO) > 0) {
@@ -110,15 +110,14 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, new Throwable().getCause());
+				throw new TspException(ERROR_PORTFOLIO, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
+			throw new TspException(ERROR_PORTFOLIO, e);
 		}
 	}
 
@@ -135,9 +134,9 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	public Integer updatePortFolio(AdminPortFolioDTO adminPortFolioDTO,
 								   CommonImageDTO commonImageDTO,
 								   MultipartFile[] files,
-								   Map<String, Object> portFolioMap) {
+								   Map<String, Object> portFolioMap) throws TspException {
 
-		int num;
+		Integer num;
 
 		try {
 			if(this.adminPortFolioMapper.updatePortFolio(adminPortFolioDTO) > 0) {
@@ -145,13 +144,13 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, files, portFolioMap))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, new Throwable().getCause());
+				throw new TspException(ERROR_PORTFOLIO, new Throwable().getCause());
 			}	
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PORTFOLIO, e);
+			throw new TspException(ERROR_PORTFOLIO, e);
 		}
 		return num;
 	}
@@ -166,11 +165,11 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) {
+	public Integer deletePortFolio(AdminPortFolioDTO adminPortFolioDTO) throws TspException {
 		try {
 			return this.adminPortFolioMapper.deletePortFolio(adminPortFolioDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
+			throw new TspException(ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 
@@ -184,11 +183,11 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deleteAllPortFolio(Map<String, Object> portFolioMap) {
+	public Integer deleteAllPortFolio(Map<String, Object> portFolioMap) throws TspException {
 		try {
 			return this.adminPortFolioMapper.deleteAllPortFolio(portFolioMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
+			throw new TspException(ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 
@@ -201,11 +200,11 @@ public class AdminPortFolioApiServiceImpl implements AdminPortFolioApiService {
 	 * 5. 작성일       : 2021. 09. 28.
 	 * </pre>
 	 */
-	public Integer deletePartPortFolio(Map<String, Object> portFolioMap) {
+	public Integer deletePartPortFolio(Map<String, Object> portFolioMap) throws TspException {
 		try {
 			return this.adminPortFolioMapper.deletePartPortFolio(portFolioMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PORTFOLIO, e);
+			throw new TspException(ERROR_DELETE_PORTFOLIO, e);
 		}
 	}
 }

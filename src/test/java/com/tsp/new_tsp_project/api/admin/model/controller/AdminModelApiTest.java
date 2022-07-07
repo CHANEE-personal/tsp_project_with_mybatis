@@ -2,6 +2,10 @@ package com.tsp.new_tsp_project.api.admin.model.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
+import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
+import com.tsp.new_tsp_project.api.admin.user.dto.Role;
+import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
+import com.tsp.new_tsp_project.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,9 +34,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -38,12 +50,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class AdminModelApiTest {
 	@Autowired
 	private MockMvc mockMvc;
@@ -54,14 +67,52 @@ class AdminModelApiTest {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	@Autowired
+	private AdminUserApiService adminUserApiService;
+
+	AdminUserDTO adminUserDTO;
+
+	Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		return authorities;
+	}
+
+	void createUser() throws Exception {
+		passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
+		adminUserDTO = AdminUserDTO.builder()
+				.userId("admin04")
+				.password("pass1234")
+				.name("test")
+				.email("test@test.com")
+				.role(Role.ROLE_ADMIN)
+				.userToken(token)
+				.visible("Y")
+				.build();
+
+		adminUserApiService.insertAdminUser(adminUserDTO);
+	}
+
 	@BeforeEach
 	@EventListener(ApplicationReadyEvent.class)
-	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+	public void setup() throws Exception {
+		this.mockMvc = webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
 				.alwaysDo(print())
 				.build();
+
+		createUser();
 	}
 
 	@Test

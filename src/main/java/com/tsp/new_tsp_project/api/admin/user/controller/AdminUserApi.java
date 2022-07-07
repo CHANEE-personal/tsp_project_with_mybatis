@@ -37,7 +37,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Api(tags = "회원관련 API")
 public class AdminUserApi {
-
 	private final AuthenticationManager authenticationManager;
 	private final MyUserDetailsService userDetailsService;
 	private final JwtUtil jwtTokenUtil;
@@ -55,7 +54,7 @@ public class AdminUserApi {
 	 *
 	 */
 	@ApiOperation(value = "회원 조회", notes = "회원을 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
 			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
 			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
@@ -71,7 +70,7 @@ public class AdminUserApi {
 	}
 
 	@ApiOperation(value = "회원 가입", notes = "회원가입을 처리한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
 			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
 			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
@@ -94,7 +93,7 @@ public class AdminUserApi {
 	 *
 	 */
 	@ApiOperation(value = "회원 로그인 처리", notes = "회원 로그인을 처리한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
 			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
 			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),

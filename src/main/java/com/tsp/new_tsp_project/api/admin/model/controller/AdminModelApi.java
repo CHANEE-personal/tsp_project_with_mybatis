@@ -29,6 +29,7 @@ import java.util.Map;
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.*;
+import static org.springframework.web.client.HttpClientErrorException.*;
 
 @Slf4j
 @Validated
@@ -52,10 +53,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 조회", notes = "모델을 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -101,10 +102,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 상세 조회", notes = "모델을 상세 조회한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -133,10 +134,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 등록", notes = "모델을 등록한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "브랜드 등록성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -170,10 +171,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 수정", notes = "모델을 수정한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "브랜드 등록성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -217,10 +218,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 이미지 삭제", notes = "모델 이미지를 삭제한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})
@@ -247,10 +248,10 @@ public class AdminModelApi {
 	 *
 	 */
 	@ApiOperation(value = "모델 삭제", notes = "모델을 삭제한다.")
-	@ApiResponses({
+	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "성공", response = Map.class),
-			@ApiResponse(code = 400, message = "잘못된 요청", response = HttpClientErrorException.BadRequest.class),
-			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = HttpClientErrorException.Unauthorized.class),
+			@ApiResponse(code = 400, message = "잘못된 요청", response = BadRequest.class),
+			@ApiResponse(code = 401, message = "허용되지 않는 관리자", response = Unauthorized.class),
 			@ApiResponse(code = 403, message = "접근거부", response = HttpClientErrorException.class),
 			@ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
 	})

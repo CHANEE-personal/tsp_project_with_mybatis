@@ -1,5 +1,6 @@
 package com.tsp.new_tsp_project.api.admin.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tsp.new_tsp_project.api.common.domain.dto.NewCommonDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,9 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import static javax.persistence.EnumType.STRING;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @SuperBuilder
@@ -41,12 +44,12 @@ public class AdminUserDTO extends NewCommonDTO {
 	@ApiModelProperty(required = true, value = "user visible", hidden = true)
 	String visible;
 
-	@ApiModelProperty(required = false, value = "user Token", hidden = true)
+	@ApiModelProperty(value = "user Token", hidden = true)
 	String userToken;
 
-	@ApiModelProperty(required = false, value = "user refresh Token", hidden = true)
+	@ApiModelProperty(value = "user refresh Token", hidden = true)
 	String userRefreshToken;
 
-	@Enumerated(EnumType.STRING)
+	@Enumerated(value = STRING)
 	private Role role;
 }

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.*;
+
 @Slf4j
 @Service("AdminProductionApiService")
 @Transactional
@@ -36,8 +38,12 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public Integer getProductionCnt(Map<String, Object> searchMap) throws Exception {
-		return this.adminProductionMapper.getProductionCnt(searchMap);
+	public Integer getProductionCnt(Map<String, Object> searchMap) throws TspException {
+		try {
+			return this.adminProductionMapper.getProductionCnt(searchMap);
+		} catch (Exception e) {
+			throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
+		}
 	}
 
 
@@ -52,11 +58,11 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public List<AdminProductionDTO> getProductionList(Map<String, Object> searchMap) {
+	public List<AdminProductionDTO> getProductionList(Map<String, Object> searchMap) throws TspException {
 		try {
 			return this.adminProductionMapper.getProductionList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION_LIST, e);
+			throw new TspException(NOT_FOUND_PRODUCTION_LIST, e);
 		}
 	}
 
@@ -71,7 +77,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) {
+	public Map<String, Object> getProductionInfo(AdminProductionDTO adminProductionDTO) throws TspException {
 		try {
 			Map<String, Object> productionMap = new HashMap<>();
 
@@ -79,7 +85,7 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 
 			return productionMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_PRODUCTION, e);
+			throw new TspException(NOT_FOUND_PRODUCTION, e);
 		}
 	}
 
@@ -96,8 +102,8 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	@Override
 	public Integer insertProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									List<MultipartFile> files) {
-		int num;
+									List<MultipartFile> files) throws TspException {
+		Integer num;
 
 		try {
 			if(this.adminProductionMapper.insertProduction(adminProductionDTO) > 0) {
@@ -107,14 +113,14 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PRODUCTION, new Throwable().getCause());
+				throw new TspException(ERROR_PRODUCTION, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
+			throw new TspException(ERROR_PRODUCTION, e);
 		}
 	}
 
@@ -131,8 +137,8 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	@Override
 	public Integer updateProduction(AdminProductionDTO adminProductionDTO,
 									CommonImageDTO commonImageDTO,
-									List<MultipartFile> files) {
-		int num;
+									List<MultipartFile> files) throws TspException {
+		Integer num;
 
 		try {
 			if(this.adminProductionMapper.updateProduction(adminProductionDTO) > 0) {
@@ -140,14 +146,14 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 				if("Y".equals(this.imageService.uploadImageFile(commonImageDTO, files, "update"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_PRODUCTION, new Throwable().getCause());
+				throw new TspException(ERROR_PRODUCTION, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_PRODUCTION, e);
+			throw new TspException(ERROR_PRODUCTION, e);
 		}
 	}
 
@@ -162,11 +168,11 @@ public class AdminProductionApiServiceImpl implements AdminProductionApiService 
 	 *
 	 */
 	@Override
-	public Integer deleteProduction(AdminProductionDTO adminProductionDTO) {
+	public Integer deleteProduction(AdminProductionDTO adminProductionDTO) throws TspException {
 		try {
 			return this.adminProductionMapper.deleteProduction(adminProductionDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_PRODUCTION, e);
+			throw new TspException(ERROR_DELETE_PRODUCTION, e);
 		}
 	}
 }
