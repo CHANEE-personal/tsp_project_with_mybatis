@@ -17,14 +17,14 @@ import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-local.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class AdminUserApiServiceTest {
-
     @Autowired
     private AdminUserApiService adminUserApiService;
 

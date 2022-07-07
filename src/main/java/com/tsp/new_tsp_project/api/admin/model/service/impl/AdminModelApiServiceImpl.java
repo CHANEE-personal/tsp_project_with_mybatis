@@ -5,7 +5,6 @@ import com.tsp.new_tsp_project.api.admin.model.service.AdminModelApiService;
 import com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import com.tsp.new_tsp_project.api.common.image.service.ImageService;
-import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.*;
+
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service("AdminModelApiService")
 public class AdminModelApiServiceImpl implements AdminModelApiService {
-
 	private final AdminModelMapper adminModelMapper;
 	private final ImageService imageService;
 
@@ -37,8 +37,12 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
-	public Integer getModelListCnt(Map<String, Object> modelMap) throws Exception {
-		return this.adminModelMapper.getModelListCnt(modelMap);
+	public Integer getModelListCnt(Map<String, Object> modelMap) throws TspException {
+		try {
+			return this.adminModelMapper.getModelListCnt(modelMap);
+		} catch (Exception e) {
+			throw new TspException(NOT_FOUND_MODEL_LIST, e);
+		}
 	}
 
 	/**
@@ -52,11 +56,11 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
-	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) {
+	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws TspException {
 		try {
 			return this.adminModelMapper.getModelList(modelMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL_LIST, e);
+			throw new TspException(NOT_FOUND_MODEL_LIST, e);
 		}
 	}
 
@@ -71,7 +75,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
-	public Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) {
+	public Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws TspException {
 		try {
 			Map<String, Object> modelMap = new HashMap<>();
 
@@ -85,7 +89,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 
 			return modelMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_MODEL, e);
+			throw new TspException(NOT_FOUND_MODEL, e);
 		}
 	}
 
@@ -101,8 +105,8 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 */
 	public Integer insertModel(AdminModelDTO adminModelDTO,
 							   CommonImageDTO commonImageDTO,
-							   List<MultipartFile> fileName) {
-		int num;
+							   List<MultipartFile> fileName) throws TspException {
+		Integer num;
 
 		try {
 			if(this.adminModelMapper.insertModel(adminModelDTO) > 0) {
@@ -112,14 +116,14 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 				if ("Y".equals(this.imageService.uploadImageFile(commonImageDTO, fileName, "insert"))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_MODEL, new Throwable().getCause());
+				throw new TspException(ERROR_MODEL, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_MODEL, e);
+			throw new TspException(ERROR_MODEL, e);
 		}
 	}
 
@@ -136,8 +140,8 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	public Integer updateModel(AdminModelDTO adminModelDTO,
 							   CommonImageDTO commonImageDTO,
 							   MultipartFile[] fileName,
-							   Map<String, Object> modelMap) {
-		int num;
+							   Map<String, Object> modelMap) throws TspException {
+		Integer num;
 
 		try {
 			if(this.adminModelMapper.updateModel(adminModelDTO) > 0) {
@@ -145,14 +149,14 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 				if("Y".equals(this.imageService.updateMultipleFile(commonImageDTO, fileName, modelMap))) {
 					num = 1;
 				} else {
-					throw new TspException(ApiExceptionType.NOT_EXIST_IMAGE, new Throwable().getCause());
+					throw new TspException(NOT_EXIST_IMAGE, new Throwable().getCause());
 				}
 			} else {
-				throw new TspException(ApiExceptionType.ERROR_MODEL, new Throwable().getCause());
+				throw new TspException(ERROR_MODEL, new Throwable().getCause());
 			}
 			return num;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_MODEL, e);
+			throw new TspException(ERROR_MODEL, e);
 		}
 	}
 	/**
@@ -165,11 +169,11 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deleteModelImage(CommonImageDTO commonImageDTO) {
+	public Integer deleteModelImage(CommonImageDTO commonImageDTO) throws TspException {
 		try {
 			return this.adminModelMapper.deleteModelImage(commonImageDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+			throw new TspException(ERROR_DELETE_MODEL, e);
 		}
 	}
 
@@ -184,11 +188,11 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 * </pre>
 	 *
 	 */
-	public Integer deleteModel(AdminModelDTO adminModelDTO) {
+	public Integer deleteModel(AdminModelDTO adminModelDTO) throws TspException {
 		try {
 			return this.adminModelMapper.deleteModel(adminModelDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_DELETE_MODEL, e);
+			throw new TspException(ERROR_DELETE_MODEL, e);
 		}
 	}
 }

@@ -1,9 +1,7 @@
 package com.tsp.new_tsp_project.api.admin.user.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
-import com.tsp.new_tsp_project.api.admin.user.dto.Role;
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import com.tsp.new_tsp_project.api.jwt.AuthenticationRequest;
 import com.tsp.new_tsp_project.api.jwt.JwtUtil;
@@ -37,17 +35,20 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
+import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class AdminUserApiTest {
     AdminUserDTO adminUserDTO;
     @Autowired
@@ -85,7 +86,7 @@ class AdminUserApiTest {
                 .password("pass1234")
                 .name("test")
                 .email("test@test.com")
-                .role(Role.ROLE_ADMIN)
+                .role(ROLE_ADMIN)
                 .userToken(token)
                 .visible("Y")
                 .build();
@@ -96,7 +97,7 @@ class AdminUserApiTest {
     @BeforeEach
     @EventListener(ApplicationReadyEvent.class)
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+        this.mockMvc = webAppContextSetup(wac)
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(springSecurity())
                 .alwaysDo(print())
