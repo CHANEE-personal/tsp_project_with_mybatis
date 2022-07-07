@@ -3,7 +3,6 @@ package com.tsp.new_tsp_project.api.admin.support.service.Impl;
 import com.tsp.new_tsp_project.api.admin.mapper.AdminSupportMapper;
 import com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO;
 import com.tsp.new_tsp_project.api.admin.support.service.AdminSupportService;
-import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.NOT_FOUND_SUPPORT;
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.NOT_FOUND_SUPPORT_LIST;
+
 @Service("AdminSupportService")
 @RequiredArgsConstructor
 public class AdminSupportServiceImpl implements AdminSupportService {
-
 	private final AdminSupportMapper adminSupportMapper;
 
 	/**
@@ -29,11 +30,11 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 *
 	 */
 	@Override
-	public Integer getSupportModelCnt(Map<String, Object> searchMap) {
+	public Integer getSupportModelCnt(Map<String, Object> searchMap) throws TspException {
 		try {
 			return this.adminSupportMapper.getSupportModelCnt(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
+			throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
 		}
 	}
 
@@ -48,11 +49,11 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 *
 	 */
 	@Override
-	public List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) {
+	public List<AdminSupportDTO> getSupportModelList(Map<String, Object> searchMap) throws TspException {
 		try {
 			return this.adminSupportMapper.getSupportModelList(searchMap);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT_LIST, e);
+			throw new TspException(NOT_FOUND_SUPPORT_LIST, e);
 		}
 	}
 
@@ -67,7 +68,7 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 	 *
 	 */
 	@Override
-	public Map<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) {
+	public Map<String, Object> getSupportModelInfo(AdminSupportDTO adminSupportDTO) throws TspException {
 
 		try {
 			Map<String, Object> supportMap = new HashMap<>();
@@ -76,7 +77,7 @@ public class AdminSupportServiceImpl implements AdminSupportService {
 
 			return supportMap;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_SUPPORT, e);
+			throw new TspException(NOT_FOUND_SUPPORT, e);
 		}
 	}
 }
