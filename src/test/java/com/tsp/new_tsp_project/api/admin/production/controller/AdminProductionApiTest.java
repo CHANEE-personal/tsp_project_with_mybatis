@@ -12,11 +12,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,20 +27,23 @@ import java.io.FileInputStream;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = NONE)
 class AdminProductionApiTest {
-
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -55,7 +56,7 @@ class AdminProductionApiTest {
 	@BeforeEach
 	@EventListener(ApplicationReadyEvent.class)
 	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+		this.mockMvc = webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
 				.alwaysDo(print())
@@ -106,8 +107,8 @@ class AdminProductionApiTest {
 						.file("imageFiles", imageFiles.get(0).getBytes())
 						.file("imageFiles", imageFiles.get(1).getBytes())
 						.file(productionJson)
-						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-						.contentType(MediaType.APPLICATION_JSON))
+						.contentType(MULTIPART_FORM_DATA_VALUE)
+						.contentType(APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));
