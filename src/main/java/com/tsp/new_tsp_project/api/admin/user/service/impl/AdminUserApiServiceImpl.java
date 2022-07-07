@@ -4,7 +4,6 @@ import com.tsp.new_tsp_project.api.admin.mapper.AdminUserMapper;
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import com.tsp.new_tsp_project.common.utils.StringUtils;
-import com.tsp.new_tsp_project.exception.ApiExceptionType;
 import com.tsp.new_tsp_project.exception.TspException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.*;
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.ERROR_USER;
+import static com.tsp.new_tsp_project.exception.ApiExceptionType.NOT_FOUND_USER_LIST;
+
 @Service("AdminUserApiService")
 @Transactional
 @RequiredArgsConstructor
 public class AdminUserApiServiceImpl implements AdminUserApiService {
-
 	private final AdminUserMapper adminUserMapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -34,8 +36,12 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 *
 	 */
 	@Override
-	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws Exception {
-		return adminUserMapper.getUserList(commandMap);
+	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws TspException {
+		try {
+			return adminUserMapper.getUserList(commandMap);
+		} catch (Exception e) {
+			throw new TspException(NOT_FOUND_USER_LIST, e);
+		}
 	}
 
 	/**
@@ -49,8 +55,12 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 *
 	 */
 	@Override
-	public Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception {
-		return adminUserMapper.insertAdminUser(adminUserDTO);
+	public Integer insertAdminUser(AdminUserDTO adminUserDTO) throws TspException {
+		try {
+			return adminUserMapper.insertAdminUser(adminUserDTO);
+		} catch (Exception e) {
+			throw new TspException(ERROR_USER, e);
+		}
 	}
 
 	/**
@@ -63,7 +73,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * </pre>
 	 *
 	 */
-	public String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) {
+	public String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) throws TspException {
 
 		try {
 			final String db_pw = StringUtils.nullStrToStr(this.adminUserMapper.adminLogin(adminUserDTO));
@@ -77,7 +87,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 			}
 			return result;
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
+			throw new TspException(NOT_FOUND_USER, e);
 		}
 	}
 
@@ -90,11 +100,11 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * 5. 작성일       : 2021. 09. 08.
 	 * </pre>
 	 */
-	public void insertUserToken(AdminUserDTO adminUserDTO) {
+	public void insertUserToken(AdminUserDTO adminUserDTO) throws TspException {
 		try {
 			this.adminUserMapper.insertUserToken(adminUserDTO);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.ERROR_USER, e);
+			throw new TspException(ERROR_USER, e);
 		}
 	}
 
@@ -108,11 +118,11 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * </pre>
 	 *
 	 */
-	public String findOneUserByToken(String token) {
+	public String findOneUserByToken(String token) throws TspException {
 		try {
 			return this.adminUserMapper.findOneUserByToken(token);
 		} catch (Exception e) {
-			throw new TspException(ApiExceptionType.NOT_FOUND_USER, e);
+			throw new TspException(NOT_FOUND_USER, e);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.tsp.new_tsp_project.api.admin.user.service;
 
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
+import com.tsp.new_tsp_project.exception.TspException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,5 +68,5 @@ public interface AdminUserApiService {
 	 * </pre>
 	 *
 	 */
-	String findOneUserByToken(String token);
+	String findOneUserByToken(String token) throws TspException;
 }
