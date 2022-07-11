@@ -36,6 +36,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 *
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws TspException {
 		try {
 			return adminUserMapper.getUserList(commandMap);
@@ -74,7 +75,6 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 *
 	 */
 	public String adminLogin(AdminUserDTO adminUserDTO, HttpServletRequest request) throws TspException {
-
 		try {
 			final String db_pw = StringUtils.nullStrToStr(this.adminUserMapper.adminLogin(adminUserDTO));
 
@@ -118,6 +118,7 @@ public class AdminUserApiServiceImpl implements AdminUserApiService {
 	 * </pre>
 	 *
 	 */
+	@Transactional(readOnly = true)
 	public String findOneUserByToken(String token) throws TspException {
 		try {
 			return this.adminUserMapper.findOneUserByToken(token);

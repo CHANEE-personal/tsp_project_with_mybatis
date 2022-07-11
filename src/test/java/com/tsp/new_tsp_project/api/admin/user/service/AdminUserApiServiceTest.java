@@ -54,4 +54,17 @@ class AdminUserApiServiceTest {
                 .userId("admin01").password("pass1234").build();
         adminUserApiService.insertUserToken(adminUserDTO);
     }
+
+    @Test
+    @DisplayName("토큰을 이용한 회원 조회 테스트")
+    void 토큰을이용한회원조회테스트() throws Exception {
+        AdminUserDTO adminUserDTO = builder()
+                .userId("admin01")
+                .idx(2)
+                .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")
+                .build();
+        adminUserApiService.insertUserToken(adminUserDTO);
+
+        assertThat(adminUserApiService.findOneUserByToken(adminUserDTO.getUserToken())).isEqualTo("admin01");
+    }
 }

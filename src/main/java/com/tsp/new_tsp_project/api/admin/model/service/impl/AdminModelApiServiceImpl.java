@@ -37,6 +37,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Integer getModelListCnt(Map<String, Object> modelMap) throws TspException {
 		try {
 			return this.adminModelMapper.getModelListCnt(modelMap);
@@ -56,6 +57,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<AdminModelDTO> getModelList(Map<String, Object> modelMap) throws TspException {
 		try {
 			return this.adminModelMapper.getModelList(modelMap);
@@ -75,6 +77,7 @@ public class AdminModelApiServiceImpl implements AdminModelApiService {
 	 *
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Map<String, Object> getModelInfo(AdminModelDTO adminModelDTO) throws TspException {
 		try {
 			Map<String, Object> modelMap = new HashMap<>();
