@@ -130,7 +130,8 @@ class AdminModelApiTest {
 	@Test
 	@DisplayName("Admin 모델 상세 조회 테스트")
 	void 모델상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/model/1/156"))
+		mockMvc.perform(get("/api/model/1/156")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.modelMap.modelInfo.idx").value(156))
@@ -224,7 +225,8 @@ class AdminModelApiTest {
 	@Test
 	@DisplayName("Admin 모델 삭제 테스트")
 	void 모델삭제Api테스트() throws Exception {
-		mockMvc.perform(delete("/api/model/156"))
+		mockMvc.perform(delete("/api/model/156")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));

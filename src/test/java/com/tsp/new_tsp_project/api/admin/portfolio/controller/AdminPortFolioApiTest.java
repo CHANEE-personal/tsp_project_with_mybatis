@@ -2,6 +2,10 @@ package com.tsp.new_tsp_project.api.admin.portfolio.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO;
+import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
+import com.tsp.new_tsp_project.api.admin.user.dto.Role;
+import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
+import com.tsp.new_tsp_project.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,11 +33,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,14 +64,52 @@ class AdminPortFolioApiTest {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	@Autowired
+	private AdminUserApiService adminUserApiService;
+
+	AdminUserDTO adminUserDTO;
+
+	Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		return authorities;
+	}
+
+	void createUser() throws Exception {
+		passwordEncoder = createDelegatingPasswordEncoder();
+
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
+
+		adminUserDTO = AdminUserDTO.builder()
+				.userId("admin04")
+				.password("pass1234")
+				.name("test")
+				.email("test@test.com")
+				.role(Role.ROLE_ADMIN)
+				.userToken(token)
+				.visible("Y")
+				.build();
+
+		adminUserApiService.insertAdminUser(adminUserDTO);
+	}
+
 	@BeforeEach
 	@EventListener(ApplicationReadyEvent.class)
-	public void setup() {
+	public void setup() throws Exception {
 		this.mockMvc = webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
 				.alwaysDo(print())
 				.build();
+
+		createUser();
 	}
 
 	@Test
@@ -70,7 +119,8 @@ class AdminPortFolioApiTest {
 		MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
 		portfolioMap.add("jpaStartPage", "1");
 		portfolioMap.add("size", "3");
-		mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap))
+		mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap)
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -79,7 +129,8 @@ class AdminPortFolioApiTest {
 	@Disabled
 	@DisplayName("Admin 포트폴리오 상세 조회 테스트")
 	void 포트폴리오상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/portfolio/1"))
+		mockMvc.perform(get("/api/portfolio/1")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -120,7 +171,8 @@ class AdminPortFolioApiTest {
 	@Disabled
 	@DisplayName("Admin 포트폴리오 삭제 테스트")
 	void 포트폴리오삭제Api테스트() throws Exception {
-		mockMvc.perform(delete("/api/portfolio/1"))
+		mockMvc.perform(delete("/api/portfolio/1")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));
