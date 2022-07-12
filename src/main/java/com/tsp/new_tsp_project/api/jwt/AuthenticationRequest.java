@@ -23,7 +23,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AuthenticationRequest implements UserDetails {
-
 	private AdminUserDTO adminUserDTO;
 
 	private static final long serialVersionUID = 5926468583005150707L;

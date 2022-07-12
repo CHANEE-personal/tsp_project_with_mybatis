@@ -17,12 +17,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,6 +37,7 @@ import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -76,7 +75,7 @@ class AdminUserApiTest {
     }
 
     void createUser() throws Exception {
-        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        passwordEncoder = createDelegatingPasswordEncoder();
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
         String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
@@ -122,9 +121,10 @@ class AdminUserApiTest {
     @Test
     @DisplayName("Admin 로그인 처리 테스트")
     void 관리자로그인Api테스트() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-        authenticationRequest.setUserId("admin01");
-        authenticationRequest.setPassword("pass1234");
+        AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
+                .userId("admin01")
+                .password("pass1234")
+                .build();
 
         mockMvc.perform(post("/api/auth/admin-login")
                         .contentType(APPLICATION_JSON_VALUE)
@@ -139,11 +139,13 @@ class AdminUserApiTest {
     @Test
     @DisplayName("Admin JWT 토큰 발급 테스트")
     void JWT토큰발급Api테스트() throws Exception {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-        authenticationRequest.setUserId("admin01");
-        authenticationRequest.setPassword("pass1234");
+        AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
+                .userId("admin01")
+                .password("pass1234")
+                .build();
 
         mockMvc.perform(post("/api/auth/authenticate")
+                        .header("Authorization", adminUserDTO.getUserToken())
                 .contentType(APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())

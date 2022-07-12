@@ -36,10 +36,10 @@ class AdminPortFolioApiServiceTest {
     @DisplayName("포트폴리오 리스트 조회 테스트")
     void 포트폴리오리스트조회테스트() throws Exception {
         Map<String, Object> portfolioMap = new HashMap<>();
-        portfolioMap.put("startPate", 1);
+        portfolioMap.put("startPage", 1);
         portfolioMap.put("size", 3);
-        List<AdminPortFolioDTO> portfoliList = adminPortFolioApiService.getPortFolioList(portfolioMap);
-        assertThat(portfoliList).isNotEmpty();
+        List<AdminPortFolioDTO> portfolioList = adminPortFolioApiService.getPortFolioList(portfolioMap);
+        assertThat(portfolioList).isNotEmpty();
     }
 
     @Test

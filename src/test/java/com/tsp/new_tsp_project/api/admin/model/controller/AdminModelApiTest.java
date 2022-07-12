@@ -24,7 +24,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -44,6 +43,7 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -85,7 +85,7 @@ class AdminModelApiTest {
 	}
 
 	void createUser() throws Exception {
-		passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		passwordEncoder = createDelegatingPasswordEncoder();
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
@@ -121,7 +121,8 @@ class AdminModelApiTest {
 		MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
 		modelMap.add("jpaStartPage", "1");
 		modelMap.add("size", "3");
-		mockMvc.perform(get("/api/model/lists/1").params(modelMap))
+		mockMvc.perform(get("/api/model/lists/1").params(modelMap)
+						.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
@@ -129,7 +130,8 @@ class AdminModelApiTest {
 	@Test
 	@DisplayName("Admin 모델 상세 조회 테스트")
 	void 모델상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/model/1/156"))
+		mockMvc.perform(get("/api/model/1/156")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.modelMap.modelInfo.idx").value(156))
@@ -223,7 +225,8 @@ class AdminModelApiTest {
 	@Test
 	@DisplayName("Admin 모델 삭제 테스트")
 	void 모델삭제Api테스트() throws Exception {
-		mockMvc.perform(delete("/api/model/156"))
+		mockMvc.perform(delete("/api/model/156")
+				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().string("Y"));
