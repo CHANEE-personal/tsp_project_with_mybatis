@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-
     <typeAliases>
         <!-- userDTO -->
         <typeAlias type="com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO" alias="adminUserDto"/>
@@ -24,5 +23,4 @@
         <typeAlias type="com.tsp.new_tsp_project.api.jwt.SecurityUser" alias="securityUser"/>
         <!-- apiVo -->
     </typeAliases>
-
 </configuration>

@@ -28,9 +28,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminPortFolioApiServiceTest {
-
-    @Autowired
-    private AdminPortFolioApiService adminPortFolioApiService;
+    @Autowired private AdminPortFolioApiService adminPortFolioApiService;
 
     @Test
     @DisplayName("포트폴리오 리스트 조회 테스트")
@@ -45,8 +43,7 @@ class AdminPortFolioApiServiceTest {
     @Test
     @DisplayName("포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회테스트() throws Exception {
-        AdminPortFolioDTO adminPortFolioDTO = builder().idx(1).build();
-        assertThat(adminPortFolioApiService.getPortFolioInfo(adminPortFolioDTO)).isNotEmpty();
+        assertThat(adminPortFolioApiService.getPortFolioInfo(builder().idx(1).build())).isNotEmpty();
     }
 
     @Test
@@ -80,8 +77,6 @@ class AdminPortFolioApiServiceTest {
     @Test
     @DisplayName("포트폴리오 삭제 테스트")
     void 포트폴리오삭제테스트() throws Exception {
-        AdminPortFolioDTO adminPortFolioDTO = builder().idx(1).build();
-        Integer count = adminPortFolioApiService.deletePortFolio(adminPortFolioDTO);
-        assertThat(count).isPositive();
+        assertThat(adminPortFolioApiService.deletePortFolio(builder().idx(1).build())).isPositive();
     }
 }

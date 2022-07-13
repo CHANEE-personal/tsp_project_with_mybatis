@@ -50,23 +50,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserApiTest {
     AdminUserDTO adminUserDTO;
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private AdminUserApiService adminUserApiService;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private WebApplicationContext wac;
+    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private AdminUserApiService adminUserApiService;
 
     Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -78,7 +67,6 @@ class AdminUserApiTest {
         passwordEncoder = createDelegatingPasswordEncoder();
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-        String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
         adminUserDTO = builder()
                 .userId("admin04")
@@ -86,7 +74,7 @@ class AdminUserApiTest {
                 .name("test")
                 .email("test@test.com")
                 .role(ROLE_ADMIN)
-                .userToken(token)
+                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
                 .visible("Y")
                 .build();
 

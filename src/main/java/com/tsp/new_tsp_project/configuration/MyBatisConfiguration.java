@@ -5,12 +5,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
@@ -27,7 +24,6 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @MapperScan(value = "com.tsp.new_tsp_project.api.admin.mapper")
 public class MyBatisConfiguration {
-
 	private final ApplicationContext applicationContext;
 
 	public MyBatisConfiguration(ApplicationContext applicationContext) {

@@ -25,8 +25,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserApiServiceTest {
-    @Autowired
-    private AdminUserApiService adminUserApiService;
+    @Autowired private AdminUserApiService adminUserApiService;
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
@@ -41,17 +40,14 @@ class AdminUserApiServiceTest {
     @Test
     @DisplayName("회원 로그인 테스트")
     void 회원로그인테스트() throws Exception {
-        AdminUserDTO adminUserDTO = builder()
-                .userId("admin01").password("pass1234").build();
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        assertThat(adminUserApiService.adminLogin(adminUserDTO, request)).isEqualTo("Y");
+        AdminUserDTO adminUserDTO = builder().userId("admin01").password("pass1234").build();
+        assertThat(adminUserApiService.adminLogin(adminUserDTO, new MockHttpServletRequest())).isEqualTo("Y");
     }
 
     @Test
     @DisplayName("로그인 후 토큰 등록 테스트")
     void 로그인후토큰등록테스트() throws Exception {
-        AdminUserDTO adminUserDTO = builder()
-                .userId("admin01").password("pass1234").build();
+        AdminUserDTO adminUserDTO = builder().userId("admin01").password("pass1234").build();
         adminUserApiService.insertUserToken(adminUserDTO);
     }
 

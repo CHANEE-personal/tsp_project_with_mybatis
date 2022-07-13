@@ -29,8 +29,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminProductionApiServiceTest {
-    @Autowired
-    private AdminProductionApiService adminProductionApiService;
+    @Autowired private AdminProductionApiService adminProductionApiService;
 
     @Test
     @DisplayName("프로덕션 리스트 조회 테스트")
@@ -45,8 +44,7 @@ class AdminProductionApiServiceTest {
     @Test
     @DisplayName("프로덕션 상세 조회 테스트")
     void 프로덕션상세조회테스트() throws Exception {
-        AdminProductionDTO adminProductionDTO = builder().idx(117).build();
-        assertThat(adminProductionApiService.getProductionInfo(adminProductionDTO).get("productionInfo")).isNotNull();
+        assertThat(adminProductionApiService.getProductionInfo(builder().idx(117).build()).get("productionInfo")).isNotNull();
     }
 
     @Test
@@ -79,8 +77,6 @@ class AdminProductionApiServiceTest {
     @Test
     @DisplayName("프로덕션 삭제 테스트")
     void 프로덕션삭제테스트() throws Exception {
-        AdminProductionDTO adminProductionDTO = builder().idx(117).build();
-        Integer count = adminProductionApiService.deleteProduction(adminProductionDTO);
-        assertThat(count).isPositive();
+        assertThat(adminProductionApiService.deleteProduction(builder().idx(117).build())).isPositive();
     }
 }

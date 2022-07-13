@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 //@Component
 public class LoginCheckInterceptor implements HandlerInterceptor {
-
 	private final JwtUtil jwtUtil;
 	private final MyUserDetailsService userDetailsService;
 

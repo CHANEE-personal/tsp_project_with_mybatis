@@ -25,9 +25,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminSupportServiceTest {
-
-    @Autowired
-    private AdminSupportService adminSupportService;
+    @Autowired private AdminSupportService adminSupportService;
 
     @Test
     @DisplayName("지원모델 리스트 조회 테스트")
@@ -42,7 +40,6 @@ class AdminSupportServiceTest {
     @Test
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() throws Exception {
-        AdminSupportDTO adminSupportDTO = builder().idx(1).build();
-        assertThat(adminSupportService.getSupportModelInfo(adminSupportDTO)).isNotEmpty();
+        assertThat(adminSupportService.getSupportModelInfo(builder().idx(1).build())).isNotEmpty();
     }
 }

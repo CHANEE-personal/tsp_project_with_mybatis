@@ -1,6 +1,5 @@
 package com.tsp.new_tsp_project.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,20 +8,12 @@ import org.springframework.validation.DefaultMessageCodesResolver;
 import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-
-//	private final HandlerInterceptor loginCheckInterceptor;
-//
-//	@Autowired
-//	public WebConfiguration(HandlerInterceptor loginCheckInterceptor) {
-//		this.loginCheckInterceptor = loginCheckInterceptor;
-//	}
 
 	private static final String[] CLASSPATH_RESOURCE_LOCATIONS =
 			{"classpath:/static/",
@@ -43,19 +34,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 				.maxAge(3600);
 	}
 
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(loginCheckInterceptor)
-//				.order(1)
-//				.excludePathPatterns("/api/auth/admin-login")
-//				.excludePathPatterns(
-//						"/v2/api-docs",
-//						"/swagger-resources/**",
-//						"/swagger-ui.html",
-//						"/webjars/**"
-//				);
-//	}
-
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
@@ -70,7 +48,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Bean
 	public MethodValidationPostProcessor methodValidationPostProcessor() {
@@ -86,7 +63,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Override
 	public MessageCodesResolver getMessageCodesResolver() {
@@ -104,7 +80,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Bean
 	public MessageSource messageSource() {
@@ -124,7 +99,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 	 * 5. 작성일       : 2022. 01. 15.
 	 * </pre>
 	 *
-	 * @throws Exception
 	 */
 	@Bean
 	public LocalValidatorFactoryBean getValidator(MessageSource messageSource) {
@@ -132,14 +106,4 @@ public class WebConfiguration implements WebMvcConfigurer {
 		bean.setValidationMessageSource(messageSource);
 		return bean;
 	}
-
-//	@Bean
-//	public CommonsMultipartResolver multipartResolver() {
-//		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//		multipartResolver.setDefaultEncoding("UTF-8");  // 파일 인코딩 설정
-//		multipartResolver.setMaxUploadSizePerFile(10 * 1024 * 1024);    // 파일당 업로드 크기 제한 (10MB)
-//
-//		return multipartResolver;
-//	}
-
 }

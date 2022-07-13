@@ -25,7 +25,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
 	private final MessageSource messageSource;
 
 	@Getter

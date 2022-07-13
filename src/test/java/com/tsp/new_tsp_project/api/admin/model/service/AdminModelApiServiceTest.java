@@ -29,8 +29,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @TestPropertySource(locations = "classpath:application-local.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminModelApiServiceTest {
-    @Autowired
-    private AdminModelApiService adminModelApiService;
+    @Autowired private AdminModelApiService adminModelApiService;
 
     @Test
     @DisplayName("관리자 모델 리스트 조회 테스트")
@@ -46,11 +45,10 @@ class AdminModelApiServiceTest {
     @Test
     @DisplayName("관리자 모델 상세 조회 테스트")
     void 관리자모델상세조회테스트() throws Exception {
-        AdminModelDTO adminModelDTO = builder().categoryCd(1).idx(156).build();
-        adminModelApiService.getModelInfo(adminModelDTO);
+        adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build());
 
-        assertThat(adminModelApiService.getModelInfo(adminModelDTO).get("modelImageList")).isNotNull();
-        assertThat(adminModelApiService.getModelInfo(adminModelDTO).get("modelInfo")).isNotNull();
+        assertThat(adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build()).get("modelImageList")).isNotNull();
+        assertThat(adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build()).get("modelInfo")).isNotNull();
     }
 
     @Test
@@ -90,15 +88,13 @@ class AdminModelApiServiceTest {
                         "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
-        Integer count = adminModelApiService.insertModel(adminModelDTO, commonImageDTO, imageFiles);
-        assertThat(count).isPositive();
+        assertThat(adminModelApiService.insertModel(adminModelDTO, commonImageDTO, imageFiles)).isPositive();
     }
 
     @Test
     @DisplayName("관리자 모델 삭제 테스트")
     void 관리자모델삭제테스트() throws Exception {
         AdminModelDTO adminModelDTO = AdminModelDTO.builder().idx(156).build();
-        Integer count = adminModelApiService.deleteModel(adminModelDTO);
-        assertThat(count).isPositive();
+        assertThat(adminModelApiService.deleteModel(adminModelDTO)).isPositive();
     }
 }

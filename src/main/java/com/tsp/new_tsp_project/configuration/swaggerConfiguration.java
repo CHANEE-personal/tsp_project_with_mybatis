@@ -2,18 +2,18 @@ package com.tsp.new_tsp_project.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static springfox.documentation.builders.PathSelectors.*;
+import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
+import static springfox.documentation.spi.service.contexts.SecurityContext.*;
 
 @Configuration
 @EnableSwagger2
@@ -28,7 +28,6 @@ public class swaggerConfiguration {
 	 * 5. 작성일       : 2021. 02. 09.
 	 * </pre>
 	 *
-	 * @return
 	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
@@ -46,7 +45,6 @@ public class swaggerConfiguration {
 	 * 5. 작성일       : 2021. 02. 09.
 	 * </pre>
 	 *
-	 * @return
 	 */
 	@Bean
 	public Docket commonApi() {
@@ -54,11 +52,11 @@ public class swaggerConfiguration {
 				.groupName("tsp")
 				.apiInfo(this.apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.tsp.new_tsp_project.api"))
-				.paths(PathSelectors.ant("/api/**"))
+				.apis(basePackage("com.tsp.new_tsp_project.api"))
+				.paths(ant("/api/**"))
 				.build()
-				.securityContexts(Arrays.asList(securityContext()))
-				.securitySchemes(Arrays.asList(apikey()));
+				.securityContexts(List.of(securityContext()))
+				.securitySchemes(List.of(apikey()));
 	}
 
 	/**
@@ -70,21 +68,19 @@ public class swaggerConfiguration {
 	 * 5. 작성일       : 2021. 02. 09.
 	 * </pre>
 	 *
-	 * @return
 	 */
 	private ApiKey apikey() {
 		return new ApiKey("JWT", "Authorization", "header");
 	}
 
 	private SecurityContext securityContext() {
-		return springfox.documentation.spi.service.contexts.SecurityContext
-				.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
+		return builder().securityReferences(defaultAuth()).forPaths(any()).build();
 	}
 
 	List<SecurityReference> defaultAuth() {
 		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
-		return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+		return List.of(new SecurityReference("JWT", authorizationScopes));
 	}
 }

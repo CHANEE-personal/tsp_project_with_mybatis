@@ -3,7 +3,6 @@ package com.tsp.new_tsp_project.api.admin.production.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO;
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
-import com.tsp.new_tsp_project.api.admin.user.dto.Role;
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import com.tsp.new_tsp_project.api.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
+import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -55,24 +55,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminProductionApiTest {
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@Autowired
-	private WebApplicationContext wac;
-
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private JwtUtil jwtUtil;
-
-	@Autowired
-	private AdminUserApiService adminUserApiService;
-
+	@Autowired private MockMvc mockMvc;
+	@Autowired private ObjectMapper objectMapper;
+	@Autowired private WebApplicationContext wac;
+	@Autowired PasswordEncoder passwordEncoder;
+	@Autowired private JwtUtil jwtUtil;
+	@Autowired private AdminUserApiService adminUserApiService;
 	AdminUserDTO adminUserDTO;
 
 	Collection<? extends GrantedAuthority> getAuthorities() {
@@ -85,15 +73,14 @@ class AdminProductionApiTest {
 		passwordEncoder = createDelegatingPasswordEncoder();
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
-		String token = jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10);
 
 		adminUserDTO = AdminUserDTO.builder()
 				.userId("admin04")
 				.password("pass1234")
 				.name("test")
 				.email("test@test.com")
-				.role(Role.ROLE_ADMIN)
-				.userToken(token)
+				.role(ROLE_ADMIN)
+				.userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
 				.visible("Y")
 				.build();
 
