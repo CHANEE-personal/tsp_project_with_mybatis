@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
-import static java.util.List.of;
+import static java.util.Arrays.asList;
 import static springfox.documentation.builders.PathSelectors.*;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.spi.service.contexts.SecurityContext.*;
@@ -54,8 +54,8 @@ public class swaggerConfiguration {
                 .apis(basePackage("com.tsp.new_tsp_project.api"))
                 .paths(ant("/api/**"))
                 .build()
-                .securityContexts(of(securityContext()))
-                .securitySchemes(of(apikey()));
+                .securityContexts(asList(securityContext()))
+                .securitySchemes(asList(apikey()));
     }
 
     /**
@@ -79,6 +79,6 @@ public class swaggerConfiguration {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return of(new SecurityReference("JWT", authorizationScopes));
+        return asList(new SecurityReference("JWT", authorizationScopes));
     }
 }

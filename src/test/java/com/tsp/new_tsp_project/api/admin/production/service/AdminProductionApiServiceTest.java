@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
-import static java.util.List.of;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
@@ -64,7 +64,7 @@ class AdminProductionApiServiceTest {
                 .typeName("model")
                 .build();
 
-        List<MultipartFile> imageFiles = of(
+        List<MultipartFile> imageFiles = asList(
                 new MockMultipartFile("0522045010647", "0522045010647.png",
                         "image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
                 new MockMultipartFile("0522045010772", "0522045010772.png",

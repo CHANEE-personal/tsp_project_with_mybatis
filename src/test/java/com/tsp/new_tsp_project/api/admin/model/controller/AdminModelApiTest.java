@@ -37,7 +37,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
-import static java.util.List.of;
+import static java.util.Arrays.asList;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -152,11 +152,11 @@ class AdminModelApiTest {
 		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "",
 				"application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
-		List<MultipartFile> imageFiles = of(
-				new MockMultipartFile("0522045010647","0522045010647.png",
-						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
-				new MockMultipartFile("0522045010772","0522045010772.png" ,
-						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+		List<MultipartFile> imageFiles = asList(
+				new MockMultipartFile("0522045010647", "0522045010647.png",
+						"image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
+				new MockMultipartFile("0522045010772", "0522045010772.png",
+						"image/png", new FileInputStream("src/main/resources/static/images/0522045010772.png"))
 		);
 
 		mockMvc.perform(multipart("/api/model")
@@ -192,7 +192,7 @@ class AdminModelApiTest {
 
 		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "", "application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
-		List<MultipartFile> imageFiles = of(
+		List<MultipartFile> imageFiles = asList(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
 				new MockMultipartFile("0522045010772","0522045010772.png" ,

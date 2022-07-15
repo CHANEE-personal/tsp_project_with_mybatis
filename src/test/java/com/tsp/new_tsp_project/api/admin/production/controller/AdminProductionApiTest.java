@@ -37,7 +37,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
-import static java.util.List.of;
+import static java.util.Arrays.asList;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -135,7 +135,7 @@ class AdminProductionApiTest {
         MockMultipartFile productionJson = new MockMultipartFile("adminProductionDTO", "",
                 "application/json", objectMapper.writeValueAsString(adminProductionDTO).getBytes());
 
-        List<MultipartFile> imageFiles = of(
+        List<MultipartFile> imageFiles = asList(
                 new MockMultipartFile("0522045010647", "0522045010647.png",
                         "image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
                 new MockMultipartFile("0522045010772", "0522045010772.png",

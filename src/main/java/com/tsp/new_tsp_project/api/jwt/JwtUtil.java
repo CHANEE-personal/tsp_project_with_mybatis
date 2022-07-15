@@ -2,7 +2,6 @@ package com.tsp.new_tsp_project.api.jwt;
 
 import com.tsp.new_tsp_project.api.admin.user.service.AdminUserApiService;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +15,20 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static io.jsonwebtoken.Jwts.*;
+import static io.jsonwebtoken.Jwts.builder;
+import static io.jsonwebtoken.Jwts.claims;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.lang.System.currentTimeMillis;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Component
@@ -35,8 +41,7 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     private Key getSigningKey(String secretKey) {
-        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return hmacShaKeyFor(secretKey.getBytes(UTF_8));
     }
 
     public String extractUserName(String token) {
@@ -62,14 +67,14 @@ public class JwtUtil {
      * </pre>
      */
     public String doGenerateToken(String username, long expireTime) {
-        Claims claims = Jwts.claims();
+        Claims claims = claims();
         claims.put("username", username);
 
-        return Jwts.builder()
+        return builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
-                .signWith(SignatureAlgorithm.HS256, getSigningKey(SECRET_KEY))
+                .setIssuedAt(new Date(currentTimeMillis()))
+                .setExpiration(new Date(currentTimeMillis() + expireTime))
+                .signWith(HS256, getSigningKey(SECRET_KEY))
                 .compact();
     }
 
@@ -82,8 +87,12 @@ public class JwtUtil {
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
      */
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token).getBody();
+    public Claims extractAllClaims(String token) throws ExpiredJwtException {
+        return parserBuilder()
+                .setSigningKey(getSigningKey(SECRET_KEY))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
@@ -124,11 +133,11 @@ public class JwtUtil {
      */
     private String createToken(Map<String, Object> claims, String subject) {
         byte[] keyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SignatureAlgorithm signatureAlgorithm = HS256;
         Key keys = new SecretKeySpec(keyBytes, signatureAlgorithm.getJcaName());
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)).signWith(signatureAlgorithm, keys).compact();
+        return builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(currentTimeMillis()))
+                .setExpiration(new Date(currentTimeMillis() + 1000 * 60 * 60 * 10)).signWith(signatureAlgorithm, keys).compact();
     }
 
     /**
@@ -169,7 +178,7 @@ public class JwtUtil {
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
+            parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
