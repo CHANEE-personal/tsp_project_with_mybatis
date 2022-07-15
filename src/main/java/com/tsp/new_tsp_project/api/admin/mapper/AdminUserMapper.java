@@ -10,86 +10,80 @@ import java.util.Map;
 @Mapper
 public interface AdminUserMapper {
 
-	/**
-	 * <pre>
-	 * 1. MethodName : getUserList
-	 * 2. ClassName  : AdminUserMapper.java
-	 * 3. Comment    : 관리자 유저 조회
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 09. 08.
-	 * </pre>
-	 *
-	 */
-	List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : getUserList
+     * 2. ClassName  : AdminUserMapper.java
+     * 3. Comment    : 관리자 유저 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     */
+    List<AdminUserDTO> getUserList(Map<String, Object> commandMap) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : insertAdminUser
-	 * 2. ClassName  : AdminUserMapper.java
-	 * 3. Comment    : 관리자 회원 가입
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 09. 08.
-	 * </pre>
-	 *
-	 */
-	Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : insertAdminUser
+     * 2. ClassName  : AdminUserMapper.java
+     * 3. Comment    : 관리자 회원 가입
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     */
+    Integer insertAdminUser(AdminUserDTO adminUserDTO) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : getUserId
-	 * 2. ClassName  : AdminUserMapper.java
-	 * 3. Comment    : 관리자 유저 아이디 조회
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 09. 08.
-	 * </pre>
-	 *
-	 */
-	AdminUserDTO getUserId(String id) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : getUserId
+     * 2. ClassName  : AdminUserMapper.java
+     * 3. Comment    : 관리자 유저 아이디 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     */
+    AdminUserDTO getUserId(String id) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : adminLogin
-	 * 2. ClassName  : AdminUserMapper.java
-	 * 3. Comment    : 관리자 로그인 처리
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 09. 08.
-	 * </pre>
-	 *
-	 */
-	String adminLogin(AdminUserDTO adminUserDTO) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : adminLogin
+     * 2. ClassName  : AdminUserMapper.java
+     * 3. Comment    : 관리자 로그인 처리
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     */
+    String adminLogin(AdminUserDTO adminUserDTO) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : selectAdminSeq
-	 * 2. ClassName  : AdminUserMapper.java
-	 * 3. Comment    : 관리자 로그인 처리 후 seq 값 부여
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 09. 08.
-	 * </pre>
-	 *
-	 */
-	String selectAdminSeq(String userToken) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : selectAdminSeq
+     * 2. ClassName  : AdminUserMapper.java
+     * 3. Comment    : 관리자 로그인 처리 후 seq 값 부여
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 09. 08.
+     * </pre>
+     */
+    String selectAdminSeq(String userToken) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : insertUserToken
-	 * 2. ClassName  : AdminLoginApiMapper.java
-	 * 3. Comment    : 관리자 로그인 처리 후 seq 값 부여
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 04. 23.
-	 * </pre>
-	 */
-	void insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : insertUserToken
+     * 2. ClassName  : AdminLoginApiMapper.java
+     * 3. Comment    : 관리자 로그인 처리 후 seq 값 부여
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 04. 23.
+     * </pre>
+     */
+    void insertUserToken(AdminUserDTO adminUserDTO) throws Exception;
 
-	/**
-	 * <pre>
-	 * 1. MethodName : findOneUserByToken
-	 * 2. ClassName  : AdminLoginApiMapper.java
-	 * 3. Comment    : 토큰을 이용한 회원 아이디 조회
-	 * 4. 작성자       : CHO
-	 * 5. 작성일       : 2021. 04. 23.
-	 * </pre>
-	 *
-	 */
-	String findOneUserByToken(String token) throws Exception;
+    /**
+     * <pre>
+     * 1. MethodName : findOneUserByToken
+     * 2. ClassName  : AdminLoginApiMapper.java
+     * 3. Comment    : 토큰을 이용한 회원 아이디 조회
+     * 4. 작성자       : CHO
+     * 5. 작성일       : 2021. 04. 23.
+     * </pre>
+     */
+    String findOneUserByToken(String token) throws Exception;
 }

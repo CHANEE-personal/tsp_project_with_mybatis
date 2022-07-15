@@ -37,6 +37,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
+import static java.util.List.of;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -55,116 +56,116 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestPropertySource(locations = "classpath:application.properties")
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminProductionApiTest {
-	@Autowired private MockMvc mockMvc;
-	@Autowired private ObjectMapper objectMapper;
-	@Autowired private WebApplicationContext wac;
-	@Autowired PasswordEncoder passwordEncoder;
-	@Autowired private JwtUtil jwtUtil;
-	@Autowired private AdminUserApiService adminUserApiService;
-	AdminUserDTO adminUserDTO;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private WebApplicationContext wac;
+    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired private JwtUtil jwtUtil;
+    @Autowired private AdminUserApiService adminUserApiService;
+    AdminUserDTO adminUserDTO;
 
-	Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		return authorities;
-	}
+    Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return authorities;
+    }
 
-	void createUser() throws Exception {
-		passwordEncoder = createDelegatingPasswordEncoder();
+    void createUser() throws Exception {
+        passwordEncoder = createDelegatingPasswordEncoder();
 
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
-		adminUserDTO = AdminUserDTO.builder()
-				.userId("admin04")
-				.password("pass1234")
-				.name("test")
-				.email("test@test.com")
-				.role(ROLE_ADMIN)
-				.userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
-				.visible("Y")
-				.build();
+        adminUserDTO = AdminUserDTO.builder()
+                .userId("admin04")
+                .password("pass1234")
+                .name("test")
+                .email("test@test.com")
+                .role(ROLE_ADMIN)
+                .userToken(jwtUtil.doGenerateToken(authenticationToken.getName(), 1000L * 10))
+                .visible("Y")
+                .build();
 
-		adminUserApiService.insertAdminUser(adminUserDTO);
-	}
+        adminUserApiService.insertAdminUser(adminUserDTO);
+    }
 
-	@BeforeEach
-	@EventListener(ApplicationReadyEvent.class)
-	public void setup() throws Exception {
-		this.mockMvc = webAppContextSetup(wac)
-				.addFilter(new CharacterEncodingFilter("UTF-8", true))
-				.apply(springSecurity())
-				.alwaysDo(print())
-				.build();
+    @BeforeEach
+    @EventListener(ApplicationReadyEvent.class)
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(wac)
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
+                .apply(springSecurity())
+                .alwaysDo(print())
+                .build();
 
-		createUser();
-	}
+        createUser();
+    }
 
-	@Test
-	@DisplayName("Admin 프로덕션 조회 테스트")
-	void 프로덕션조회Api테스트() throws Exception {
-		MultiValueMap<String, String> productionMap = new LinkedMultiValueMap<>();
-		productionMap.add("jpaStartPage", "1");
-		productionMap.add("size", "3");
-		mockMvc.perform(get("/api/production/lists").params(productionMap)
-						.header("Authorization", adminUserDTO.getUserToken()))
-				.andDo(print())
-				.andExpect(status().isOk());
-	}
+    @Test
+    @DisplayName("Admin 프로덕션 조회 테스트")
+    void 프로덕션조회Api테스트() throws Exception {
+        MultiValueMap<String, String> productionMap = new LinkedMultiValueMap<>();
+        productionMap.add("jpaStartPage", "1");
+        productionMap.add("size", "3");
+        mockMvc.perform(get("/api/production/lists").params(productionMap)
+                        .header("Authorization", adminUserDTO.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 
-	@Test
-	@DisplayName("Admin 프로덕션 상세 조회 테스트")
-	void 프로덕션상세조회Api테스트() throws Exception {
-		mockMvc.perform(get("/api/production/117")
-						.header("Authorization", adminUserDTO.getUserToken()))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.productionInfo.title").value("test"))
-				.andExpect(jsonPath("$.productionInfo.description").value("test"));
-	}
+    @Test
+    @DisplayName("Admin 프로덕션 상세 조회 테스트")
+    void 프로덕션상세조회Api테스트() throws Exception {
+        mockMvc.perform(get("/api/production/117")
+                        .header("Authorization", adminUserDTO.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.productionInfo.title").value("test"))
+                .andExpect(jsonPath("$.productionInfo.description").value("test"));
+    }
 
-	@Test
-	@DisplayName("Admin 프로덕션 등록 테스트")
-	void 프로덕션등록Api테스트() throws Exception {
-		AdminProductionDTO adminProductionDTO = builder()
-				.title("productionTest")
-				.description("productionTest")
-				.visible("Y")
-				.build();
+    @Test
+    @DisplayName("Admin 프로덕션 등록 테스트")
+    void 프로덕션등록Api테스트() throws Exception {
+        AdminProductionDTO adminProductionDTO = builder()
+                .title("productionTest")
+                .description("productionTest")
+                .visible("Y")
+                .build();
 
-		MockMultipartFile productionJson = new MockMultipartFile("adminProductionDTO", "",
-				"application/json", objectMapper.writeValueAsString(adminProductionDTO).getBytes());
+        MockMultipartFile productionJson = new MockMultipartFile("adminProductionDTO", "",
+                "application/json", objectMapper.writeValueAsString(adminProductionDTO).getBytes());
 
-		List<MultipartFile> imageFiles = List.of(
-				new MockMultipartFile("0522045010647","0522045010647.png",
-						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
-				new MockMultipartFile("0522045010772","0522045010772.png" ,
-						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
-		);
+        List<MultipartFile> imageFiles = of(
+                new MockMultipartFile("0522045010647", "0522045010647.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
+                new MockMultipartFile("0522045010772", "0522045010772.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+        );
 
-		mockMvc.perform(multipart("/api/production")
-						.file("imageFiles", imageFiles.get(0).getBytes())
-						.file("imageFiles", imageFiles.get(1).getBytes())
-						.file(productionJson)
-						.contentType(MULTIPART_FORM_DATA_VALUE)
-						.contentType(APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().string("Y"));
-	}
+        mockMvc.perform(multipart("/api/production")
+                        .file("imageFiles", imageFiles.get(0).getBytes())
+                        .file("imageFiles", imageFiles.get(1).getBytes())
+                        .file(productionJson)
+                        .contentType(MULTIPART_FORM_DATA_VALUE)
+                        .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("Y"));
+    }
 
-	@Disabled
-	@DisplayName("Admin 프로덕션 수정 테스트")
-	void 프로덕션수정Api테스트() throws Exception {
+    @Disabled
+    @DisplayName("Admin 프로덕션 수정 테스트")
+    void 프로덕션수정Api테스트() throws Exception {
 
-	}
+    }
 
-	@Test
-	@DisplayName("Admin 프로덕션 삭제 테스트")
-	void 프로덕션삭제Api테스트() throws Exception {
-		mockMvc.perform(delete("/api/production/117")
-						.header("Authorization", adminUserDTO.getUserToken()))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().string("Y"));
-	}
+    @Test
+    @DisplayName("Admin 프로덕션 삭제 테스트")
+    void 프로덕션삭제Api테스트() throws Exception {
+        mockMvc.perform(delete("/api/production/117")
+                        .header("Authorization", adminUserDTO.getUserToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("Y"));
+    }
 }

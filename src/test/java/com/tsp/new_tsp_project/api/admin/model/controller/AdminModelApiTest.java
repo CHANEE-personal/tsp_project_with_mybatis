@@ -19,7 +19,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +37,7 @@ import java.util.List;
 
 import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
+import static java.util.List.of;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -152,7 +152,7 @@ class AdminModelApiTest {
 		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "",
 				"application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
-		List<MultipartFile> imageFiles = List.of(
+		List<MultipartFile> imageFiles = of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
 				new MockMultipartFile("0522045010772","0522045010772.png" ,
@@ -192,7 +192,7 @@ class AdminModelApiTest {
 
 		MockMultipartFile modelJson = new MockMultipartFile("adminModelDTO", "", "application/json", objectMapper.writeValueAsString(adminModelDTO).getBytes());
 
-		List<MultipartFile> imageFiles = List.of(
+		List<MultipartFile> imageFiles = of(
 				new MockMultipartFile("0522045010647","0522045010647.png",
 						"image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
 				new MockMultipartFile("0522045010772","0522045010772.png" ,

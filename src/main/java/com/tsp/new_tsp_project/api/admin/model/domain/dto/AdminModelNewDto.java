@@ -7,15 +7,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import net.sf.json.JSON;
-import org.hibernate.validator.constraints.Length;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -98,5 +92,8 @@ public class AdminModelNewDto extends NewCommonDTO {
     @ApiModelProperty(required = true, value = "modelImageList", hidden = true)
     private List<CommonImageDTO> modelImage = new ArrayList<>();
 
-    @Override public String toString() { return new Gson().toJson(this); }
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }

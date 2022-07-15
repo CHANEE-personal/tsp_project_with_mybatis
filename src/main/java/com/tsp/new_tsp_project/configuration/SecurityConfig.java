@@ -56,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -72,7 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -81,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
         // 그 외
         http.authorizeRequests()
                 .antMatchers("/api/model").hasRole("ADMIN")
@@ -119,7 +116,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() throws Exception {
@@ -134,7 +130,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {

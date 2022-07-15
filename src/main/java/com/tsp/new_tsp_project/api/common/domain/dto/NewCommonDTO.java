@@ -17,22 +17,22 @@ import java.util.Date;
 @ApiModel
 public class NewCommonDTO {
 
-	@ApiModelProperty(required = true, value = "등록자", hidden = true)
-	private String creator;
+    @ApiModelProperty(required = true, value = "등록자", hidden = true)
+    private String creator;
 
-	@ApiModelProperty(required = true, value = "수정자", hidden = true)
-	private String updater;
+    @ApiModelProperty(required = true, value = "수정자", hidden = true)
+    private String updater;
 
-	@ApiModelProperty(required = true, value = "등록자 이름", hidden = true)
-	private String adminName;
+    @ApiModelProperty(required = true, value = "등록자 이름", hidden = true)
+    private String adminName;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	@ApiModelProperty(required = true, value = "등록 일자", hidden = true)
-	private Date createTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @ApiModelProperty(required = true, value = "등록 일자", hidden = true)
+    private Date createTime;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	@ApiModelProperty(required = true, value = "수정 일자", hidden = true)
-	private Date updateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @ApiModelProperty(required = true, value = "수정 일자", hidden = true)
+    private Date updateTime;
 }

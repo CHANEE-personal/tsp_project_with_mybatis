@@ -24,34 +24,34 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @MapperScan(value = "com.tsp.new_tsp_project.api.admin.mapper")
 public class MyBatisConfiguration {
-	private final ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-	public MyBatisConfiguration(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
+    public MyBatisConfiguration(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-	@Bean
-	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(dataSource);
+    @Bean
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(dataSource);
 
-		Resource[] arrResource = new PathMatchingResourcePatternResolver()
-				.getResources("classpath:mapper/**/*.xml");
+        Resource[] arrResource = new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mapper/**/*.xml");
 
-		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:config/mybatis-config.xml"));
-		sqlSessionFactoryBean.setMapperLocations(arrResource);
-		sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:config/mybatis-config.xml"));
+        sqlSessionFactoryBean.setMapperLocations(arrResource);
+        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
 
-		return sqlSessionFactoryBean.getObject();
-	}
+        return sqlSessionFactoryBean.getObject();
+    }
 
-	@Bean
-	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
-		return new SqlSessionTemplate(sqlSessionFactory);
-	}
+    @Bean
+    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
 
-	@Bean(name = "transactionManager")
-	public PlatformTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
-	}
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 }

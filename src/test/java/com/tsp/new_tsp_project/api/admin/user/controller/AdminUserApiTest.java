@@ -101,7 +101,7 @@ class AdminUserApiTest {
         userMap.add("jpaStartPage", "1");
         userMap.add("size", "3");
         mockMvc.perform(get("/api/auth/users").params(userMap)
-                .header("Authorization", adminUserDTO.getUserToken()))
+                        .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -134,8 +134,8 @@ class AdminUserApiTest {
 
         mockMvc.perform(post("/api/auth/authenticate")
                         .header("Authorization", adminUserDTO.getUserToken())
-                .contentType(APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(authenticationRequest)))
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.jwt").isNotEmpty())

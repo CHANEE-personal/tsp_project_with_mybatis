@@ -60,7 +60,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String doGenerateToken(String username, long expireTime) {
         Claims claims = Jwts.claims();
@@ -82,7 +81,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(getSigningKey(SECRET_KEY)).parseClaimsJws(token).getBody();
@@ -96,7 +94,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
@@ -110,7 +107,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -125,7 +121,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     private String createToken(Map<String, Object> claims, String subject) {
         byte[] keyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
@@ -144,14 +139,13 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
 
     public String resolveAccessToken(HttpServletRequest request) {
-        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), ""))   {
+        if (request.getHeader("Authorization") != null && !Objects.equals(request.getHeader("Authorization"), "")) {
             return request.getHeader("Authorization");
         }
         return null;
@@ -172,7 +166,6 @@ public class JwtUtil {
      * 4. 작성자       : CHO
      * 5. 작성일       : 2021. 07. 07.
      * </pre>
-     *
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {

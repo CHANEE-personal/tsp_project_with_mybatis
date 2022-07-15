@@ -23,43 +23,43 @@ import java.util.List;
 @Getter
 @Setter
 public class AuthenticationRequest implements UserDetails {
-	private AdminUserDTO adminUserDTO;
+    private AdminUserDTO adminUserDTO;
 
-	private static final long serialVersionUID = 5926468583005150707L;
-	@JsonProperty("userId")
-	private String userId;
-	@JsonProperty("password")
-	private String password;
+    private static final long serialVersionUID = 5926468583005150707L;
+    @JsonProperty("userId")
+    private String userId;
+    @JsonProperty("password")
+    private String password;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		return authorities;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
+    }
 
-	@Override
-	public String getUsername() {
-		return adminUserDTO.getName();
-	}
+    @Override
+    public String getUsername() {
+        return adminUserDTO.getName();
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return false;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

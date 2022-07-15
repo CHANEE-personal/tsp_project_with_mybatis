@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
+import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
@@ -63,15 +64,14 @@ class AdminPortFolioApiServiceTest {
                 .typeName("model")
                 .build();
 
-        List<MultipartFile> imageFiles = List.of(
-                new MockMultipartFile("0522045010647","0522045010647.png",
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010647.png")),
-                new MockMultipartFile("0522045010772","0522045010772.png" ,
-                        "image/png" , new FileInputStream("src/main/resources/static/images/0522045010772.png"))
+        List<MultipartFile> imageFiles = of(
+                new MockMultipartFile("0522045010647", "0522045010647.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010647.png")),
+                new MockMultipartFile("0522045010772", "0522045010772.png",
+                        "image/png", new FileInputStream("src/main/resources/static/images/0522045010772.png"))
         );
 
-        Integer count = adminPortFolioApiService.insertPortFolio(adminPortFolioDTO, commonImageDTO, imageFiles);
-        assertThat(count).isPositive();
+        assertThat(adminPortFolioApiService.insertPortFolio(adminPortFolioDTO, commonImageDTO, imageFiles)).isPositive();
     }
 
     @Test

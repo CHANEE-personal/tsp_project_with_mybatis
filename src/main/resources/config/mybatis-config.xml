@@ -12,9 +12,11 @@
         <!-- modelDTO -->
         <typeAlias type="com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelNewDto" alias="adminModelNewDto"/>
         <!-- portFolioDTO -->
-        <typeAlias type="com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO" alias="adminPortFolioDto"/>
+        <typeAlias type="com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO"
+                   alias="adminPortFolioDto"/>
         <!-- productionDTO -->
-        <typeAlias type="com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO" alias="adminProductionDto"/>
+        <typeAlias type="com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO"
+                   alias="adminProductionDto"/>
         <!-- supportDTO -->
         <typeAlias type="com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO" alias="adminSupportDto"/>
         <!-- imageDTO -->

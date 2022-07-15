@@ -95,7 +95,7 @@ class AdminSupportApiTest {
         supportMap.add("jpaStartPage", "1");
         supportMap.add("size", "3");
         mockMvc.perform(get("/api/support/lists").params(supportMap)
-                .header("Authorization", adminUserDTO.getUserToken()))
+                        .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -104,7 +104,7 @@ class AdminSupportApiTest {
     @DisplayName("Admin 지원 모델 상세 조회 테스트")
     void 지원모델상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/support/1")
-                .header("Authorization", adminUserDTO.getUserToken()))
+                        .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
