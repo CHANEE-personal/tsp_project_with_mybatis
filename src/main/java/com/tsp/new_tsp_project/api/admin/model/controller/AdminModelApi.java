@@ -60,8 +60,7 @@ public class AdminModelApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists/{categoryCd}")
-    public Map<String, Object> getModelList(@PathVariable("categoryCd")
-                                            @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+    public Map<String, Object> getModelList(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
                                             @RequestParam(required = false) Map<String, Object> paramMap,
                                             Page page) throws Exception {
 
@@ -108,9 +107,8 @@ public class AdminModelApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{categoryCd}/{idx}")
-    public Map<String, Object> getModelEdit(@PathVariable("categoryCd")
-                                            @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
-                                            @PathVariable("idx") Integer idx) throws Exception {
+    public Map<String, Object> getModelEdit(@PathVariable @Range(min = 1, max = 3, message = "{modelCategory.Range}") Integer categoryCd,
+                                            @PathVariable Integer idx) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> modelMap;
 
@@ -175,8 +173,8 @@ public class AdminModelApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{categoryCd}/{idx}", consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE})
-    public String updateModel(@PathVariable(value = "idx") Integer idx,
-                              @PathVariable(value = "categoryCd") Integer categoryCd,
+    public String updateModel(@PathVariable Integer idx,
+                              @PathVariable Integer categoryCd,
                               @Valid AdminModelDTO adminModelDTO,
                               CommonImageDTO commonImageDTO,
                               NewCommonDTO newCommonDTO,
@@ -221,7 +219,7 @@ public class AdminModelApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/image/{idx}")
-    public String deleteModelImage(@PathVariable(value = "idx") Integer idx) throws Exception {
+    public String deleteModelImage(@PathVariable Integer idx) throws Exception {
         String result;
 
         if (this.adminModelApiService.deleteModelImage(CommonImageDTO.builder().idx(idx).build()) > 0) {
@@ -250,7 +248,7 @@ public class AdminModelApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping("/{idx}")
-    public String deleteModel(@PathVariable(value = "idx") Integer idx) throws Exception {
+    public String deleteModel(@PathVariable Integer idx) throws Exception {
         String result;
 
         if (this.adminModelApiService.deleteModel(AdminModelDTO.builder().visible("N").idx(idx).build()) > 0) {

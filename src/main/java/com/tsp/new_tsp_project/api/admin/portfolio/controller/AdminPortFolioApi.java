@@ -55,7 +55,7 @@ public class AdminPortFolioApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getPortFolioList(Page page, @RequestParam(required = false) Map<String, Object> paramMap) throws Exception {
+    public Map<String, Object> getPortFolioList(@RequestParam(required = false) Map<String, Object> paramMap, Page page) throws Exception {
         Map<String, Object> portFolioMap = new HashMap<>();
 
         Map<String, Object> searchMap = searchCommon.searchCommon(page, paramMap);
@@ -98,7 +98,7 @@ public class AdminPortFolioApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public Map<String, Object> getPortFolioInfo(@PathVariable("idx") Integer idx) throws Exception {
+    public Map<String, Object> getPortFolioInfo(@PathVariable Integer idx) throws Exception {
         return this.adminPortFolioApiService.getPortFolioInfo(builder().idx(idx).build());
     }
 
@@ -193,7 +193,7 @@ public class AdminPortFolioApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public String deletePortFolio(@PathVariable(value = "idx") Integer idx) throws Exception {
+    public String deletePortFolio(@PathVariable Integer idx) throws Exception {
         AdminPortFolioDTO adminPortFolioDTO = builder().idx(idx).build();
 
         String result;

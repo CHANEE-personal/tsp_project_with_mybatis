@@ -95,7 +95,7 @@ public class AdminSupportApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping("/{idx}")
-    public Map<String, Object> getSupportModelInfo(@PathVariable("idx") Integer idx) throws Exception {
+    public Map<String, Object> getSupportModelInfo(@PathVariable Integer idx) throws Exception {
         Map<String, Object> supportMap = new HashMap<>();
 
         supportMap.put("supportModelInfo", this.adminSupportService.getSupportModelInfo(builder().idx(idx).build()));

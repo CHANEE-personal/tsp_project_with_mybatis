@@ -55,7 +55,7 @@ public class AdminProductionApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/lists")
-    public Map<String, Object> getProductionList(Page page, @RequestParam Map<String, Object> paramMap) throws Exception {
+    public Map<String, Object> getProductionList(@RequestParam Map<String, Object> paramMap, Page page) throws Exception {
 
         Map<String, Object> productionMap = new HashMap<>();
 
@@ -99,7 +99,7 @@ public class AdminProductionApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @GetMapping(value = "/{idx}")
-    public Map<String, Object> getProductionInfo(@PathVariable("idx") Integer idx) throws Exception {
+    public Map<String, Object> getProductionInfo(@PathVariable Integer idx) throws Exception {
         return this.adminProductionApiService.getProductionInfo(builder().idx(idx).build());
     }
 
@@ -152,7 +152,7 @@ public class AdminProductionApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @PostMapping(value = "/{idx}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public String updateProduction(@PathVariable("idx") Integer idx,
+    public String updateProduction(@PathVariable Integer idx,
                                    @Valid AdminProductionDTO adminProductionDTO,
                                    CommonImageDTO commonImageDTO,
                                    @RequestParam(value = "imageFiles", required = false) List<MultipartFile> files) throws Exception {
@@ -187,7 +187,7 @@ public class AdminProductionApi {
             @ApiResponse(code = 500, message = "서버 에러", response = ServerError.class)
     })
     @DeleteMapping(value = "/{idx}")
-    public String deleteProduction(@PathVariable("idx") Integer idx) throws Exception {
+    public String deleteProduction(@PathVariable Integer idx) throws Exception {
         String result;
 
         AdminProductionDTO adminProductionDTO = builder().visible("N").idx(idx).build();
