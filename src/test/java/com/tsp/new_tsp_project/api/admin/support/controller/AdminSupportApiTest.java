@@ -37,6 +37,7 @@ import static org.springframework.security.crypto.factory.PasswordEncoderFactori
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -101,7 +102,8 @@ class AdminSupportApiTest {
         mockMvc.perform(get("/api/support/lists").params(supportMap)
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -110,6 +112,7 @@ class AdminSupportApiTest {
         mockMvc.perform(get("/api/support/1")
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 }

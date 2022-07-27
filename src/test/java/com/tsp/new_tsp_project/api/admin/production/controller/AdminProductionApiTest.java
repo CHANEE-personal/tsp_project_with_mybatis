@@ -114,7 +114,8 @@ class AdminProductionApiTest {
         mockMvc.perform(get("/api/production/lists").params(productionMap)
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -124,6 +125,7 @@ class AdminProductionApiTest {
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.productionInfo.title").value("test"))
                 .andExpect(jsonPath("$.productionInfo.description").value("test"));
     }
@@ -155,6 +157,7 @@ class AdminProductionApiTest {
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string("Y"));
     }
 
@@ -171,6 +174,7 @@ class AdminProductionApiTest {
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string("Y"));
     }
 }

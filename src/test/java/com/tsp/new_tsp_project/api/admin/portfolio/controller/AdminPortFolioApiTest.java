@@ -116,7 +116,8 @@ class AdminPortFolioApiTest {
         mockMvc.perform(get("/api/portfolio/lists").params(portfolioMap)
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -126,7 +127,8 @@ class AdminPortFolioApiTest {
         mockMvc.perform(get("/api/portfolio/1")
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -158,6 +160,7 @@ class AdminPortFolioApiTest {
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string("Y"));
     }
 
@@ -169,6 +172,7 @@ class AdminPortFolioApiTest {
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(content().string("Y"));
     }
 }

@@ -108,7 +108,8 @@ class AdminUserApiTest {
         mockMvc.perform(get("/api/auth/users").params(userMap)
                         .header("Authorization", adminUserDTO.getUserToken()))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"));
     }
 
     @Test
@@ -124,6 +125,7 @@ class AdminUserApiTest {
                         .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.loginYn").value("Y"))
                 .andExpect(jsonPath("$.userId").value("admin01"))
                 .andExpect(jsonPath("$.token").isNotEmpty());
@@ -143,6 +145,7 @@ class AdminUserApiTest {
                         .content(objectMapper.writeValueAsString(authenticationRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=utf-8"))
                 .andExpect(jsonPath("$.jwt").isNotEmpty())
                 .andExpect(jsonPath("$.token").isNotEmpty());
     }

@@ -116,7 +116,8 @@ class AdminModelApiTest {
 		mockMvc.perform(get("/api/model/lists/1").params(modelMap)
 						.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"));
 	}
 
 	@Test
@@ -126,6 +127,7 @@ class AdminModelApiTest {
 				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(jsonPath("$.modelMap.modelInfo.idx").value(156))
 				.andExpect(jsonPath("$.modelMap.modelInfo.category_cd").value(1))
 				.andExpect(jsonPath("$.modelMap.modelInfo.category_age").value(2))
@@ -172,6 +174,7 @@ class AdminModelApiTest {
 						.contentType(MULTIPART_FORM_DATA_VALUE))
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string("Y"));
 	}
 
@@ -211,6 +214,7 @@ class AdminModelApiTest {
 						.contentType(APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string("Y"));
 	}
 
@@ -221,6 +225,7 @@ class AdminModelApiTest {
 				.header("Authorization", adminUserDTO.getUserToken()))
 				.andDo(print())
 				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=utf-8"))
 				.andExpect(content().string("Y"));
 	}
 }
