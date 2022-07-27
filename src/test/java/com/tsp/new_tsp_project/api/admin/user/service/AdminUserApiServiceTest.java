@@ -1,13 +1,14 @@
 package com.tsp.new_tsp_project.api.admin.user.service;
 
 import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.transaction.Transactional;
@@ -18,14 +19,17 @@ import java.util.Map;
 import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
+import static org.springframework.test.context.TestConstructor.AutowireMode.ALL;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-local.properties")
+@TestConstructor(autowireMode = ALL)
+@RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
 class AdminUserApiServiceTest {
-    @Autowired private AdminUserApiService adminUserApiService;
+    private final AdminUserApiService adminUserApiService;
 
     @Test
     @DisplayName("관리자 회원 리스트 조회 테스트")
