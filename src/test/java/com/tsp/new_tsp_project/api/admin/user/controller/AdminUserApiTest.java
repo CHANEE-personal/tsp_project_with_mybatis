@@ -52,6 +52,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @TestConstructor(autowireMode = ALL)
 @RequiredArgsConstructor
 @AutoConfigureTestDatabase(replace = NONE)
+@DisplayName("유저 Api Test")
 class AdminUserApiTest {
     private final ObjectMapper objectMapper;
     private final WebApplicationContext wac;
