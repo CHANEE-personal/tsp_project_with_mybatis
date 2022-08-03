@@ -69,6 +69,7 @@ class AdminUserApiTest {
         return authorities;
     }
 
+    @DisplayName("테스트 유저 생성")
     void createUser() throws Exception {
         passwordEncoder = createDelegatingPasswordEncoder();
 
@@ -114,6 +115,7 @@ class AdminUserApiTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 로그인 처리 테스트")
     void 관리자로그인Api테스트() throws Exception {
         AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
@@ -133,6 +135,7 @@ class AdminUserApiTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin JWT 토큰 발급 테스트")
     void JWT토큰발급Api테스트() throws Exception {
         AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()

@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -76,6 +77,7 @@ class AdminProductionApiTest {
         return authorities;
     }
 
+    @DisplayName("테스트 유저 생성")
     void createUser() throws Exception {
         passwordEncoder = createDelegatingPasswordEncoder();
 
@@ -107,6 +109,7 @@ class AdminProductionApiTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 조회 테스트")
     void 프로덕션조회Api테스트() throws Exception {
         MultiValueMap<String, String> productionMap = new LinkedMultiValueMap<>();
@@ -120,6 +123,7 @@ class AdminProductionApiTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 상세 조회 테스트")
     void 프로덕션상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/production/117")
@@ -162,13 +166,16 @@ class AdminProductionApiTest {
                 .andExpect(content().string("Y"));
     }
 
+    @Test
     @Disabled
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 수정 테스트")
     void 프로덕션수정Api테스트() throws Exception {
 
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 프로덕션 삭제 테스트")
     void 프로덕션삭제Api테스트() throws Exception {
         mockMvc.perform(delete("/api/production/117")

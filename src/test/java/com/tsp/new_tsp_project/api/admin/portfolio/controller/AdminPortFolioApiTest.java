@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -77,6 +78,7 @@ class AdminPortFolioApiTest {
         return authorities;
     }
 
+    @DisplayName("테스트 유저 생성")
     void createUser() throws Exception {
         passwordEncoder = createDelegatingPasswordEncoder();
 
@@ -109,6 +111,7 @@ class AdminPortFolioApiTest {
 
     @Test
     @Disabled
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 조회 테스트")
     void 포트폴리오조회Api테스트() throws Exception {
         MultiValueMap<String, String> portfolioMap = new LinkedMultiValueMap<>();
@@ -123,6 +126,7 @@ class AdminPortFolioApiTest {
 
     @Test
     @Disabled
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회Api테스트() throws Exception {
         mockMvc.perform(get("/api/portfolio/1")
@@ -134,6 +138,7 @@ class AdminPortFolioApiTest {
 
     @Test
     @Disabled
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 등록 테스트")
     void 포트폴리오등록Api테스트() throws Exception {
         AdminPortFolioDTO adminPortFolioDTO = builder()
@@ -167,6 +172,7 @@ class AdminPortFolioApiTest {
 
     @Test
     @Disabled
+    @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 삭제 테스트")
     void 포트폴리오삭제Api테스트() throws Exception {
         mockMvc.perform(delete("/api/portfolio/1")

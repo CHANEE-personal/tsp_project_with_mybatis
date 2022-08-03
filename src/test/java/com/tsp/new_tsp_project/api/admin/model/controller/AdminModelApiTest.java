@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -78,6 +79,7 @@ class AdminModelApiTest {
 		return authorities;
 	}
 
+	@DisplayName("테스트 유저 생성")
 	void createUser() throws Exception {
 		passwordEncoder = createDelegatingPasswordEncoder();
 
@@ -109,6 +111,7 @@ class AdminModelApiTest {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 모델 조회 테스트")
 	void 모델조회Api테스트() throws Exception {
 		MultiValueMap<String, String> modelMap = new LinkedMultiValueMap<>();
@@ -122,6 +125,7 @@ class AdminModelApiTest {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 모델 상세 조회 테스트")
 	void 모델상세조회Api테스트() throws Exception {
 		mockMvc.perform(get("/api/model/1/156")
@@ -137,6 +141,7 @@ class AdminModelApiTest {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	@Disabled
 	@DisplayName("Admin 모델 등록 테스트")
 	void 모델등록Api테스트() throws Exception {
@@ -179,7 +184,9 @@ class AdminModelApiTest {
 				.andExpect(content().string("Y"));
 	}
 
+	@Test
 	@Disabled
+	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 모델 수정 테스트")
 	void 모델수정Api테스트() throws Exception {
 		AdminModelDTO adminModelDTO = builder()
@@ -220,6 +227,7 @@ class AdminModelApiTest {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 모델 삭제 테스트")
 	void 모델삭제Api테스트() throws Exception {
 		mockMvc.perform(delete("/api/model/156")
