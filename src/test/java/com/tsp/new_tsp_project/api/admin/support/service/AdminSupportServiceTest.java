@@ -21,6 +21,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
@@ -49,8 +51,8 @@ class AdminSupportServiceTest {
     }
 
     @Test
-    @DisplayName("지원모델 리스트 조회 BDD 테스트")
-    void 지원모델리스트조회BDD테스트() throws Exception {
+    @DisplayName("지원모델 리스트 조회 Mockito 테스트")
+    void 지원모델리스트조회Mockito테스트() throws Exception {
         Map<String, Object> supportMap = new HashMap<>();
         supportMap.put("startPage", 1);
         supportMap.put("size", 3);
@@ -81,6 +83,41 @@ class AdminSupportServiceTest {
         verify(mockAdminSupportService, times(1)).getSupportModelList(supportMap);
         verify(mockAdminSupportService, atLeastOnce()).getSupportModelList(supportMap);
         verifyNoMoreInteractions(mockAdminSupportService);
+    }
+
+    @Test
+    @DisplayName("지원모델 리스트 조회 BDD 테스트")
+    void 지원모델리스트조회BDD테스트() throws Exception {
+        Map<String, Object> supportMap = new HashMap<>();
+        supportMap.put("startPage", 1);
+        supportMap.put("size", 3);
+        List<AdminSupportDTO> returnSupportList = new ArrayList<>();
+
+        returnSupportList.add(AdminSupportDTO.builder()
+                .idx(1).supportName("조찬희").supportMessage("조찬희")
+                .supportPhone("010-1234-5678").supportHeight(170).supportSize3("31-24-31")
+                .supportInstagram("https://instagram.com").build());
+
+        given(mockAdminSupportService.getSupportModelList(supportMap)).willReturn(returnSupportList);
+        List<AdminSupportDTO> supportList = mockAdminSupportService.getSupportModelList(supportMap);
+
+        // then
+        assertAll(
+                () -> assertThat(supportList).isNotEmpty(),
+                () -> assertThat(supportList).hasSize(1)
+        );
+
+        assertThat(supportList.get(0).getIdx()).isEqualTo(returnSupportList.get(0).getIdx());
+        assertThat(supportList.get(0).getSupportName()).isEqualTo(returnSupportList.get(0).getSupportName());
+        assertThat(supportList.get(0).getSupportMessage()).isEqualTo(returnSupportList.get(0).getSupportMessage());
+        assertThat(supportList.get(0).getSupportHeight()).isEqualTo(returnSupportList.get(0).getSupportHeight());
+        assertThat(supportList.get(0).getSupportPhone()).isEqualTo(returnSupportList.get(0).getSupportPhone());
+        assertThat(supportList.get(0).getSupportSize3()).isEqualTo(returnSupportList.get(0).getSupportSize3());
+
+        // verify
+        then(mockAdminSupportService).should(times(1)).getSupportModelList(supportMap);
+        then(mockAdminSupportService).should(atLeastOnce()).getSupportModelList(supportMap);
+        then(mockAdminSupportService).shouldHaveNoMoreInteractions();
     }
 
     @Test

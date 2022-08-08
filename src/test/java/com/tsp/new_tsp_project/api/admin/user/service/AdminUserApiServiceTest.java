@@ -21,6 +21,8 @@ import java.util.Map;
 import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -53,8 +55,8 @@ class AdminUserApiServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 회원 리스트 조회 BDD 테스트")
-    void 관리자회원리스트조회BDD테스트() throws Exception {
+    @DisplayName("관리자 회원 리스트 조회 Mockito 테스트")
+    void 관리자회원리스트조회Mockito테스트() throws Exception {
         // given
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("jpaStartPage", 1);
@@ -83,6 +85,39 @@ class AdminUserApiServiceTest {
         verify(mockAdminUserApiService, times(1)).getUserList(userMap);
         verify(mockAdminUserApiService, atLeastOnce()).getUserList(userMap);
         verifyNoMoreInteractions(mockAdminUserApiService);
+    }
+
+    @Test
+    @DisplayName("관리자 회원 리스트 조회 BDD 테스트")
+    void 관리자회원리스트조회BDD테스트() throws Exception {
+        // given
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("jpaStartPage", 1);
+        userMap.put("size", 3);
+
+        List<AdminUserDTO> returnUserList = new ArrayList<>();
+
+        returnUserList.add(AdminUserDTO.builder().idx(1).userId("admin05").password("test1234").name("admin05").visible("Y").build());
+
+        // when
+        given(mockAdminUserApiService.getUserList(userMap)).willReturn(returnUserList);
+        List<AdminUserDTO> userList = mockAdminUserApiService.getUserList(userMap);
+
+        // then
+        assertAll(
+                () -> assertThat(userList).isNotEmpty(),
+                () -> assertThat(userList).hasSize(1)
+        );
+
+        assertThat(userList.get(0).getIdx()).isEqualTo(returnUserList.get(0).getIdx());
+        assertThat(userList.get(0).getUserId()).isEqualTo(returnUserList.get(0).getUserId());
+        assertThat(userList.get(0).getPassword()).isEqualTo(returnUserList.get(0).getPassword());
+        assertThat(userList.get(0).getName()).isEqualTo(returnUserList.get(0).getName());
+
+        // verify
+        then(mockAdminUserApiService).should(times(1)).getUserList(userMap);
+        then(mockAdminUserApiService).should(atLeastOnce()).getUserList(userMap);
+        then(mockAdminUserApiService).shouldHaveNoMoreInteractions();
     }
 
     @Test

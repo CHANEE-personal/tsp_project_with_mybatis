@@ -104,6 +104,7 @@ class AdminModelApiTest {
 		this.mockMvc = webAppContextSetup(wac)
 				.addFilter(new CharacterEncodingFilter("UTF-8", true))
 				.apply(springSecurity())
+				.alwaysExpect(status().isOk())
 				.alwaysDo(print())
 				.build();
 

@@ -26,6 +26,8 @@ import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -56,8 +58,8 @@ class AdminModelApiServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 모델 리스트 조회 BDD 테스트")
-    void 모델리스트조회BDD테스트() throws Exception {
+    @DisplayName("관리자 모델 리스트 조회 Mockito 테스트")
+    void 모델리스트조회Mockito테스트() throws Exception {
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("categoryCd", "1");
         modelMap.put("jpaStartPage", 1);
@@ -104,6 +106,54 @@ class AdminModelApiServiceTest {
     }
 
     @Test
+    @DisplayName("관리자 모델 리스트 조회 BDD 테스트")
+    void 모델리스트조회BDD테스트() throws Exception {
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("categoryCd", "1");
+        modelMap.put("jpaStartPage", 1);
+        modelMap.put("size", 3);
+
+        List<AdminModelDTO> returnModelList = new ArrayList<>();
+
+        // 남성
+        returnModelList.add(AdminModelDTO.builder().idx(1).categoryCd(1).modelKorName("남성모델").modelEngName("menModel").build());
+        // 여성
+        returnModelList.add(AdminModelDTO.builder().idx(2).categoryCd(2).modelKorName("여성모델").modelEngName("womenModel").build());
+        // 시니어
+        returnModelList.add(AdminModelDTO.builder().idx(3).categoryCd(3).modelKorName("시니어모델").modelEngName("seniorModel").build());
+
+        // when
+        given(mockAdminModelApiService.getModelList(modelMap)).willReturn(returnModelList);
+        List<AdminModelDTO> modelList = mockAdminModelApiService.getModelList(modelMap);
+
+        // then
+        assertAll(
+                () -> assertThat(modelList).isNotEmpty(),
+                () -> assertThat(modelList).hasSize(3)
+        );
+
+        assertThat(modelList.get(0).getIdx()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(modelList.get(0).getCategoryCd()).isEqualTo(returnModelList.get(0).getIdx());
+        assertThat(modelList.get(0).getModelKorName()).isEqualTo(returnModelList.get(0).getModelKorName());
+        assertThat(modelList.get(0).getModelEngName()).isEqualTo(returnModelList.get(0).getModelEngName());
+
+        assertThat(modelList.get(1).getIdx()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(modelList.get(1).getCategoryCd()).isEqualTo(returnModelList.get(1).getIdx());
+        assertThat(modelList.get(1).getModelKorName()).isEqualTo(returnModelList.get(1).getModelKorName());
+        assertThat(modelList.get(1).getModelEngName()).isEqualTo(returnModelList.get(1).getModelEngName());
+
+        assertThat(modelList.get(2).getIdx()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(modelList.get(2).getCategoryCd()).isEqualTo(returnModelList.get(2).getIdx());
+        assertThat(modelList.get(2).getModelKorName()).isEqualTo(returnModelList.get(2).getModelKorName());
+        assertThat(modelList.get(2).getModelEngName()).isEqualTo(returnModelList.get(2).getModelEngName());
+
+        // verify
+        then(mockAdminModelApiService).should(times(1)).getModelList(modelMap);
+        then(mockAdminModelApiService).should(atLeastOnce()).getModelList(modelMap);
+        then(mockAdminModelApiService).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
     @DisplayName("관리자 모델 상세 조회 테스트")
     void 관리자모델상세조회테스트() throws Exception {
         // given
@@ -115,8 +165,8 @@ class AdminModelApiServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 모델 상세 조회 BDD 테스트")
-    void 모델상세조회BDD테스트() throws Exception {
+    @DisplayName("관리자 모델 상세 조회 Mockito 테스트")
+    void 모델상세조회Mockito테스트() throws Exception {
         AdminModelDTO adminModelDTO = AdminModelDTO.builder()
                 .categoryCd(1)
                 .categoryAge("2")
@@ -147,6 +197,41 @@ class AdminModelApiServiceTest {
         verify(mockAdminModelApiService, times(2)).getModelInfo(adminModelDTO);
         verify(mockAdminModelApiService, atLeastOnce()).getModelInfo(adminModelDTO);
         verifyNoMoreInteractions(mockAdminModelApiService);
+    }
+
+    @Test
+    @DisplayName("관리자 모델 상세 조회 Mockito 테스트")
+    void 모델상세조회BDD테스트() throws Exception {
+        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
+                .categoryCd(1)
+                .categoryAge("2")
+                .modelKorFirstName("조")
+                .modelKorSecondName("찬희")
+                .modelKorName("조찬희")
+                .modelFirstName("CHO")
+                .modelSecondName("CHANHEE")
+                .modelEngName("CHOCHANHEE")
+                .modelDescription("chaneeCho")
+                .modelMainYn("Y")
+                .height("170")
+                .size3("34-24-34")
+                .shoes("270")
+                .visible("Y")
+                .build();
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("modelInfo", mockAdminModelApiService.getModelInfo(adminModelDTO));
+
+        // when
+        given(mockAdminModelApiService.getModelInfo(adminModelDTO)).willReturn(resultMap);
+
+        // then
+        assertThat(mockAdminModelApiService.getModelInfo(adminModelDTO).get("modelInfo")).isNotNull();
+
+        // verify
+        then(mockAdminModelApiService).should(times(2)).getModelInfo(adminModelDTO);
+        then(mockAdminModelApiService).should(atLeastOnce()).getModelInfo(adminModelDTO);
+        then(mockAdminModelApiService).shouldHaveNoMoreInteractions();
     }
 
     @Test
