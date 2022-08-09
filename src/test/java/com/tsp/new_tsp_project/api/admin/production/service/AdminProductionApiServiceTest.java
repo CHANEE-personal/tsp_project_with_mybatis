@@ -5,6 +5,7 @@ import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -82,6 +83,9 @@ class AdminProductionApiServiceTest {
         verify(mockAdminProductionApiService, times(1)).getProductionList(productionMap);
         verify(mockAdminProductionApiService, atLeastOnce()).getProductionList(productionMap);
         verifyNoMoreInteractions(mockAdminProductionApiService);
+
+        InOrder inOrder = inOrder(mockAdminProductionApiService);
+        inOrder.verify(mockAdminProductionApiService).getProductionList(productionMap);
     }
 
     @Test
@@ -142,6 +146,9 @@ class AdminProductionApiServiceTest {
         verify(mockAdminProductionApiService, times(2)).getProductionInfo(adminProductionDTO);
         verify(mockAdminProductionApiService, atLeastOnce()).getProductionInfo(adminProductionDTO);
         verifyNoMoreInteractions(mockAdminProductionApiService);
+
+        InOrder inOrder = inOrder(mockAdminProductionApiService);
+        inOrder.verify(mockAdminProductionApiService).getProductionInfo(adminProductionDTO);
     }
 
     @Test

@@ -1,11 +1,11 @@
 package com.tsp.new_tsp_project.api.admin.portfolio.service;
 
 import com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO;
-import com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO;
 import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -87,6 +87,9 @@ class AdminPortFolioApiServiceTest {
         verify(mockAdminPortfolioApiService, times(1)).getPortFolioList(portfolioMap);
         verify(mockAdminPortfolioApiService, atLeastOnce()).getPortFolioList(portfolioMap);
         verifyNoMoreInteractions(mockAdminPortfolioApiService);
+
+        InOrder inOrder = inOrder(mockAdminPortfolioApiService);
+        inOrder.verify(mockAdminPortfolioApiService).getPortFolioList(portfolioMap);
     }
 
     @Test
@@ -149,6 +152,9 @@ class AdminPortFolioApiServiceTest {
         verify(mockAdminPortfolioApiService, times(2)).getPortFolioInfo(adminPortFolioDTO);
         verify(mockAdminPortfolioApiService, atLeastOnce()).getPortFolioInfo(adminPortFolioDTO);
         verifyNoMoreInteractions(mockAdminPortfolioApiService);
+
+        InOrder inOrder = inOrder(mockAdminPortfolioApiService);
+        inOrder.verify(mockAdminPortfolioApiService).getPortFolioInfo(adminPortFolioDTO);
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -83,6 +84,9 @@ class AdminSupportServiceTest {
         verify(mockAdminSupportService, times(1)).getSupportModelList(supportMap);
         verify(mockAdminSupportService, atLeastOnce()).getSupportModelList(supportMap);
         verifyNoMoreInteractions(mockAdminSupportService);
+
+        InOrder inOrder = inOrder(mockAdminSupportService);
+        inOrder.verify(mockAdminSupportService).getSupportModelList(supportMap);
     }
 
     @Test

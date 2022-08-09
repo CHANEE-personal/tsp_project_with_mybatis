@@ -4,6 +4,7 @@ import com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -85,6 +86,9 @@ class AdminUserApiServiceTest {
         verify(mockAdminUserApiService, times(1)).getUserList(userMap);
         verify(mockAdminUserApiService, atLeastOnce()).getUserList(userMap);
         verifyNoMoreInteractions(mockAdminUserApiService);
+
+        InOrder inOrder = inOrder(mockAdminUserApiService);
+        inOrder.verify(mockAdminUserApiService).getUserList(userMap);
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.tsp.new_tsp_project.api.common.domain.dto.CommonImageDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -103,6 +104,9 @@ class AdminModelApiServiceTest {
         verify(mockAdminModelApiService, times(1)).getModelList(modelMap);
         verify(mockAdminModelApiService, atLeastOnce()).getModelList(modelMap);
         verifyNoMoreInteractions(mockAdminModelApiService);
+
+        InOrder inOrder = inOrder(mockAdminModelApiService);
+        inOrder.verify(mockAdminModelApiService).getModelList(modelMap);
     }
 
     @Test
@@ -197,10 +201,13 @@ class AdminModelApiServiceTest {
         verify(mockAdminModelApiService, times(2)).getModelInfo(adminModelDTO);
         verify(mockAdminModelApiService, atLeastOnce()).getModelInfo(adminModelDTO);
         verifyNoMoreInteractions(mockAdminModelApiService);
+
+        InOrder inOrder = inOrder(mockAdminModelApiService);
+        inOrder.verify(mockAdminModelApiService).getModelInfo(adminModelDTO);
     }
 
     @Test
-    @DisplayName("관리자 모델 상세 조회 Mockito 테스트")
+    @DisplayName("관리자 모델 상세 조회 BDD 테스트")
     void 모델상세조회BDD테스트() throws Exception {
         AdminModelDTO adminModelDTO = AdminModelDTO.builder()
                 .categoryCd(1)
