@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -161,11 +160,11 @@ class AdminModelApiServiceTest {
     @DisplayName("관리자 모델 상세 조회 테스트")
     void 관리자모델상세조회테스트() throws Exception {
         // given
-        adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build());
+        adminModelApiService.getModelInfo(AdminModelDTO.builder().categoryCd(1).idx(156).build());
 
         // then
-        assertThat(adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build()).get("modelImageList")).isNotNull();
-        assertThat(adminModelApiService.getModelInfo(builder().categoryCd(1).idx(156).build()).get("modelInfo")).isNotNull();
+        assertThat(adminModelApiService.getModelInfo(AdminModelDTO.builder().categoryCd(1).idx(156).build()).get("modelImageList")).isNotNull();
+        assertThat(adminModelApiService.getModelInfo(AdminModelDTO.builder().categoryCd(1).idx(156).build()).get("modelInfo")).isNotNull();
     }
 
     @Test
@@ -244,7 +243,7 @@ class AdminModelApiServiceTest {
     @Test
     @DisplayName("관리자 모델 등록 테스트")
     void 관리자모델등록테스트() throws Exception {
-        AdminModelDTO adminModelDTO = builder()
+        AdminModelDTO adminModelDTO = AdminModelDTO.builder()
                 .categoryCd(1)
                 .categoryAge("2")
                 .modelKorFirstName("조")
@@ -285,6 +284,6 @@ class AdminModelApiServiceTest {
     @Test
     @DisplayName("관리자 모델 삭제 테스트")
     void 관리자모델삭제테스트() throws Exception {
-        assertThat(adminModelApiService.deleteModel(builder().idx(156).build())).isPositive();
+        assertThat(adminModelApiService.deleteModel(AdminModelDTO.builder().idx(156).build())).isPositive();
     }
 }

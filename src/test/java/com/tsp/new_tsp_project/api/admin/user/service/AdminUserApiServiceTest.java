@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -128,7 +127,7 @@ class AdminUserApiServiceTest {
     @DisplayName("회원 로그인 테스트")
     void 회원로그인테스트() throws Exception {
         // given
-        AdminUserDTO adminUserDTO = builder().userId("admin01").password("pass1234").build();
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder().userId("admin01").password("pass1234").build();
         // then
         assertThat(adminUserApiService.adminLogin(adminUserDTO, new MockHttpServletRequest())).isEqualTo("Y");
     }
@@ -136,7 +135,7 @@ class AdminUserApiServiceTest {
     @Test
     @DisplayName("로그인 후 토큰 등록 테스트")
     void 로그인후토큰등록테스트() throws Exception {
-        AdminUserDTO adminUserDTO = builder().userId("admin01").password("pass1234").build();
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder().userId("admin01").password("pass1234").build();
         adminUserApiService.insertUserToken(adminUserDTO);
     }
 
@@ -144,7 +143,7 @@ class AdminUserApiServiceTest {
     @DisplayName("토큰을 이용한 회원 조회 테스트")
     void 토큰을이용한회원조회테스트() throws Exception {
         // given
-        AdminUserDTO adminUserDTO = builder()
+        AdminUserDTO adminUserDTO = AdminUserDTO.builder()
                 .userId("admin01")
                 .idx(2)
                 .userToken("test___eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTkyNDU0NSwiaWF0IjoxNjUxODg4NTQ1fQ.H3ntnpBve8trpCiwgdF8wlZsXa51FJmMWzIVf")

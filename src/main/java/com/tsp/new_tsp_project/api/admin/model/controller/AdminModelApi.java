@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -112,7 +111,7 @@ public class AdminModelApi {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> modelMap;
 
-        modelMap = this.adminModelApiService.getModelInfo(builder().idx(idx).categoryCd(categoryCd).build());
+        modelMap = this.adminModelApiService.getModelInfo(AdminModelDTO.builder().idx(idx).categoryCd(categoryCd).build());
 
         resultMap.put("modelMap", modelMap);
 
@@ -188,7 +187,7 @@ public class AdminModelApi {
         modelMap.put("arrayState", request.getParameter("imageState").split(","));
         modelMap.put("arrayIdx", request.getParameter("idxState").split(","));
 
-        builder().idx(idx).categoryCd(categoryCd).build();
+        AdminModelDTO.builder().idx(idx).categoryCd(categoryCd).build();
 
         String result;
 

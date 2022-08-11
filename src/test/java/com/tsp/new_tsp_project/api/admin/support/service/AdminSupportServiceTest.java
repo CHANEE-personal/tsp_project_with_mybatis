@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.support.domain.dto.AdminSupportDTO.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -127,6 +126,6 @@ class AdminSupportServiceTest {
     @Test
     @DisplayName("지원모델 상세 조회 테스트")
     void 지원모델상세조회테스트() throws Exception {
-        assertThat(adminSupportService.getSupportModelInfo(builder().idx(1).build())).isNotEmpty();
+        assertThat(adminSupportService.getSupportModelInfo(AdminSupportDTO.builder().idx(1).build())).isNotEmpty();
     }
 }

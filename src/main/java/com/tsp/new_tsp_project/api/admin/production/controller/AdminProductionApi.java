@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -100,7 +99,7 @@ public class AdminProductionApi {
     })
     @GetMapping(value = "/{idx}")
     public Map<String, Object> getProductionInfo(@PathVariable Integer idx) throws Exception {
-        return this.adminProductionApiService.getProductionInfo(builder().idx(idx).build());
+        return this.adminProductionApiService.getProductionInfo(AdminProductionDTO.builder().idx(idx).build());
     }
 
     /**
@@ -158,7 +157,7 @@ public class AdminProductionApi {
                                    @RequestParam(value = "imageFiles", required = false) List<MultipartFile> files) throws Exception {
         String result;
 
-        builder().idx(idx).build();
+        AdminProductionDTO.builder().idx(idx).build();
 
         if (this.adminProductionApiService.updateProduction(adminProductionDTO, commonImageDTO, files) > 0) {
             result = "Y";
@@ -190,7 +189,7 @@ public class AdminProductionApi {
     public String deleteProduction(@PathVariable Integer idx) throws Exception {
         String result;
 
-        AdminProductionDTO adminProductionDTO = builder().visible("N").idx(idx).build();
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder().visible("N").idx(idx).build();
 
         if (this.adminProductionApiService.deleteProduction(adminProductionDTO) > 0) {
             result = "Y";

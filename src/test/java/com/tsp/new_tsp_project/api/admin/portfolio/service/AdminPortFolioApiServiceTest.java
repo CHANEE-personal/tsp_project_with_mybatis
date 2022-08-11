@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -129,7 +128,7 @@ class AdminPortFolioApiServiceTest {
     @Test
     @DisplayName("포트폴리오 상세 조회 테스트")
     void 포트폴리오상세조회테스트() throws Exception {
-        assertThat(adminPortFolioApiService.getPortFolioInfo(builder().idx(1).build())).isNotEmpty();
+        assertThat(adminPortFolioApiService.getPortFolioInfo(AdminPortFolioDTO.builder().idx(1).build())).isNotEmpty();
     }
 
     @Test
@@ -182,7 +181,7 @@ class AdminPortFolioApiServiceTest {
     @Test
     @DisplayName("포트폴리오 등록 테스트")
     void 포트폴리오등록테스트() throws Exception {
-        AdminPortFolioDTO adminPortFolioDTO = builder()
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
                 .categoryCd(1).title("테스트").description("테스트").videoUrl("https://youtube.com")
                 .visible("Y").hashTag("#test").build();
 
@@ -209,6 +208,6 @@ class AdminPortFolioApiServiceTest {
     @Test
     @DisplayName("포트폴리오 삭제 테스트")
     void 포트폴리오삭제테스트() throws Exception {
-        assertThat(adminPortFolioApiService.deletePortFolio(builder().idx(1).build())).isPositive();
+        assertThat(adminPortFolioApiService.deletePortFolio(AdminPortFolioDTO.builder().idx(1).build())).isPositive();
     }
 }

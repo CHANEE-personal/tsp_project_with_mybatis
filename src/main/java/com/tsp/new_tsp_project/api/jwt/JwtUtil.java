@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static io.jsonwebtoken.Jwts.*;
-import static io.jsonwebtoken.Jwts.builder;
 import static io.jsonwebtoken.Jwts.claims;
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
@@ -70,7 +69,7 @@ public class JwtUtil {
         Claims claims = claims();
         claims.put("username", username);
 
-        return builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(currentTimeMillis()))
                 .setExpiration(new Date(currentTimeMillis() + expireTime))
@@ -88,7 +87,7 @@ public class JwtUtil {
      * </pre>
      */
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
-        return parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(SECRET_KEY))
                 .build()
                 .parseClaimsJws(token)
@@ -136,7 +135,7 @@ public class JwtUtil {
         SignatureAlgorithm signatureAlgorithm = HS256;
         Key keys = new SecretKeySpec(keyBytes, signatureAlgorithm.getJcaName());
 
-        return builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(currentTimeMillis()))
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(currentTimeMillis()))
                 .setExpiration(new Date(currentTimeMillis() + 1000 * 60 * 60 * 10)).signWith(signatureAlgorithm, keys).compact();
     }
 

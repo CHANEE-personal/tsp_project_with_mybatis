@@ -72,7 +72,7 @@ public class swaggerConfiguration {
     }
 
     private SecurityContext securityContext() {
-        return builder().securityReferences(defaultAuth()).forPaths(any()).build();
+        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(any()).build();
     }
 
     List<SecurityReference> defaultAuth() {

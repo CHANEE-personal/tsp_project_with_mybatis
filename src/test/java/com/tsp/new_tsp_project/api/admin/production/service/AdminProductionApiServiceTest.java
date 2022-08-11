@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -121,7 +120,7 @@ class AdminProductionApiServiceTest {
     @Test
     @DisplayName("프로덕션 상세 조회 테스트")
     void 프로덕션상세조회테스트() throws Exception {
-        assertThat(adminProductionApiService.getProductionInfo(builder().idx(117).build()).get("productionInfo")).isNotNull();
+        assertThat(adminProductionApiService.getProductionInfo(AdminProductionDTO.builder().idx(117).build()).get("productionInfo")).isNotNull();
     }
 
     @Test
@@ -178,7 +177,7 @@ class AdminProductionApiServiceTest {
     @Test
     @DisplayName("프로덕션 등록 테스트")
     void 관리자프로덕션등록테스트() throws Exception {
-        AdminProductionDTO adminProductionDTO = builder()
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
                 .title("테스트").description("테스트").visible("Y").build();
 
         CommonImageDTO commonImageDTO = CommonImageDTO.builder()
@@ -204,6 +203,6 @@ class AdminProductionApiServiceTest {
     @Test
     @DisplayName("프로덕션 삭제 테스트")
     void 프로덕션삭제테스트() throws Exception {
-        assertThat(adminProductionApiService.deleteProduction(builder().idx(117).build())).isPositive();
+        assertThat(adminProductionApiService.deleteProduction(AdminProductionDTO.builder().idx(117).build())).isPositive();
     }
 }

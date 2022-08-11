@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static java.util.Arrays.asList;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -142,7 +141,7 @@ class AdminPortFolioApiTest {
     @WithMockUser(roles = "ADMIN")
     @DisplayName("Admin 포트폴리오 등록 테스트")
     void 포트폴리오등록Api테스트() throws Exception {
-        AdminPortFolioDTO adminPortFolioDTO = builder()
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder()
                 .categoryCd(1)
                 .title("test")
                 .description("test")

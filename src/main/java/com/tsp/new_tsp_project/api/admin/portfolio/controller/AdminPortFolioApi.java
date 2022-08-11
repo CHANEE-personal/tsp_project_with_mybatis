@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tsp.new_tsp_project.api.admin.portfolio.domain.dto.AdminPortFolioDTO.*;
 import static java.lang.Math.ceil;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.client.HttpClientErrorException.*;
@@ -99,7 +98,7 @@ public class AdminPortFolioApi {
     })
     @GetMapping(value = "/{idx}")
     public Map<String, Object> getPortFolioInfo(@PathVariable Integer idx) throws Exception {
-        return this.adminPortFolioApiService.getPortFolioInfo(builder().idx(idx).build());
+        return this.adminPortFolioApiService.getPortFolioInfo(AdminPortFolioDTO.builder().idx(idx).build());
     }
 
     /**
@@ -194,7 +193,7 @@ public class AdminPortFolioApi {
     })
     @DeleteMapping(value = "/{idx}")
     public String deletePortFolio(@PathVariable Integer idx) throws Exception {
-        AdminPortFolioDTO adminPortFolioDTO = builder().idx(idx).build();
+        AdminPortFolioDTO adminPortFolioDTO = AdminPortFolioDTO.builder().idx(idx).build();
 
         String result;
 

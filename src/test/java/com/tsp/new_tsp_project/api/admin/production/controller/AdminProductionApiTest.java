@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_project.api.admin.production.domain.dto.AdminProductionDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static java.util.Arrays.asList;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -139,7 +138,7 @@ class AdminProductionApiTest {
     @Test
     @DisplayName("Admin 프로덕션 등록 테스트")
     void 프로덕션등록Api테스트() throws Exception {
-        AdminProductionDTO adminProductionDTO = builder()
+        AdminProductionDTO adminProductionDTO = AdminProductionDTO.builder()
                 .title("productionTest")
                 .description("productionTest")
                 .visible("Y")

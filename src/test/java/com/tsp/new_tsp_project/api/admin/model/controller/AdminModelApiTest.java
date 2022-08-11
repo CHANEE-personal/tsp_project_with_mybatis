@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_project.api.admin.model.domain.dto.AdminModelDTO.*;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static java.util.Arrays.asList;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
@@ -146,7 +145,7 @@ class AdminModelApiTest {
 	@Disabled
 	@DisplayName("Admin 모델 등록 테스트")
 	void 모델등록Api테스트() throws Exception {
-		AdminModelDTO adminModelDTO = builder()
+		AdminModelDTO adminModelDTO = AdminModelDTO.builder()
 				.categoryCd(1)
 				.categoryAge("2")
 				.modelKorFirstName("조")
@@ -190,7 +189,7 @@ class AdminModelApiTest {
 	@WithMockUser(roles = "ADMIN")
 	@DisplayName("Admin 모델 수정 테스트")
 	void 모델수정Api테스트() throws Exception {
-		AdminModelDTO adminModelDTO = builder()
+		AdminModelDTO adminModelDTO = AdminModelDTO.builder()
 				.categoryCd(1)
 				.categoryAge("2")
 				.modelKorFirstName("조")

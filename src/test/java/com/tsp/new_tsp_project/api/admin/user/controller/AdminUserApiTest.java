@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.tsp.new_tsp_project.api.admin.user.dto.AdminUserDTO.builder;
 import static com.tsp.new_tsp_project.api.admin.user.dto.Role.ROLE_ADMIN;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -75,7 +74,7 @@ class AdminUserApiTest {
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin04", "pass1234", getAuthorities());
 
-        adminUserDTO = builder()
+        adminUserDTO = AdminUserDTO.builder()
                 .userId("admin04")
                 .password("pass1234")
                 .name("test")
